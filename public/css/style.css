@@ -477,3 +477,177 @@ p{margin:0 0 1em}
   .dish-name{font-size:.95rem}
 }
 @media print{.site-header,.mobile-tabbar,.drawer,.modal,.install-banner,.floating-cart{display:none!important}}
+
+/* ==========================================================================
+   v2 — REFONTE RESPONSIVE (téléphone / tablette) + MODE APPLICATION ANDROID
+   ========================================================================== */
+
+/* 1. Base tactile --------------------------------------------------------- */
+html{-webkit-tap-highlight-color:transparent}
+body{overflow-x:hidden;-webkit-overflow-scrolling:touch}
+@supports (overflow-x:clip){ body{overflow-x:clip} }   /* préserve position:sticky */
+button,.btn,.chip,.tab,.qty-btn,.icon-btn,.opt{touch-action:manipulation}
+.btn,.chip,.opt{min-height:42px}
+.qty-btn{min-width:38px;min-height:38px;font-size:1.05rem}
+section[id],.step,.dish,.order-card{scroll-margin-top:calc(var(--header-h) + 14px)}
+/* Police 16px : évite le zoom automatique des navigateurs mobiles */
+.field input,.field select,.field textarea,.search input,select,textarea{font-size:16px}
+
+/* 2. Menu : barre de recherche + catégories collantes --------------------- */
+@media (max-width:899px){
+  .menu-toolbar{
+    position:sticky;top:var(--header-h);z-index:45;
+    margin:0 -.2rem .9rem;padding:.7rem .2rem .5rem;
+    background:linear-gradient(180deg,var(--cream) 76%,rgba(250,246,239,0));
+  }
+  .chip-row{margin:0;padding:.15rem 0 .4rem;scroll-snap-type:x proximity}
+  .chip{scroll-snap-align:start}
+  .search{box-shadow:0 4px 14px rgba(11,17,32,.08)}
+}
+.search input,.field input{min-height:34px}
+
+/* 3. Grille des plats : 2 colonnes sur téléphone -------------------------- */
+.dish-grid{grid-template-columns:repeat(auto-fill,minmax(min(46vw,230px),1fr));gap:.9rem}
+.dish-name{overflow-wrap:anywhere}
+@media (max-width:420px){
+  .dish-grid{gap:.7rem}
+  .dish-name{font-size:.94rem}
+  .dish-desc{font-size:.79rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .dish-body{padding:.65rem .7rem .75rem;gap:.25rem}
+  .dish-price{font-size:.95rem}
+  .add-btn{width:36px;height:36px;font-size:1.15rem}
+  .badge{font-size:.62rem;padding:.22rem .5rem}
+}
+
+/* 4. Accueil : hero compact ---------------------------------------------- */
+@media (max-width:640px){
+  .hero-inner{padding:2.2rem 0 4.6rem;gap:1.25rem}
+  .hero h1{font-size:clamp(1.95rem,8.4vw,2.6rem)}
+  .hero-sub{font-size:.97rem}
+  .hero-cta{gap:.55rem;margin:1.05rem 0 .95rem}
+  .hero-cta .btn{flex:1 1 100%}
+  .hero-card{padding:1.15rem;border-radius:20px}
+  .hero-facts{gap:.35rem .95rem;font-size:.83rem}
+}
+
+/* 5. Fenêtres : « feuille glissante » depuis le bas sur téléphone --------- */
+@media (max-width:640px){
+  .modal{place-items:end center;padding:0;align-items:flex-end}
+  .modal-card{
+    width:100%;max-height:93dvh;
+    border-radius:24px 24px 0 0;
+    padding:1.7rem 1.15rem calc(1.3rem + env(safe-area-inset-bottom));
+    animation:sheetUp .32s cubic-bezier(.2,.9,.3,1);
+  }
+  .modal-card::before{
+    content:"";position:absolute;top:.62rem;left:50%;transform:translateX(-50%);
+    width:46px;height:4px;border-radius:99px;background:rgba(11,17,32,.16)
+  }
+  .modal-close{top:.9rem;right:.8rem}
+  .dish-modal-media{margin:.6rem 0 .9rem}
+  .dish-modal-media img{aspect-ratio:16/11}
+  .modal-card h3{font-size:1.22rem}
+  .confirm-icon{font-size:2.6rem}
+}
+@keyframes sheetUp{from{transform:translateY(102%)}to{transform:none}}
+
+/* 6. Panier : plein écran depuis le bas ---------------------------------- */
+@media (max-width:640px){
+  .drawer{
+    top:auto;height:94dvh;width:100%;
+    border-radius:22px 22px 0 0;
+    animation:sheetUp .32s cubic-bezier(.2,.9,.3,1);
+  }
+  .drawer-head{position:relative;padding-top:1.5rem}
+  .drawer-head::before{
+    content:"";position:absolute;top:.5rem;left:50%;transform:translateX(-50%);
+    width:46px;height:4px;border-radius:99px;background:rgba(11,17,32,.16)
+  }
+  .drawer-body{padding:.9rem 1rem}
+}
+
+/* 7. En-tête compact ----------------------------------------------------- */
+@media (max-width:560px){
+  :root{--header-h:62px}
+  .brand-mark{width:36px;height:36px}
+  .brand-text strong{font-size:1rem}
+  .header-actions{gap:.1rem}
+  .btn-install{display:none!important}          /* le bandeau d'installation prend le relais */
+  .cart-btn{padding:.55rem .8rem}
+  .cart-btn > span{display:none}                /* on garde l'icône + le compteur */
+  .site-header .btn-ghost{padding:.5rem .6rem}
+  #accountName{max-width:74px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+
+/* 8. Espacements, cartes, sections -------------------------------------- */
+@media (max-width:640px){
+  .wrap{width:calc(100% - 1.9rem)}
+  .section{padding:2.5rem 0}
+  .section-head{margin-bottom:1.15rem}
+  .section-sub{font-size:.93rem}
+  .steps{padding-top:1.7rem}
+  .step{padding:1.15rem 1.05rem 1rem}
+  .specials,.reviews{grid-template-columns:1fr}
+  .about-badge{left:.6rem;bottom:.6rem;padding:.5rem .8rem}
+  .contact-actions .btn{flex:1 1 100%}
+  .review{padding:1.05rem}
+}
+
+/* 9. Formulaires : une seule colonne, boutons lisibles ------------------- */
+@media (max-width:640px){
+  .form-grid{grid-template-columns:1fr!important;column-gap:0}
+  .seg{display:grid;grid-template-columns:1fr;gap:.4rem}
+  .seg button{min-width:0;text-align:left;padding:.75rem .95rem;display:flex;gap:.5rem;align-items:center}
+  .summary-box{font-size:.86rem;padding:.8rem .85rem}
+  .cart-item{grid-template-columns:54px 1fr auto;gap:.6rem}
+  .cart-item .thumb{width:54px;height:54px}
+}
+
+/* 10. Barre d'onglets mobile + éléments flottants ------------------------ */
+.mobile-tabbar .tab{min-height:52px;gap:.05rem;padding:.3rem 0}
+.mobile-tabbar .tab span{font-size:1.06rem;line-height:1}
+.mobile-tabbar .tab.active::after{
+  content:"";position:absolute;top:0;width:26px;height:2.5px;border-radius:2px;background:var(--gold)
+}
+.floating-cart{bottom:calc(74px + env(safe-area-inset-bottom));padding:.7rem 1.25rem;font-size:.88rem}
+.toast-wrap{bottom:calc(88px + env(safe-area-inset-bottom))}
+.install-banner{bottom:calc(122px + env(safe-area-inset-bottom))}
+
+/* 11. Tablettes (641 → 899 px) ------------------------------------------ */
+@media (min-width:641px) and (max-width:899px){
+  .dish-grid{grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+  .hero-inner{grid-template-columns:1.3fr .9fr;gap:1.6rem;align-items:center;padding:3rem 0 4.5rem}
+  .steps-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* 12. Administration sur téléphone -------------------------------------- */
+@media (max-width:640px){
+  .admin-tabs{padding:.55rem .15rem}
+  .kpi{padding:.85rem}
+  .kpi b{font-size:1.3rem}
+  .card{padding:1rem}
+  .menu-editor .dish-row{grid-template-columns:1fr 1fr!important;gap:.4rem;padding:.65rem 0}
+  table{min-width:540px}
+  th,td{padding:.55rem .5rem;font-size:.85rem}
+}
+
+/* 13. MODE APPLICATION ANDROID (APK) ------------------------------------ */
+html.in-app{--header-h:0px}
+html.in-app .site-header{display:none}              /* la barre d'app native la remplace */
+html.in-app .mobile-tabbar{display:none!important}  /* la navigation native la remplace */
+html.in-app body{padding-bottom:0}
+html.in-app .install-banner,html.in-app .btn-install{display:none!important}
+html.in-app .floating-cart{bottom:calc(16px + env(safe-area-inset-bottom))}
+html.in-app .toast-wrap{bottom:calc(22px + env(safe-area-inset-bottom))}
+/* Effets coûteux désactivés dans l'application : rendu plus fluide sous Android */
+html.in-app .hero-card,html.in-app .modal-card,html.in-app .drawer{backdrop-filter:none}
+html.in-app .hero-card{background:#16233d}
+html.in-app .dish:hover{transform:none}
+html.in-app .dish:hover .dish-media img{transform:none}
+html.in-app .announce{padding-top:calc(.5rem + env(safe-area-inset-top))}
+
+/* 14. Accessibilité : mouvement réduit ---------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}

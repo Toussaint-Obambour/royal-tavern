@@ -18,6 +18,28 @@
     remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
 
+  /* ---------------------------------------------------------------- */
+  /* Détection de l'application Android (APK) et pont de communication */
+  /* ---------------------------------------------------------------- */
+  const IS_APP = /RoyalTavernApp/i.test(navigator.userAgent) || !!window.RTAndroid;
+  if (IS_APP) document.documentElement.classList.add('in-app');
+
+  /** Appelle une fonction native Android (sans erreur si absente). */
+  function appBridge(method, value) {
+    try {
+      if (window.RTAndroid && typeof window.RTAndroid[method] === 'function') {
+        window.RTAndroid[method](String(value == null ? '' : value));
+      }
+    } catch (e) { /* ignoré */ }
+  }
+
+  /** Ouvre un lien externe : application native dans l'APK, nouvel onglet sur le web. */
+  function openExternal(url) {
+    if (!url) return;
+    if (IS_APP) appBridge('openExternal', url);
+    else window.open(url, '_blank');
+  }
+
   const CART_KEY = 'rt_cart_v1';
   const CUSTOMER_KEY = 'rt_customer_v1';
 
@@ -219,6 +241,16 @@
     });
     $('#reviewWhatsapp').href = waLink(`Bonjour ${s.name || ''}, je souhaite laisser un avis sur votre restaurant : `);
 
+    // Dans l'application Android, les liens externes s'ouvrent dans les applis natives
+    if (IS_APP) {
+      $$('a[target="_blank"]').forEach((a) => a.addEventListener('click', (ev) => {
+        if (a.dataset.external === '1' || /^https?:/.test(a.href)) {
+          ev.preventDefault();
+          openExternal(a.href);
+        }
+      }));
+    }
+
     const tel = String(s.phone || '').replace(/\s/g, '');
     ['#contactPhone', '#footerPhone', '#phoneTop'].forEach((sel) => {
       const el = $(sel);
@@ -226,6 +258,11 @@
     });
     $('#footerPhone').textContent = s.phone || 'Téléphone';
     $('#confirmCall').href = `tel:${tel}`;
+
+    // Informations utilisées par les menus natifs de l'application Android
+    window.RT_contactPhone = s.phone || '';
+    window.RT_whatsapp = s.whatsapp || '';
+    window.RT_siteName = s.name || 'Le Royal Tavern';
 
     $('#aboutText').textContent = s.about || '';
     $('#contactAddress').textContent = s.address || '';
@@ -269,7 +306,13 @@
     )).join('');
     $$('.chip', chips).forEach((b) => b.addEventListener('click', () => {
       state.filter = b.dataset.cat;
+      appBridge('haptic', 'light');
       renderCategories(); renderDishes();
+      // Sur téléphone, on ramène la grille sous les yeux de l'utilisateur
+      if (window.matchMedia('(max-width: 899px)').matches) {
+        const grid = $('#dishGrid');
+        if (grid) setTimeout(() => grid.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+      }
     }));
   }
 
@@ -277,7 +320,7 @@
     const inCart = state.cart.find((i) => i.id === d.id);
     const cat = state.categories.find((c) => c.id === d.cat);
     const media = d.img
-      ? `<img src="${esc(d.img)}" alt="${esc(d.name)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'${esc(cat?.icon || '🍽️')}'}))" />`
+      ? `<img src="${esc(d.img)}" alt="${esc(d.name)}" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'${esc(cat?.icon || '🍽️')}'}))" />`
       : `<span class="fallback">${esc(cat?.icon || '🍽️')}</span>`;
     return `
       <article class="dish ${inCart ? 'in-cart' : ''}" data-id="${esc(d.id)}" tabindex="0" role="button"
@@ -356,6 +399,7 @@
   /* Panier                                                              */
   /* ------------------------------------------------------------------ */
   function addToCart(dish, qty, extras) {
+    appBridge('haptic', 'light');            // petite vibration de confirmation (application)
     const key = `${dish.id}|${extras.slice().sort().join(',')}`;
     const found = state.cart.find((i) => i.key === key);
     if (found) found.qty = Math.min(50, found.qty + qty);
@@ -375,6 +419,7 @@
     floating.hidden = count === 0;
     $('#floatingCount').textContent = count;
     $('#floatingTotal').textContent = FC(subtotal);
+    appBridge('setCartBadge', count);        // badge sur l'icône Panier de l'application
     renderCartDrawer();
     renderDishes();
     if (!$('#checkoutModal').hidden) renderCheckoutSummary();
@@ -605,6 +650,7 @@
       $('#checkoutModal').hidden = true;
       $('#confirmNumber').textContent = data.order.number;
       $('#confirmWhatsapp').href = data.whatsappUrl || waLink(data.whatsappText || '');
+    $('#confirmWhatsapp').setAttribute('data-external', '1');
       $('#confirmText').textContent =
         `Commande n° ${data.order.number} enregistrée — total ${FC(data.order.total)}. ` +
         `Un message WhatsApp pré-rempli va s'ouvrir pour l'envoyer au restaurant. ` +
@@ -613,8 +659,8 @@
 
       state.cart = []; saveCart(); syncCart();
 
-      // Tentative d'ouverture automatique de WhatsApp
-      try { window.open($('#confirmWhatsapp').href, '_blank'); } catch (err) {}
+      // Ouverture automatique de WhatsApp (application native dans l'APK)
+      try { openExternal($('#confirmWhatsapp').href); } catch (err) {}
       toast('Commande enregistrée !', 'ok');
     } catch (err) {
       toast(err.message || 'Impossible d’envoyer la commande.', 'err');
@@ -670,6 +716,7 @@
   /* Installation de l'application (PWA)                                 */
   /* ------------------------------------------------------------------ */
   function setupPWA() {
+    if (IS_APP) return;                      // déjà une application : rien à installer
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const dismissed = store.get('rt_install_dismissed') === '1';
@@ -794,11 +841,23 @@
         entries.forEach((en) => {
           if (!en.isIntersecting) return;
           tabs.forEach((t) => t.classList.toggle('active', t.getAttribute('href') === `#${en.target.id}`));
+          appBridge('setActiveTab', en.target.id);
         });
       }, { rootMargin: '-45% 0px -50% 0px' });
       sections.forEach((s) => io.observe(s));
     }
   }
+
+  /** Navigation demandée par la barre d'onglets native de l'application. */
+  window.RT_gotoSection = function (section) {
+    const key = String(section || '').toLowerCase();
+    if (key === 'panier') { openDrawer(); return; }
+    if (key === 'compte') { location.href = 'compte.html'; return; }
+    const target = { accueil: '#top', menu: '#menu', contact: '#contact' }[key];
+    if (!target) return;
+    const el = document.querySelector(target);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   function closeAllModals() {
     $$('.modal').forEach((m) => { m.hidden = true; });
@@ -893,6 +952,8 @@
     syncCart();
     bindEvents();
     setupPWA();
+    appBridge('onPageReady', document.title);
+    appBridge('setActiveTab', 'accueil');
     // Pré-remplissage du suivi si une commande vient d'être passée
     // Suivi automatique : on propose le dernier numéro de commande connu
     const lastNum = store.get('rt_last_order');

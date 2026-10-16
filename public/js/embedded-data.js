@@ -1,7 +1,7 @@
-/* Généré automatiquement le 2026-10-16T11:40:33.075Z — ne pas modifier à la main.
+/* Généré automatiquement le 2026-10-16T12:04:17.974Z — ne pas modifier à la main.
    Source : data/menu.json + data/settings.json  (npm run build:data) */
 window.RT_FALLBACK = {
- "generatedAt": "2026-10-16T11:40:33.075Z",
+ "generatedAt": "2026-10-16T12:04:17.974Z",
  "settings": {
   "name": "Le Royal Tavern",
   "tagline": "Grillades, braisés & saveurs royales au cœur du Charbonnage",
