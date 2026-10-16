@@ -443,6 +443,16 @@
     });
   }
 
+  /** Ouvre une fenêtre et ferme automatiquement toutes les autres. */
+  function openModal(sel) {
+    closeAllModals();
+    const m = typeof sel === 'string' ? $(sel) : sel;
+    if (m) {
+      m.hidden = false;
+      document.body.classList.add('no-scroll');
+    }
+  }
+
   function openDrawer() {
     $('#cartDrawer').classList.add('open');
     $('#cartDrawer').setAttribute('aria-hidden', 'false');
@@ -486,8 +496,7 @@
       if (state.dishOptions.has(v)) { state.dishOptions.delete(v); b.classList.remove('active'); }
       else { state.dishOptions.add(v); b.classList.add('active'); }
     }));
-    $('#dishModal').hidden = false;
-    document.body.classList.add('no-scroll');
+    openModal('#dishModal');
   }
 
   /* ------------------------------------------------------------------ */
@@ -547,8 +556,7 @@
     fillZones();
     updateModeUI();
     updatePaymentHint();
-    $('#checkoutModal').hidden = false;
-    document.body.classList.add('no-scroll');
+    openModal('#checkoutModal');
   }
 
   async function submitOrder(e) {
@@ -595,14 +603,13 @@
       store.set('rt_last_order', data.order.number);
 
       $('#checkoutModal').hidden = true;
-      document.body.classList.remove('no-scroll');
       $('#confirmNumber').textContent = data.order.number;
       $('#confirmWhatsapp').href = data.whatsappUrl || waLink(data.whatsappText || '');
       $('#confirmText').textContent =
         `Commande n° ${data.order.number} enregistrée — total ${FC(data.order.total)}. ` +
         `Un message WhatsApp pré-rempli va s'ouvrir pour l'envoyer au restaurant. ` +
         `Gardez ce numéro pour suivre votre commande.`;
-      $('#confirmModal').hidden = false;
+      openModal('#confirmModal');
 
       state.cart = []; saveCart(); syncCart();
 
@@ -620,9 +627,12 @@
   /* Suivi de commande                                                   */
   /* ------------------------------------------------------------------ */
   function openTrack(prefill) {
-    if (prefill) $('#trackNumber').value = prefill;
-    $('#trackModal').hidden = false;
-    document.body.classList.add('no-scroll');
+    const last = state.lastOrder;
+    const num = prefill || (last && last.number) || store.get('rt_last_order') || '';
+    if (num) $('#trackNumber').value = num;
+    const phone = (last && last.customer && last.customer.phone) || '';
+    if (phone) $('#trackPhone').value = String(phone).replace(/\D/g, '').slice(-6);
+    openModal('#trackModal');
   }
 
   async function doTrack() {
@@ -723,9 +733,20 @@
 
     $('#menuSearch').addEventListener('input', (e) => { state.search = e.target.value; renderDishes(); });
 
-    $$('[data-close-modal]').forEach((b) => b.addEventListener('click', () => closeAllModals()));
-    $$('.modal').forEach((m) => m.addEventListener('click', (e) => { if (e.target === m) closeAllModals(); }));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeAllModals(); closeDrawer(); } });
+    // Fermeture des fenêtres : ✕, clic sur le fond sombre, ou touche Échap.
+    // Délégué au document pour fonctionner dans tous les cas.
+    document.addEventListener('click', (e) => {
+      const closer = e.target.closest('[data-close-modal]');
+      if (closer) { e.preventDefault(); e.stopPropagation(); closeAllModals(); return; }
+      if (e.target.classList && e.target.classList.contains('modal')) closeAllModals();
+    }, true);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeAllModals(); closeDrawer(); }
+    });
+
+    // Après une commande : bouton « Suivre ma commande » dans la fenêtre de confirmation
+    const confirmTrackBtn = $('#confirmTrack');
+    if (confirmTrackBtn) confirmTrackBtn.addEventListener('click', () => openTrack());
 
     // Modale plat
     $('#dmMinus').addEventListener('click', () => { state.dishQty = Math.max(1, state.dishQty - 1); $('#dmQty').value = state.dishQty; });
@@ -781,7 +802,8 @@
 
   function closeAllModals() {
     $$('.modal').forEach((m) => { m.hidden = true; });
-    if (!$('#cartDrawer').classList.contains('open')) document.body.classList.remove('no-scroll');
+    const drawer = $('#cartDrawer');
+    if (!drawer || !drawer.classList.contains('open')) document.body.classList.remove('no-scroll');
   }
 
   /* ------------------------------------------------------------------ */
@@ -827,6 +849,8 @@
 
   async function init() {
     loadCart();
+    closeAllModals();          // aucune fenêtre ne doit s'ouvrir toute seule
+    document.body.classList.remove('no-scroll');
     let online = false;
     try {
       const res = await fetch('/api/public');

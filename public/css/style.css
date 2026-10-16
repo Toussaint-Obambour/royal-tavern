@@ -31,6 +31,11 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
+
+/* Indispensable : garantit que tout élément marqué « hidden » est réellement masqué,
+   même si une autre règle lui impose un affichage (fenêtres modales, bandeaux, champs…).
+   Sans cette ligne, les fenêtres ✕ / « Suivre ma commande » restaient bloquées à l'écran. */
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;font-family:var(--sans);color:var(--ink);background:var(--cream);

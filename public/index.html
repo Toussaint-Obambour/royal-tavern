@@ -467,8 +467,9 @@
       <p class="confirm-num">Numéro : <b id="confirmNumber">—</b></p>
       <p id="confirmText">Un message WhatsApp va s'ouvrir pour envoyer votre commande au restaurant. Si WhatsApp ne s'ouvre pas, utilisez le bouton ci-dessous ou appelez-nous.</p>
       <a class="btn btn-gold btn-block btn-lg" id="confirmWhatsapp" href="#" target="_blank" rel="noopener">💬 Ouvrir WhatsApp</a>
-      <a class="btn btn-dark btn-block" id="confirmCall" href="#">📞 Appeler le restaurant</a>
-      <button class="btn btn-ghost btn-block" id="confirmClose">Fermer et continuer</button>
+      <button class="btn btn-dark btn-block" id="confirmTrack">🔎 Suivre ma commande</button>
+      <a class="btn btn-ghost btn-block" id="confirmCall" href="#">📞 Appeler le restaurant</a>
+      <button class="btn btn-outline btn-block" id="confirmClose" data-close-modal>Fermer et continuer</button>
     </div>
   </div>
 </div>
@@ -488,6 +489,7 @@
       <input id="trackPhone" inputmode="tel" placeholder="Vos 6 derniers chiffres suffisent" />
     </div>
     <button class="btn btn-gold btn-block" id="trackBtn">Rechercher</button>
+    <button class="btn btn-ghost btn-block" data-close-modal>Fermer</button>
     <div id="trackResult" class="track-result" hidden></div>
   </div>
 </div>
