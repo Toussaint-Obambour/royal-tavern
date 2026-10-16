@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Suivre ma commande — Le Royal Tavern</title>
+<meta name="description" content="Suivez en direct l'avancement de votre commande au restaurant Le Royal Tavern, Libreville." />
+<meta name="theme-color" content="#0b1120" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body{background:var(--cream)}
+  .track-page{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+  .track-head{background:linear-gradient(120deg,var(--navy),var(--navy-soft));color:#fff;padding:1.1rem 0}
+  .track-head .wrap{display:flex;align-items:center;gap:.9rem}
+  .track-head a{color:var(--gold-light);font-weight:600;font-size:.9rem}
+  .track-head .spacer{margin-left:auto}
+  .track-main{padding:2rem 0 3rem}
+  .track-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:1.5rem;box-shadow:var(--shadow-sm);max-width:640px;margin-inline:auto}
+  .track-card h1{font-size:1.6rem;margin-bottom:.3rem}
+  .track-card>p{color:var(--ink-soft);font-size:.93rem}
+  .track-form{display:grid;gap:.6rem;margin:1.2rem 0 .4rem}
+  .steps-timeline{list-style:none;padding:0;margin:1.2rem 0 0;display:grid;gap:.55rem}
+  .steps-timeline li{display:flex;gap:.7rem;align-items:flex-start;font-size:.92rem;color:var(--ink-soft)}
+  .steps-timeline li .dot{width:26px;height:26px;border-radius:50%;background:#e9e4d9;color:#fff;display:grid;place-items:center;font-size:.8rem;flex:0 0 auto}
+  .steps-timeline li.done{color:var(--ink);font-weight:600}
+  .steps-timeline li.done .dot{background:var(--ok)}
+  .steps-timeline li.current .dot{background:var(--gold);color:#241a05;box-shadow:0 0 0 5px rgba(217,168,60,.22)}
+  .result-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding-bottom:.8rem;border-bottom:1px dashed var(--line)}
+  .result-head b{font-family:var(--serif);font-size:1.25rem}
+  .order-summary{font-size:.9rem;display:grid;gap:.25rem;margin-top:.9rem}
+  .order-summary .r{display:flex;justify-content:space-between;gap:1rem}
+  .order-summary .r.tot{font-weight:800;border-top:1px dashed var(--line);padding-top:.35rem}
+  .help-line{margin-top:1.3rem;font-size:.88rem;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+<div class="track-page">
+  <header class="track-head">
+    <div class="wrap">
+      <a href="/" class="brand" style="color:#fff">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+        </span>
+        <span class="brand-text"><strong>Le Royal Tavern</strong><em>Suivi de commande</em></span>
+      </a>
+      <span class="spacer"></span>
+      <a href="/#menu">← Retour au menu</a>
+    </div>
+  </header>
+
+  <main class="track-main">
+    <div class="wrap">
+      <div class="track-card">
+        <h1>Où en est ma commande ?</h1>
+        <p>Entrez le numéro de commande reçu lors de votre commande (ex. <b>RT-261016-001</b>) et votre numéro de téléphone.</p>
+
+        <form class="track-form" id="form">
+          <div class="field">
+            <label for="number">Numéro de commande</label>
+            <input id="number" placeholder="RT-…" autocomplete="off" required />
+          </div>
+          <div class="field">
+            <label for="phone">Téléphone (vos 6 derniers chiffres suffisent)</label>
+            <input id="phone" inputmode="tel" placeholder="Ex. 740000" required />
+          </div>
+          <button class="btn btn-gold btn-block btn-lg" type="submit">🔍 Rechercher ma commande</button>
+        </form>
+
+        <div id="result" hidden></div>
+
+        <p class="help-line">
+          Un souci ? Appelez-nous au <a id="telLink" href="#"><b>—</b></a> ou
+          <a id="waLink" href="#" target="_blank" rel="noopener">écrivez-nous sur WhatsApp</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-bottom" style="margin-top:0;border-top:0">
+      <span>© <span id="year"></span> Le Royal Tavern — <span id="address">Charbonnage, Libreville</span></span>
+      <span class="footer-meta"><a href="/">Accueil</a> · <a href="/#contact">Contact</a></span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const FC = (n) => `${Number(n || 0).toLocaleString('fr-FR')} FCFA`;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const FLOW = ['nouvelle', 'confirmee', 'en_preparation', 'en_livraison', 'livree'];
+  const LABELS = {
+    nouvelle: ['Commande reçue', 'Nous avons bien reçu votre commande.'],
+    confirmee: ['Commande confirmée', 'Le restaurant a confirmé votre commande.'],
+    en_preparation: ['En préparation', 'Vos plats sont en cours de cuisson.'],
+    en_livraison: ['En livraison', 'Le livreur est en route (ou votre plat vous attend).'],
+    livree: ['Terminée', 'Commande livrée ou récupérée. Bon appétit ! 👑']
+  };
+
+  let settings = {};
+  fetch('/api/public').then((r) => r.json()).then((d) => {
+    settings = d.settings || {};
+    $('#year').textContent = new Date().getFullYear();
+    $('#address').textContent = settings.address || '';
+    const tel = String(settings.phone || '').replace(/\s/g, '');
+    const telLink = $('#telLink');
+    telLink.href = `tel:${tel}`; telLink.querySelector('b').textContent = settings.phone || '—';
+    const num = String(settings.whatsapp || '').replace(/\D/g, '');
+    $('#waLink').href = `https://wa.me/${num}?text=${encodeURIComponent('Bonjour, je souhaite des nouvelles de ma commande : ')}`;
+  }).catch(() => {});
+
+  // Pré-remplissage depuis l'URL : /suivi?number=RT-...&phone=...
+  const params = new URLSearchParams(location.search);
+  if (params.get('number')) $('#number').value = params.get('number');
+  if (params.get('phone')) $('#phone').value = params.get('phone');
+
+  async function search(number, phone) {
+    const box = $('#result');
+    box.hidden = false;
+    box.innerHTML = '<p style="color:var(--ink-soft)">Recherche en cours…</p>';
+    try {
+      const res = await fetch(`/api/track?number=${encodeURIComponent(number)}&phone=${encodeURIComponent(phone)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Commande introuvable.');
+      const o = data.order;
+      const idx = FLOW.indexOf(o.status);
+      const cancelled = o.status === 'annulee';
+      box.innerHTML = `
+        <div class="result-head">
+          <div><b>${esc(o.number)}</b><br><small style="color:var(--ink-soft)">${new Date(o.createdAt).toLocaleString('fr-FR')}</small></div>
+          <span class="status-pill st-${esc(o.status)}">${esc(o.statusLabel || o.status)}</span>
+        </div>
+        ${cancelled
+          ? '<p style="color:var(--danger);margin-top:1rem">Cette commande a été annulée. Contactez-nous si besoin.</p>'
+          : `<ul class="steps-timeline">
+              ${FLOW.map((f, i) => `
+                <li class="${i < idx ? 'done' : ''} ${i === idx ? 'current' : ''}">
+                  <span class="dot">${i <= idx ? '✔' : i + 1}</span>
+                  <span><b>${LABELS[f][0]}</b><br><small>${LABELS[f][1]}</small></span>
+                </li>`).join('')}
+             </ul>`}
+        <div class="order-summary" style="margin-top:1.2rem">
+          ${o.items.map((i) => `<div class="r"><span>${i.qty} × ${esc(i.name)}</span><span>${FC(i.lineTotal)}</span></div>`).join('')}
+          <div class="r tot"><span>Total</span><span>${FC(o.total)}</span></div>
+        </div>`;
+    } catch (e) {
+      box.innerHTML = `<p style="color:var(--danger);margin-top:1rem">${esc(e.message)}</p>`;
+    }
+  }
+
+  $('#form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    search($('#number').value.trim(), $('#phone').value.trim());
+  });
+
+  if (params.get('number')) search(params.get('number'), params.get('phone') || '');
+})();
+</script>
+</body>
+</html>

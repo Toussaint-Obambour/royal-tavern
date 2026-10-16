@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Accès — Le Royal Tavern</title>
+<meta name="description" content="Créez votre compte ou connectez-vous pour commander vos plats du Royal Tavern en ligne (Charbonnage, Libreville)." />
+<meta name="theme-color" content="#0b1120" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body{background:var(--navy);padding:0}
+  .auth-page{min-height:100dvh;display:grid;grid-template-columns:1fr}
+  .auth-visual{
+    position:relative;display:none;color:#fff;padding:2.4rem;
+    background:linear-gradient(160deg,rgba(11,17,32,.92),rgba(11,17,32,.55)),
+               url("img/hero.jpg") center/cover no-repeat;
+    flex-direction:column;justify-content:space-between
+  }
+  .auth-visual h1{font-size:2.5rem;margin-top:.6rem}
+  .auth-visual p{color:#dbe3f2;max-width:26rem}
+  .auth-visual ul{list-style:none;padding:0;margin:1.4rem 0 0;display:grid;gap:.6rem;font-size:.95rem;color:#e7ecf6}
+  .auth-visual ul li{display:flex;gap:.6rem;align-items:center}
+  .auth-visual .mini-legal{font-size:.78rem;color:#9fb0d0}
+
+  .auth-panel{display:flex;align-items:center;justify-content:center;padding:1.6rem 1.1rem 2.4rem}
+  .auth-card{width:min(460px,100%)}
+  .auth-brand{display:flex;align-items:center;gap:.7rem;color:#fff;margin-bottom:1.2rem}
+  .auth-brand .brand-mark{width:48px;height:48px}
+  .auth-brand strong{font-family:var(--serif);font-size:1.3rem;display:block;line-height:1.1}
+  .auth-brand em{font-style:normal;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light)}
+  .auth-box{background:var(--cream);border-radius:22px;padding:1.5rem;box-shadow:var(--shadow-lg)}
+  .tabs{display:flex;background:#efe8db;border-radius:14px;padding:.28rem;margin-bottom:1.2rem}
+  .tabs button{
+    flex:1;border:0;background:transparent;padding:.7rem .5rem;border-radius:11px;font-weight:700;
+    font-size:.9rem;cursor:pointer;color:var(--ink-soft);transition:.2s
+  }
+  .tabs button.active{background:#fff;color:var(--navy);box-shadow:0 4px 12px rgba(11,17,32,.12)}
+  .auth-title{font-size:1.45rem;margin:0 0 .2rem}
+  .auth-sub{color:var(--ink-soft);font-size:.9rem;margin:0 0 1.1rem}
+  .auth-box .field{margin-bottom:.85rem}
+  .pwd-wrap{position:relative}
+  .pwd-wrap input{padding-right:3.2rem}
+  .pwd-toggle{
+    position:absolute;right:.55rem;top:50%;transform:translateY(-50%);border:0;background:transparent;
+    cursor:pointer;font-size:.78rem;font-weight:700;color:var(--gold-dark)
+  }
+  .auth-error{
+    background:#fbe3e0;color:#a02c1f;border-radius:12px;padding:.7rem .9rem;font-size:.85rem;
+    margin-bottom:.9rem;display:none
+  }
+  .auth-note{font-size:.78rem;color:var(--ink-soft);text-align:center;margin:.9rem 0 0;line-height:1.5}
+  .guest-row{margin-top:1.1rem;padding-top:1rem;border-top:1px dashed var(--line);text-align:center}
+  .guest-row a{font-size:.87rem;font-weight:700;color:var(--ink-soft)}
+  .guest-row a:hover{color:var(--gold-dark)}
+  .switch-hint{font-size:.86rem;color:var(--ink-soft);text-align:center;margin:.9rem 0 0}
+  .switch-hint button{background:none;border:0;color:var(--gold-dark);font-weight:800;cursor:pointer;font-size:.86rem;padding:0 .2rem}
+  .auth-foot{color:#93a3c4;font-size:.8rem;text-align:center;margin-top:1.3rem;display:grid;gap:.35rem}
+  .auth-foot a{color:var(--gold-light);font-weight:600}
+  .success-row{display:flex;gap:.6rem;align-items:center;background:#dff3e8;color:#1a7a4f;border-radius:12px;padding:.75rem .9rem;font-size:.87rem;font-weight:600}
+
+  @media (min-width:960px){
+    .auth-page{grid-template-columns:1.05fr .95fr}
+    .auth-visual{display:flex}
+    .auth-panel{padding:2.5rem}
+  }
+</style>
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- Colonne visuelle (ordinateur / tablette) -->
+  <section class="auth-visual">
+    <div class="brand" style="color:#fff">
+      <span class="brand-mark">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+      </span>
+      <span class="brand-text"><strong>Le Royal Tavern</strong><em>Charbonnage · Libreville</em></span>
+    </div>
+    <div>
+      <span class="pill"><span class="dot"></span> Commandez en ligne en 2 minutes</span>
+      <h1>Bienvenue au<br>Royal Tavern 👑</h1>
+      <p>Créez votre compte pour commander vos plats préférés : grillades, poissons braisés, brochettes, poulet DG, burgers et jus naturels.</p>
+      <ul>
+        <li>🛵 <span>Livraison, à emporter ou sur place</span></li>
+        <li>🧾 <span>Vos commandes et leurs statuts, enregistrés dans votre compte</span></li>
+        <li>💬 <span>Confirmation immédiate sur WhatsApp</span></li>
+        <li>💳 <span>Espèces, Airtel Money ou Moov Money</span></li>
+      </ul>
+    </div>
+    <p class="mini-legal">📍 Charbonnage, derrière la Chapelle des Vainqueurs · Libreville, Gabon</p>
+  </section>
+
+  <!-- Colonne formulaire -->
+  <section class="auth-panel">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+        </span>
+        <span>
+          <strong>Le Royal Tavern</strong>
+          <em id="brandTagline">Votre espace client</em>
+        </span>
+      </div>
+
+      <div class="auth-box">
+        <div class="tabs" role="tablist">
+          <button id="tabSignup" class="active" role="tab" aria-selected="true">Créer un compte</button>
+          <button id="tabLogin" role="tab" aria-selected="false">Se connecter</button>
+        </div>
+
+        <div class="auth-error" id="authError"></div>
+
+        <!-- ---------- Inscription ---------- -->
+        <form id="signupForm">
+          <h2 class="auth-title">Créer votre compte</h2>
+          <p class="auth-sub">30 secondes suffisent — vous commanderez plus vite la prochaine fois.</p>
+
+          <div class="field">
+            <label for="suName">Nom complet *</label>
+            <input id="suName" name="name" required minlength="2" autocomplete="name" placeholder="Ex. Marie Ondo" />
+          </div>
+          <div class="field">
+            <label for="suPhone">Téléphone / WhatsApp *</label>
+            <input id="suPhone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="Ex. 074 00 00 00" />
+            <p class="hint">Ce numéro servira d'identifiant de connexion et de contact pour vos commandes.</p>
+          </div>
+          <div class="field">
+            <label for="suAddress">Adresse de livraison (facultatif)</label>
+            <input id="suAddress" name="address" placeholder="Quartier, rue, repère" />
+          </div>
+          <div class="field">
+            <label for="suPassword">Mot de passe * (4 caractères minimum)</label>
+            <div class="pwd-wrap">
+              <input id="suPassword" name="password" type="password" required minlength="4" autocomplete="new-password" placeholder="••••••••" />
+              <button type="button" class="pwd-toggle" data-toggle="suPassword">Afficher</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="suPassword2">Confirmez le mot de passe *</label>
+            <input id="suPassword2" type="password" required minlength="4" autocomplete="new-password" placeholder="••••••••" />
+          </div>
+          <input type="text" id="suWebsite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <button class="btn btn-gold btn-block btn-lg" type="submit" id="suSubmit">👑 Créer mon compte</button>
+
+          <p class="switch-hint">Vous avez déjà un compte ?
+            <button type="button" id="goLogin">Connectez-vous</button>
+          </p>
+        </form>
+
+        <!-- ---------- Connexion ---------- -->
+        <form id="loginForm" hidden>
+          <h2 class="auth-title">Se connecter</h2>
+          <p class="auth-sub">Entrez le numéro de téléphone utilisé lors de votre inscription.</p>
+
+          <div class="field">
+            <label for="liPhone">Téléphone *</label>
+            <input id="liPhone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="Ex. 074 00 00 00" />
+          </div>
+          <div class="field">
+            <label for="liPassword">Mot de passe *</label>
+            <div class="pwd-wrap">
+              <input id="liPassword" name="password" type="password" required autocomplete="current-password" placeholder="••••••••" />
+              <button type="button" class="pwd-toggle" data-toggle="liPassword">Afficher</button>
+            </div>
+          </div>
+          <button class="btn btn-gold btn-block btn-lg" type="submit" id="liSubmit">Se connecter</button>
+
+          <p class="switch-hint">Pas encore de compte ?
+            <button type="button" id="goSignup">Créez-en un</button>
+          </p>
+        </form>
+
+        <div class="guest-row">
+          <a href="#" id="guestLink">Continuer sans compte (commander en invité) →</a>
+        </div>
+      </div>
+
+      <p class="auth-foot">
+        <span>Vous êtes l'équipe du restaurant ? <a href="/admin">Espace restaurant ↗</a></span>
+        <span>Un souci pour vous connecter ? <a id="waHelp" href="#" target="_blank" rel="noopener">Écrivez-nous sur WhatsApp</a></span>
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const TOKEN_KEY = 'rt_client_token';
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  const params = new URLSearchParams(location.search);
+  const NEXT = params.get('next') || '/';
+
+  function toast(msg, type = '') {
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.innerHTML = '<span>' + (type === 'ok' ? '✅' : type === 'err' ? '⚠️' : '👑') + '</span><span>' + msg + '</span>';
+    $('#toastWrap').appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 320); }, 3500);
+  }
+  function showError(msg) {
+    const box = $('#authError');
+    box.textContent = msg;
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function hideError() { $('#authError').style.display = 'none'; }
+
+  /* ---------- Bascule entre les deux formulaires ---------- */
+  function showTab(which) {
+    const signup = which === 'signup';
+    $('#tabSignup').classList.toggle('active', signup);
+    $('#tabLogin').classList.toggle('active', !signup);
+    $('#tabSignup').setAttribute('aria-selected', signup);
+    $('#tabLogin').setAttribute('aria-selected', !signup);
+    $('#signupForm').hidden = !signup;
+    $('#loginForm').hidden = signup;
+    hideError();
+    history.replaceState(null, '', signup ? '?mode=inscription' : '?mode=connexion');
+    setTimeout(() => (signup ? $('#suName') : $('#liPhone')).focus(), 60);
+  }
+  $('#tabSignup').addEventListener('click', () => showTab('signup'));
+  $('#tabLogin').addEventListener('click', () => showTab('login'));
+  $('#goLogin').addEventListener('click', () => showTab('login'));
+  $('#goSignup').addEventListener('click', () => showTab('signup'));
+
+  // Ouverture directe sur le bon onglet selon l'URL (?mode=connexion)
+  if (params.get('mode') === 'connexion') showTab('login');
+
+  /* ---------- Affichage du mot de passe ---------- */
+  document.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => {
+    const input = document.getElementById(b.dataset.toggle);
+    const visible = input.type === 'text';
+    input.type = visible ? 'password' : 'text';
+    b.textContent = visible ? 'Afficher' : 'Masquer';
+  }));
+
+  /* ---------- Connexion ---------- */
+  $('#loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError();
+    const btn = $('#liSubmit');
+    btn.disabled = true; btn.textContent = 'Connexion…';
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ phone: $('#liPhone').value, password: $('#liPassword').value })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Connexion impossible.');
+      store.set(TOKEN_KEY, data.token);
+      store.set('rt_client', JSON.stringify(data.user));
+      store.remove('rt_guest');
+      toast('Bienvenue ' + data.user.name.split(' ')[0] + ' ! 👑', 'ok');
+      setTimeout(() => location.replace(NEXT), 500);
+    } catch (err) {
+      showError(err.message);
+      btn.disabled = false; btn.textContent = 'Se connecter';
+    }
+  });
+
+  /* ---------- Inscription ---------- */
+  $('#signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideError();
+    if ($('#suPassword').value !== $('#suPassword2').value) {
+      showError('Les deux mots de passe ne correspondent pas.');
+      return;
+    }
+    const btn = $('#suSubmit');
+    btn.disabled = true; btn.textContent = 'Création du compte…';
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          name: $('#suName').value,
+          phone: $('#suPhone').value,
+          address: $('#suAddress').value,
+          password: $('#suPassword').value,
+          website: $('#suWebsite').value
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Création impossible.');
+      store.set(TOKEN_KEY, data.token);
+      store.set('rt_client', JSON.stringify(data.user));
+      store.remove('rt_guest');
+      toast('Compte créé — bienvenue ' + data.user.name.split(' ')[0] + ' ! 👑', 'ok');
+      setTimeout(() => location.replace(NEXT), 600);
+    } catch (err) {
+      showError(err.message);
+      btn.disabled = false; btn.textContent = '👑 Créer mon compte';
+      if (/existe déjà/i.test(err.message)) setTimeout(() => showTab('login'), 1500);
+    }
+  });
+
+  /* ---------- Accès invité ---------- */
+  $('#guestLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    store.set('rt_guest', '1');
+    location.replace(NEXT);
+  });
+
+  /* ---------- Déjà connecté ? ---------- */
+  (async function boot() {
+    const token = store.get(TOKEN_KEY);
+    if (token && !params.get('force')) {
+      try {
+        const res = await fetch('/api/auth/me', { headers: { 'x-client-token': token } });
+        const data = await res.json();
+        if (data.ok) { location.replace(NEXT); return; }
+        store.remove(TOKEN_KEY);
+      } catch (e) { /* hors ligne : on reste sur la page */ }
+    }
+    // Coordonnées du restaurant (WhatsApp d'aide)
+    try {
+      const r = await fetch('/api/public');
+      const d = await r.json();
+      const s = d.settings || {};
+      const num = String(s.whatsapp || '').replace(/\D/g, '');
+      $('#waHelp').href = 'https://wa.me/' + num + '?text=' + encodeURIComponent('Bonjour, j’ai besoin d’aide pour me connecter à mon compte sur le site du Royal Tavern.');
+      if (s.name) $('#brandTagline').textContent = s.tagline ? s.tagline.slice(0, 40) : 'Votre espace client';
+    } catch (e) {}
+  })();
+})();
+</script>
+</body>
+</html>

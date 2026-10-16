@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Affiche à imprimer — Le Royal Tavern</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<style>
+  :root{ --navy:#0b1120; --gold:#d9a83c; --gold-l:#f0d08a; --cream:#faf6ef; }
+  *{box-sizing:border-box}
+  body{margin:0;background:#e9e4da;font-family:"Segoe UI",system-ui,Arial,sans-serif;color:var(--navy);padding:24px}
+  .toolbar{max-width:760px;margin:0 auto 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .toolbar button,.toolbar a{border:0;background:var(--navy);color:#fff;border-radius:999px;padding:.65rem 1.1rem;font-weight:700;cursor:pointer;text-decoration:none;font-size:.9rem}
+  .toolbar a.alt{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+  .toolbar span{font-size:.85rem;color:#5a6577}
+  .poster{
+    width:210mm;min-height:297mm;margin:0 auto;background:var(--cream);padding:18mm 16mm;
+    display:flex;flex-direction:column;align-items:center;text-align:center;gap:6mm;
+    box-shadow:0 20px 50px rgba(0,0,0,.25)
+  }
+  .crown{width:64px;height:64px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:44px;margin:0;letter-spacing:.01em}
+  .sub{font-size:15px;color:#5a6577;letter-spacing:.16em;text-transform:uppercase;margin:0}
+  .rule{width:70%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .claim{font-family:Georgia,serif;font-size:26px;line-height:1.35;margin:2mm 0}
+  .qr-wrap{background:#fff;border-radius:22px;padding:14px;box-shadow:0 10px 26px rgba(11,17,32,.14)}
+  .qr-wrap img{display:block;width:78mm;height:78mm}
+  .scan{font-size:19px;font-weight:700}
+  .url{font-family:ui-monospace,Consolas,monospace;font-size:15px;background:#fff;border:1px dashed var(--gold);border-radius:10px;padding:6px 12px;word-break:break-all}
+  .steps{display:grid;gap:2mm;font-size:14px;color:#3d4757;text-align:left;width:100%;max-width:120mm}
+  .steps div{display:flex;gap:8px;align-items:flex-start}
+  .steps b{color:var(--gold-dark,#a9761f)}
+  .info{margin-top:auto;width:100%;border-top:2px solid var(--gold);padding-top:5mm;font-size:14px;display:grid;gap:1.5mm}
+  .wa{font-size:18px;font-weight:800}
+  .badge-row{display:flex;gap:3mm;flex-wrap:wrap;justify-content:center;font-size:13px;color:#3d4757}
+  .badge-row span{background:#fff;border:1px solid #e6dfd2;border-radius:999px;padding:4px 10px}
+  @media print{
+    body{background:#fff;padding:0}
+    .toolbar{display:none}
+    .poster{box-shadow:none;margin:0;width:auto;min-height:auto;page-break-after:always}
+    @page{size:A4;margin:0}
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button onclick="window.print()">🖨️ Imprimer l'affiche</button>
+  <a class="alt" href="/admin">← Espace restaurant</a>
+  <span>Astuce : imprimez en A4, puis posez l'affiche sur les tables, la vitrine et vos flyers.</span>
+</div>
+
+<div class="poster">
+  <svg class="crown" viewBox="0 0 64 64" aria-hidden="true">
+    <path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/>
+    <rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/>
+  </svg>
+  <h1>Le Royal Tavern</h1>
+  <p class="sub">Restaurant · Charbonnage · Libreville</p>
+  <div class="rule"></div>
+
+  <p class="claim">Scannez, choisissez vos plats,<br>commandez en ligne 🍽️</p>
+
+  <div class="qr-wrap"><img id="qr" alt="QR code du menu en ligne du Royal Tavern" /></div>
+  <p class="scan">📲 Scannez ce QR code avec votre téléphone</p>
+  <p class="url" id="url">—</p>
+
+  <div class="steps">
+    <div><b>1.</b><span>Ouvrez l'appareil photo et scannez le QR code (ou tapez l'adresse du site).</span></div>
+    <div><b>2.</b><span>Choisissez vos plats : poulet braisé, poisson, brochettes, riz sauté, burgers, jus naturels.</span></div>
+    <div><b>3.</b><span>Envoyez votre commande sur WhatsApp — nous confirmons en quelques minutes.</span></div>
+    <div><b>4.</b><span>Payez en espèces à la réception, par Airtel Money ou Moov Money.</span></div>
+  </div>
+
+  <div class="badge-row">
+    <span>🛵 Livraison</span><span>🥡 À emporter</span><span>🪑 Sur place</span><span>📱 Airtel &amp; Moov Money</span>
+  </div>
+
+  <div class="info">
+    <div>📍 <b id="address">Charbonnage, derrière la Chapelle des Vainqueurs, Libreville</b></div>
+    <div>🕒 <span id="hours">Tous les jours : 10h00 – 23h00</span></div>
+    <div class="wa">📞 <span id="phone">—</span> &nbsp;·&nbsp; 💬 WhatsApp : <span id="wa">—</span></div>
+  </div>
+</div>
+
+<script>
+  const url = location.origin + '/';
+  document.getElementById('url').textContent = url;
+  document.getElementById('qr').src = `/api/qr.png?data=${encodeURIComponent(url)}&size=900`;
+  fetch('/api/public').then((r) => r.json()).then((d) => {
+    const s = d.settings || {};
+    if (s.address) document.getElementById('address').textContent = s.address;
+    if (s.hoursText) document.getElementById('hours').textContent = s.hoursText;
+    if (s.phone) document.getElementById('phone').textContent = s.phone;
+    document.getElementById('wa').textContent = s.phone || s.whatsapp || '—';
+  }).catch(() => {});
+</script>
+</body>
+</html>

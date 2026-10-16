@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Le Royal Tavern — Grillades & Plats à commander en ligne | Libreville</title>
+<meta name="description" content="Le Royal Tavern, Charbonnage derrière la Chapelle des Vainqueurs (Libreville) : poulet braisé, poisson braisé, brochettes, poulet DG, burgers, jus naturels. Commandez en ligne, livraison, à emporter ou sur place." />
+<meta name="theme-color" content="#0b1120" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta property="og:title" content="Le Royal Tavern — Commandez vos plats en ligne" />
+<meta property="og:description" content="Grillades, braisés et saveurs royales au cœur du Charbonnage, Libreville." />
+<meta property="og:image" content="img/hero.jpg" />
+<meta property="og:type" content="restaurant" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Le Royal Tavern",
+  "servesCuisine": ["Africaine", "Grillades", "Burgers"],
+  "priceRange": "1500 - 12000 FCFA",
+  "telephone": "+24100000000",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Charbonnage, derrière la Chapelle des Vainqueurs",
+    "addressLocality": "Libreville",
+    "addressCountry": "GA"
+  },
+  "openingHours": "Mo-Su 10:00-23:00",
+  "acceptsReservations": "True"
+}
+</script>
+</head>
+<body>
+
+<!-- ============ Bandeau annonces ============ -->
+<div class="announce" id="announceBar" hidden>
+  <span id="announceText"></span>
+</div>
+
+<!-- ============ En-tête ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="Le Royal Tavern, accueil">
+      <span class="brand-mark">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6dc9c"/><stop offset="55%" stop-color="#d9a83c"/><stop offset="100%" stop-color="#a9761f"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#gGold)" d="M6 22l9 8 8-14 9 14 9-14 8 14 9-8-4 22H10L6 22z"/>
+          <rect x="10" y="46" width="44" height="5" rx="1.6" fill="url(#gGold)"/>
+          <circle cx="32" cy="15" r="3.4" fill="#f6dc9c"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>Le Royal Tavern</strong>
+        <em>Charbonnage · Libreville</em>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#menu">Menu</a>
+      <a href="#jour">Menu du jour</a>
+      <a href="#apropos">Le restaurant</a>
+      <a href="#avis">Avis</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn btn-ghost btn-install" id="installBtn" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Installer l'app
+      </button>
+      <a class="btn btn-ghost" id="accountChip" href="compte.html" title="Mon compte">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span id="accountName">Mon compte</span>
+      </a>
+      <a class="btn btn-ghost hide-sm" id="phoneTop" href="#contact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 006 6L15 14l5 2v4a1 1 0 01-1.1 1A16 16 0 013 5.1A1 1 0 014 4z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        Appeler
+      </a>
+      <button class="btn btn-gold cart-btn" id="cartOpenBtn" aria-label="Ouvrir le panier">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2l2.2 9.5a2 2 0 002 1.5h7.1a2 2 0 002-1.6L21 8H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>
+        <span>Panier</span>
+        <b class="cart-count" id="cartCount">0</b>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ============ Hero ============ -->
+  <section class="hero" id="accueil">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <span class="pill" id="heroStatus">
+          <span class="dot"></span> <span id="heroStatusText">Ouvert aujourd'hui</span>
+        </span>
+        <h1>Le goût royal,<br>livré chez vous.</h1>
+        <p class="hero-sub" id="heroTagline">Poulets braisés au charbon, poissons entiers, brochettes, poulet DG, burgers maison et jus naturels — préparés chaque jour au Charbonnage.</p>
+        <div class="hero-cta">
+          <a class="btn btn-gold btn-lg" href="#menu">🍽️ Voir le menu &amp; commander</a>
+          <a class="btn btn-outline btn-lg" id="heroWhatsapp" href="#" target="_blank" rel="noopener">💬 Commander sur WhatsApp</a>
+        </div>
+        <ul class="hero-facts">
+          <li><b>🛵</b> Livraison &amp; à emporter</li>
+          <li><b>📱</b> Airtel &amp; Moov Money</li>
+          <li><b>⏱️</b> Prêt en 20–35 min</li>
+        </ul>
+      </div>
+      <aside class="hero-card">
+        <h3>Commande express</h3>
+        <p>Appelez, écrivez sur WhatsApp ou commandez directement sur le site. Nous confirmons en quelques minutes.</p>
+        <div class="hero-card-rows">
+          <div><span>📍 Adresse</span><strong id="heroAddress">Charbonnage, derrière la Chapelle des Vainqueurs</strong></div>
+          <div><span>🕒 Horaires</span><strong id="heroHours">Tous les jours : 10h – 23h</strong></div>
+          <div><span>🛵 Livraison</span><strong id="heroDelivery">À partir de 1 000 FCFA</strong></div>
+        </div>
+        <button class="btn btn-gold btn-block" id="heroOrderBtn">Je passe commande</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ Comment ça marche ============ -->
+  <section class="steps">
+    <div class="wrap steps-grid">
+      <article class="step">
+        <span class="step-num">1</span>
+        <h3>Choisissez vos plats</h3>
+        <p>Parcourez le menu, ajoutez au panier et indiquez vos préférences (piment, sauce, accompagnement).</p>
+      </article>
+      <article class="step">
+        <span class="step-num">2</span>
+        <h3>Envoyez la commande</h3>
+        <p>Votre commande part directement sur WhatsApp du restaurant, avec un numéro de suivi automatique.</p>
+      </article>
+      <article class="step">
+        <span class="step-num">3</span>
+        <h3>Payez &amp; dégustez</h3>
+        <p>Espèces à la réception, Airtel Money ou Moov Money. Livraison, à emporter ou service sur place.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ Menu ============ -->
+  <section class="section" id="menu">
+    <div class="wrap">
+      <header class="section-head">
+        <span class="eyebrow">Notre carte</span>
+        <h2>Le menu du Royal Tavern</h2>
+        <p class="section-sub">Des plats préparés à la commande, avec des produits frais du marché. Cliquez sur un plat pour choisir la quantité et vos préférences.</p>
+      </header>
+
+      <div class="menu-toolbar">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" id="menuSearch" placeholder="Rechercher un plat (poulet, poisson, burger…)" autocomplete="off" />
+        </label>
+        <div class="chip-row scroll-x" id="categoryChips" role="tablist" aria-label="Catégories"></div>
+      </div>
+
+      <div class="dish-grid" id="dishGrid" aria-live="polite"></div>
+      <p class="empty-state" id="menuEmpty" hidden>Aucun plat ne correspond à votre recherche.</p>
+    </div>
+  </section>
+
+  <!-- ============ Menu du jour ============ -->
+  <section class="section section-alt" id="jour">
+    <div class="wrap">
+      <header class="section-head">
+        <span class="eyebrow">Chaque semaine</span>
+        <h2>Suggestions &amp; menus du jour</h2>
+        <p class="section-sub">Des plats à prix doux servis du lundi au dimanche. Aujourd'hui, c'est surligné 👇</p>
+      </header>
+      <div class="specials" id="specialsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ À propos ============ -->
+  <section class="section" id="apropos">
+    <div class="wrap about-grid">
+      <div class="about-media">
+        <img src="img/ambiance.jpg" alt="Terrasse du restaurant Le Royal Tavern à Libreville" loading="lazy" />
+        <div class="about-badge">
+          <strong>+12</strong>
+          <span>plats au feu de bois</span>
+        </div>
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow">Le restaurant</span>
+        <h2>Une table conviviale au Charbonnage</h2>
+        <p id="aboutText">Le Royal Tavern est un restaurant convivial situé au Charbonnage, juste derrière la Chapelle des Vainqueurs à Libreville.</p>
+        <ul class="about-list">
+          <li><b>Braised au charbon</b> — nos poulets et poissons sont braisés au feu, jamais frits à l'avance.</li>
+          <li><b>Sauces maison</b> — piment, gingembre, arachide : préparées sur place chaque matin.</li>
+          <li><b>Produits frais</b> — achats quotidiens au marché, cuisson à la commande.</li>
+          <li><b>Sur place &amp; à emporter</b> — espace terrasse, ambiance musicale le week-end.</li>
+        </ul>
+        <div class="about-cta">
+          <a class="btn btn-dark" href="#menu">Découvrir la carte</a>
+          <a class="btn btn-outline" id="aboutWhatsapp" href="#" target="_blank" rel="noopener">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Avis ============ -->
+  <section class="section section-alt" id="avis">
+    <div class="wrap">
+      <header class="section-head">
+        <span class="eyebrow">Ils ont goûté</span>
+        <h2>Avis de nos clients</h2>
+      </header>
+      <div class="reviews" id="reviewsGrid"></div>
+      <p class="review-cta">
+        Vous avez aimé ? Laissez un avis à votre prochaine visite ou écrivez-nous sur WhatsApp —
+        <a id="reviewWhatsapp" href="#" target="_blank" rel="noopener">Envoyer un avis 💬</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Contact / localisation ============ -->
+  <section class="section" id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-copy">
+        <span class="eyebrow">Nous trouver</span>
+        <h2>Charbonnage, derrière la Chapelle des Vainqueurs</h2>
+        <p>Passez nous voir, ou faites-vous livrer dans tout Libreville. Un doute sur l'itinéraire ? Appelez-nous, on vous guide.</p>
+        <ul class="contact-list">
+          <li><span>📍</span><div><b>Adresse</b><p id="contactAddress">Charbonnage, derrière la Chapelle des Vainqueurs, Libreville</p></div></li>
+          <li><span>🕒</span><div><b>Horaires</b><p id="contactHours">Tous les jours : 10h00 – 23h00</p></div></li>
+          <li><span>📞</span><div><b>Téléphone</b><p><a id="contactPhone" href="#">—</a></p></div></li>
+          <li><span>💬</span><div><b>WhatsApp</b><p><a id="contactWhatsapp" href="#" target="_blank" rel="noopener">—</a></p></div></li>
+          <li><span>🛵</span><div><b>Zones de livraison</b><p id="contactZones">—</p></div></li>
+          <li><span>💳</span><div><b>Paiements</b><p id="contactPayments">Espèces · Airtel Money · Moov Money</p></div></li>
+        </ul>
+        <div class="contact-actions">
+          <a class="btn btn-gold" id="mapsBtn" href="#" target="_blank" rel="noopener">Ouvrir l'itinéraire Google Maps</a>
+          <button class="btn btn-outline" id="trackOpenBtn">Suivre ma commande</button>
+        </div>
+        <div class="social-row" id="socialRow"></div>
+      </div>
+      <div class="contact-map">
+        <div class="map-illustration">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Plan de situation du Royal Tavern au Charbonnage">
+            <rect width="400" height="300" fill="#0f1a30"/>
+            <g stroke="#1e2e52" stroke-width="2">
+              <path d="M0 70h400M0 150h400M0 230h400M80 0v300M200 0v300M320 0v300"/>
+            </g>
+            <path d="M20 260C120 250 150 190 200 150S300 60 400 40" stroke="#2a3f6b" stroke-width="14" fill="none" stroke-linecap="round"/>
+            <circle cx="200" cy="150" r="46" fill="#d9a83c" opacity=".14"/>
+            <circle cx="200" cy="150" r="26" fill="#d9a83c" opacity=".24"/>
+            <path d="M200 108c-14 0-25 11-25 25 0 19 25 43 25 43s25-24 25-43c0-14-11-25-25-25z" fill="#d9a83c"/>
+            <circle cx="200" cy="133" r="9" fill="#0b1120"/>
+            <text x="200" y="196" text-anchor="middle" fill="#f4e6c6" font-family="Georgia,serif" font-size="15">Le Royal Tavern</text>
+            <text x="200" y="214" text-anchor="middle" fill="#9fb0d0" font-size="11">Charbonnage · derrière la Chapelle des Vainqueurs</text>
+          </svg>
+        </div>
+        <a class="btn btn-block btn-dark" id="mapsBtn2" href="#" target="_blank" rel="noopener">Voir sur la carte</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Appel à l'action final ============ -->
+  <section class="cta-band">
+    <div class="wrap">
+      <h2>Une faim de roi ?</h2>
+      <p>Commandez maintenant, votre repas est préparé dès réception et confirmé par WhatsApp.</p>
+      <div class="hero-cta">
+        <button class="btn btn-gold btn-lg" id="ctaOrderBtn">🍽️ Commander en ligne</button>
+        <button class="btn btn-outline btn-lg" id="installBtn2" hidden>📲 Installer l'application</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ Pied de page ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="brand footer-brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path fill="#d9a83c" d="M6 22l9 8 8-14 9 14 9-14 8 14 9-8-4 22H10L6 22z"/>
+            <rect x="10" y="46" width="44" height="5" rx="1.6" fill="#d9a83c"/>
+          </svg>
+        </span>
+        <span class="brand-text"><strong>Le Royal Tavern</strong><em>Restaurant · Libreville</em></span>
+      </div>
+      <p class="footer-note">Grillades, braisés et plats du pays préparés à la commande. Sur place, à emporter et en livraison au Charbonnage et dans tout Libreville.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul><li><a href="#menu">Le menu</a></li><li><a href="#jour">Menus du jour</a></li><li><a href="#apropos">Le restaurant</a></li><li><a href="#avis">Avis clients</a></li><li><a href="#contact">Contact &amp; livraison</a></li></ul>
+    </div>
+    <div>
+      <h4>Commander</h4>
+      <ul>
+        <li><a id="footerWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a id="footerPhone" href="#">Téléphone</a></li>
+        <li><a href="compte.html">Mon compte / mes commandes</a></li>
+        <li><a href="#" id="footerTrack">Suivre une commande</a></li>
+        <li><a href="/admin">Espace restaurant</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Le restaurant</h4>
+      <ul>
+        <li><span id="footerAddress">—</span></li>
+        <li><span id="footerHours">—</span></li>
+        <li><a id="footerMaps" href="#" target="_blank" rel="noopener">Itinéraire</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© <span id="year"></span> Le Royal Tavern — Tous droits réservés.</span>
+    <span class="footer-meta">Commande en ligne &amp; application mobile · <span id="footerVersion">v1.0</span></span>
+  </div>
+</footer>
+
+<!-- ============ Navigation mobile ============ -->
+<nav class="mobile-tabbar" aria-label="Navigation mobile">
+  <a href="#accueil" class="tab active"><span>🏠</span>Accueil</a>
+  <a href="#menu" class="tab"><span>🍽️</span>Menu</a>
+  <button class="tab" id="tabCart"><span>🛒</span>Panier <b class="cart-count" id="cartCountTab">0</b></button>
+  <a href="compte.html" class="tab" id="tabAccount"><span>👤</span>Compte</a>
+  <a href="#contact" class="tab"><span>📞</span>Contact</a>
+</nav>
+
+<!-- ============ Panier (tiroir) ============ -->
+<div class="overlay" id="drawerOverlay" hidden></div>
+<aside class="drawer" id="cartDrawer" aria-label="Panier" aria-hidden="true">
+  <header class="drawer-head">
+    <h3>🛒 Votre panier</h3>
+    <button class="icon-btn" id="cartCloseBtn" aria-label="Fermer le panier">✕</button>
+  </header>
+  <div class="drawer-body" id="cartItems"></div>
+  <footer class="drawer-foot">
+    <div class="cart-line"><span>Sous-total</span><b id="cartSubtotal">0 FCFA</b></div>
+    <div class="cart-line muted" id="cartDeliveryRow" hidden><span>Livraison</span><b id="cartDelivery">—</b></div>
+    <div class="cart-line total"><span>Total</span><b id="cartTotal">0 FCFA</b></div>
+    <p class="cart-hint" id="cartHint"></p>
+    <button class="btn btn-gold btn-block btn-lg" id="checkoutBtn" disabled>Valider la commande</button>
+    <button class="btn btn-ghost btn-block" id="cartClearBtn" hidden>Vider le panier</button>
+  </footer>
+</aside>
+
+<!-- ============ Modale plat ============ -->
+<div class="modal" id="dishModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="dishModalTitle">
+    <button class="icon-btn modal-close" data-close-modal aria-label="Fermer">✕</button>
+    <div class="dish-modal-media"><img id="dmImg" src="" alt="" /></div>
+    <div class="dish-modal-body">
+      <span class="badge" id="dmBadge" hidden></span>
+      <h3 id="dishModalTitle">Plat</h3>
+      <p id="dmDesc"></p>
+      <p class="dish-modal-price" id="dmPrice"></p>
+      <div class="field">
+        <label>Quantité</label>
+        <div class="qty-row">
+          <button class="qty-btn" id="dmMinus" aria-label="Réduire">−</button>
+          <input type="number" id="dmQty" value="1" min="1" max="50" inputmode="numeric" />
+          <button class="qty-btn" id="dmPlus" aria-label="Augmenter">+</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Vos préférences (facultatif)</label>
+        <div class="opt-grid" id="dmOptions"></div>
+      </div>
+      <button class="btn btn-gold btn-block btn-lg" id="dmAddBtn">Ajouter au panier</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Modale commande ============ -->
+<div class="modal" id="checkoutModal" hidden>
+  <div class="modal-card modal-wide" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <button class="icon-btn modal-close" data-close-modal aria-label="Fermer">✕</button>
+    <h3 id="checkoutTitle">Finaliser ma commande</h3>
+    <p class="modal-sub">Votre commande sera enregistrée et envoyée au restaurant via WhatsApp pour confirmation immédiate.</p>
+
+    <form id="checkoutForm" class="form-grid">
+      <div class="field">
+        <label for="ckName">Nom complet *</label>
+        <input id="ckName" name="name" required minlength="2" placeholder="Ex. Marie Ondo" />
+      </div>
+      <div class="field">
+        <label for="ckPhone">Téléphone / WhatsApp *</label>
+        <input id="ckPhone" name="phone" required inputmode="tel" placeholder="Ex. 074 00 00 00" />
+      </div>
+
+      <div class="field span-2">
+        <label>Mode de service *</label>
+        <div class="seg" id="modeSeg">
+          <button type="button" data-value="livraison" class="active">🛵 Livraison</button>
+          <button type="button" data-value="emporter">🥡 À emporter</button>
+          <button type="button" data-value="surplace">🪑 Sur place</button>
+        </div>
+      </div>
+
+      <div class="field" id="zoneField">
+        <label for="ckZone">Zone de livraison</label>
+        <select id="ckZone" name="zone"></select>
+      </div>
+      <div class="field" id="whenField">
+        <label for="ckWhen">Moment souhaité</label>
+        <select id="ckWhen">
+          <option value="asap">Dès que possible</option>
+          <option value="scheduled">À une heure précise</option>
+        </select>
+      </div>
+      <div class="field span-2" id="scheduledField" hidden>
+        <label for="ckScheduled">Heure souhaitée</label>
+        <input id="ckScheduled" type="text" placeholder="Ex. 19h30 ce soir" />
+      </div>
+
+      <div class="field span-2" id="addressField">
+        <label for="ckAddress">Adresse de livraison *</label>
+        <input id="ckAddress" placeholder="Quartier, rue, immeuble, numéro" />
+      </div>
+      <div class="field span-2" id="landmarkField">
+        <label for="ckLandmark">Repère / précision (facultatif)</label>
+        <input id="ckLandmark" placeholder="Ex. en face de la pharmacie, portail vert" />
+      </div>
+
+      <div class="field span-2">
+        <label>Moyen de paiement *</label>
+        <div class="seg" id="paySeg">
+          <button type="button" data-value="cash" class="active">💵 Espèces</button>
+          <button type="button" data-value="airtel">📱 Airtel Money</button>
+          <button type="button" data-value="moov">📱 Moov Money</button>
+        </div>
+        <p class="hint" id="payHint">Payez en espèces à la livraison ou au retrait, sans frais supplémentaires.</p>
+      </div>
+
+      <div class="field span-2">
+        <label for="ckNotes">Note pour la cuisine (facultatif)</label>
+        <textarea id="ckNotes" rows="2" placeholder="Ex. pas trop de piment, sauce à part…"></textarea>
+      </div>
+
+      <input type="text" id="ckWebsite" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="span-2 summary-box" id="ckSummary"></div>
+
+      <div class="span-2">
+        <button class="btn btn-gold btn-block btn-lg" type="submit" id="ckSubmit">✅ Envoyer la commande sur WhatsApp</button>
+        <p class="hint center">En validant, un message pré-rempli s'ouvre dans WhatsApp pour le restaurant. Votre commande est aussi enregistrée, visible par l'équipe dans son espace de gestion.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ Modale confirmation ============ -->
+<div class="modal" id="confirmModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="confirm">
+      <div class="confirm-icon">✅</div>
+      <h3>Commande enregistrée !</h3>
+      <p class="confirm-num">Numéro : <b id="confirmNumber">—</b></p>
+      <p id="confirmText">Un message WhatsApp va s'ouvrir pour envoyer votre commande au restaurant. Si WhatsApp ne s'ouvre pas, utilisez le bouton ci-dessous ou appelez-nous.</p>
+      <a class="btn btn-gold btn-block btn-lg" id="confirmWhatsapp" href="#" target="_blank" rel="noopener">💬 Ouvrir WhatsApp</a>
+      <a class="btn btn-dark btn-block" id="confirmCall" href="#">📞 Appeler le restaurant</a>
+      <button class="btn btn-ghost btn-block" id="confirmClose">Fermer et continuer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Modale suivi ============ -->
+<div class="modal" id="trackModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="trackTitle">
+    <button class="icon-btn modal-close" data-close-modal aria-label="Fermer">✕</button>
+    <h3 id="trackTitle">Suivre ma commande</h3>
+    <p class="modal-sub">Entrez le numéro reçu après votre commande (ex. RT-261016-001) et votre téléphone.</p>
+    <div class="field">
+      <label for="trackNumber">Numéro de commande</label>
+      <input id="trackNumber" placeholder="RT-…" />
+    </div>
+    <div class="field">
+      <label for="trackPhone">Téléphone</label>
+      <input id="trackPhone" inputmode="tel" placeholder="Vos 6 derniers chiffres suffisent" />
+    </div>
+    <button class="btn btn-gold btn-block" id="trackBtn">Rechercher</button>
+    <div id="trackResult" class="track-result" hidden></div>
+  </div>
+</div>
+
+<!-- ============ Bandeau installation PWA ============ -->
+<div class="install-banner" id="installBanner" hidden>
+  <img src="icons/icon-192.png" alt="" width="40" height="40" />
+  <div>
+    <b>Installer Le Royal Tavern</b>
+    <span>Commandez plus vite, comme une application.</span>
+  </div>
+  <button class="btn btn-gold" id="installBannerBtn">Installer</button>
+  <button class="icon-btn" id="installBannerClose" aria-label="Fermer">✕</button>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<button class="floating-cart" id="floatingCart" hidden aria-label="Voir le panier">
+  🛒 <b id="floatingCount">0</b> · <span id="floatingTotal">0 FCFA</span>
+</button>
+
+<script src="js/embedded-data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

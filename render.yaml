@@ -1,0 +1,36 @@
+# Déploiement en un clic sur Render.com — Le Royal Tavern
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# MÉTHODE 1 (la plus simple) — déploiement manuel, voir DEPLOIEMENT-RENDER.md
+#   New + → Web Service → votre dépôt GitHub → mettre "npm install" et "npm start"
+#
+# MÉTHODE 2 — Render lit ce fichier automatiquement :
+#   New + → Blueprint → sélectionnez le dépôt royal-tavern
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  - type: web
+    name: royal-tavern
+    runtime: node
+    region: frankfurt          # le plus proche du Gabon
+    plan: free                 # pour tester — voir plus bas pour la production
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+
+    # ┌──────────────────────────────────────────────────────────────────────┐
+    # │ EN PRODUCTION (recommandé avant le lancement client) :               │
+    # │ 1. remplacez plan: free  par  plan: starter   (≈ 7 $/mois)           │
+    # │ 2. supprimez les # devant les lignes « disk: » ci-dessous            │
+    # │ Cela conserve définitivement le menu, les comptes clients et         │
+    # │ l'historique des commandes.                                          │
+    # └──────────────────────────────────────────────────────────────────────┘
+    # disk:
+    #   name: royal-tavern-data
+    #   mountPath: /opt/render/project/src/data
+    #   sizeGB: 1

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Administration — Le Royal Tavern</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#0b1120" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body{background:var(--cream);padding-bottom:0}
+  .admin-top{background:linear-gradient(120deg,var(--navy),var(--navy-soft));color:#fff;padding:1rem 0}
+  .admin-top .wrap{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .admin-top .brand-text strong{font-size:1.05rem}
+  .admin-top .brand-text em{color:var(--gold-light)}
+  .admin-top .spacer{margin-left:auto}
+  .admin-top .btn{--btn-fg:#fff}
+  .admin-top .btn-outline{--btn-bd:rgba(255,255,255,.45)}
+  .login-wrap{min-height:100vh;display:grid;place-items:center;background:linear-gradient(120deg,var(--navy),var(--navy-soft));padding:1rem}
+  .login-card{background:var(--cream);border-radius:24px;padding:2rem;width:min(420px,100%);box-shadow:var(--shadow-lg);text-align:center}
+  .login-card .brand-mark{margin:0 auto .6rem;width:56px;height:56px}
+  .login-card h1{font-size:1.6rem;margin-bottom:.2rem}
+  .login-card p{color:var(--ink-soft);font-size:.9rem}
+  .login-card form{text-align:left;margin-top:1.2rem}
+  .login-note{margin-top:1rem;font-size:.78rem;color:var(--ink-soft);background:#fff;border:1px dashed var(--line);border-radius:12px;padding:.7rem}
+
+  .admin-tabs{display:flex;gap:.4rem;overflow-x:auto;padding:.7rem 0;position:sticky;top:0;background:var(--cream);z-index:20;scrollbar-width:none}
+  .admin-tabs::-webkit-scrollbar{display:none}
+  .admin-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.55rem 1rem;font-weight:600;cursor:pointer;white-space:nowrap;font-size:.9rem}
+  .admin-tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .kpis{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:1rem 0 1.4rem}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:var(--shadow-sm)}
+  .kpi span{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:700}
+  .kpi b{display:block;font-family:var(--serif);font-size:1.55rem;margin-top:.25rem}
+  .kpi.gold b{color:var(--gold-dark)}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.2rem;box-shadow:var(--shadow-sm);margin-bottom:1.2rem}
+  .card-head{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:1rem}
+  .card-head h2{font-size:1.2rem;margin:0}
+  .card-head .spacer{margin-left:auto}
+  .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+  .toolbar input,.toolbar select{border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem;font-size:.9rem;background:#fff}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px}
+  th,td{text-align:left;padding:.65rem .6rem;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);background:#faf8f4;position:sticky;top:0}
+  tr:hover td{background:#fdfbf7}
+  .status-pill{display:inline-block;padding:.25rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700;white-space:nowrap}
+  .st-nouvelle{background:#fdf0d5;color:#8a5a09}
+  .st-confirmee{background:#e2eefc;color:#1a4f8a}
+  .st-en_preparation{background:#fdeacd;color:#9a5a06}
+  .st-en_livraison{background:#e3e0fb;color:#453aa6}
+  .st-livree{background:#dff3e8;color:#1a7a4f}
+  .st-annulee{background:#fbe3e0;color:#a02c1f}
+  .row-actions{display:flex;gap:.35rem;flex-wrap:wrap}
+  .mini{border:1px solid var(--line);background:#fff;border-radius:9px;padding:.3rem .55rem;font-size:.78rem;font-weight:600;cursor:pointer}
+  .mini:hover{border-color:var(--gold)}
+  .mini.danger{color:var(--danger);border-color:#f0cdc8}
+  .mini.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .empty{padding:2rem;text-align:center;color:var(--ink-soft)}
+
+  .menu-editor .dish-row{display:grid;grid-template-columns:1.4fr .8fr .7fr 1.6fr .7fr auto;gap:.5rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--line)}
+  .menu-editor input,.menu-editor select,.menu-editor textarea{border:1px solid var(--line);border-radius:10px;padding:.5rem .6rem;font-size:.87rem;width:100%;background:#fff}
+  .menu-editor .chk{display:flex;flex-direction:column;gap:.2rem;font-size:.75rem;color:var(--ink-soft)}
+  .zone-row{display:grid;grid-template-columns:2fr 1fr auto;gap:.5rem;margin-bottom:.5rem}
+  .zone-row input{border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem}
+  .grid-2{display:grid;gap:0 1rem;grid-template-columns:1fr}
+  .qr-box{display:grid;gap:1rem;justify-items:center;text-align:center}
+  .qr-box img{border:10px solid #fff;border-radius:14px;box-shadow:var(--shadow-sm);width:220px;height:220px}
+  .pill-line{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+  code.url{background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem;font-size:.85rem;word-break:break-all}
+  @media (min-width:860px){ .grid-2{grid-template-columns:1fr 1fr} }
+  @media (max-width:859px){ .menu-editor .dish-row{grid-template-columns:1fr 1fr;gap:.4rem} }
+  @media print{
+    .admin-top,.admin-tabs,.no-print,.row-actions{display:none!important}
+    body{background:#fff}
+    .card{box-shadow:none;border:0}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================== Écran de connexion ================== -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <span class="brand-mark">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+    </span>
+    <h1>Espace restaurant</h1>
+    <p>Gestion des commandes, du menu et des informations du Royal Tavern.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="pwd">Mot de passe administrateur</label>
+        <input type="password" id="pwd" required autocomplete="current-password" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-gold btn-block btn-lg" type="submit">Se connecter</button>
+      <p class="hint" id="loginError" style="color:var(--danger);display:none"></p>
+    </form>
+    <div class="login-note">
+      Premier accès : mot de passe par défaut <b>royal2026</b> — pensez à le changer dans l'onglet « Paramètres ».
+    </div>
+  </div>
+</div>
+
+<!-- ================== Application admin ================== -->
+<div id="adminApp" hidden>
+  <header class="admin-top">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+        </span>
+        <span class="brand-text"><strong>Le Royal Tavern</strong><em>Administration</em></span>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost btn-outline" id="notifBtn" title="Activer les alertes de nouvelle commande">🔔 Alertes</button>
+      <a class="btn btn-outline" href="/" target="_blank" rel="noopener">Voir la vitrine ↗</a>
+      <button class="btn btn-ghost" id="logoutBtn">Déconnexion</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <nav class="admin-tabs" id="adminTabs">
+      <button data-tab="dashboard" class="active">📊 Tableau de bord</button>
+      <button data-tab="orders">🧾 Commandes <span id="newBadge" class="badge" style="position:static;display:none">0</span></button>
+      <button data-tab="menu">🍽️ Menu &amp; prix</button>
+      <button data-tab="settings">⚙️ Paramètres</button>
+      <button data-tab="share">📲 QR, affiche &amp; app</button>
+      <button data-tab="help">❓ Aide</button>
+    </nav>
+
+    <!-- ---------- Tableau de bord ---------- -->
+    <section id="tab-dashboard" class="tab-panel">
+      <div class="kpis" id="kpiRow"></div>
+      <div class="card">
+        <div class="card-head">
+          <h2>Dernières commandes</h2>
+          <div class="spacer"></div>
+          <button class="mini" data-goto="orders">Tout voir →</button>
+        </div>
+        <div class="table-scroll"><table id="dashOrders"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Plats les plus commandés</h2></div>
+        <div class="table-scroll"><table id="topDishes"></table></div>
+      </div>
+    </section>
+
+    <!-- ---------- Commandes ---------- -->
+    <section id="tab-orders" class="tab-panel" hidden>
+      <div class="card">
+        <div class="card-head">
+          <h2>Commandes reçues</h2>
+          <div class="spacer"></div>
+          <button class="mini" id="refreshOrders">🔄 Actualiser</button>
+          <button class="mini" id="exportCsv">⬇️ Export CSV</button>
+        </div>
+        <div class="toolbar">
+          <input id="orderSearch" placeholder="Rechercher (n°, nom, téléphone)…" />
+          <select id="orderStatusFilter">
+            <option value="">Tous les statuts</option>
+            <option value="nouvelle">Nouvelles</option>
+            <option value="confirmee">Confirmées</option>
+            <option value="en_preparation">En préparation</option>
+            <option value="en_livraison">En livraison</option>
+            <option value="livree">Livrées / Récupérées</option>
+            <option value="annulee">Annulées</option>
+          </select>
+          <select id="orderPeriod">
+            <option value="all">Toute la période</option>
+            <option value="today">Aujourd'hui</option>
+            <option value="7d">7 derniers jours</option>
+            <option value="30d">30 derniers jours</option>
+          </select>
+        </div>
+        <div class="table-scroll"><table id="ordersTable"></table></div>
+        <div id="ordersEmpty" class="empty" hidden>Aucune commande pour ces critères.</div>
+      </div>
+    </section>
+
+    <!-- ---------- Menu ---------- -->
+    <section id="tab-menu" class="tab-panel" hidden>
+      <div class="card">
+        <div class="card-head">
+          <h2>Plats &amp; prix</h2>
+          <div class="spacer"></div>
+          <button class="mini" id="addDishBtn">＋ Ajouter un plat</button>
+          <button class="mini primary" id="saveMenuBtn">💾 Enregistrer le menu</button>
+        </div>
+        <p class="hint">Modifiez directement les champs, puis cliquez sur « Enregistrer le menu ». Les prix sont en FCFA. Décochez « Disponible » pour masquer un plat épuisé sans le supprimer.</p>
+        <div class="toolbar">
+          <select id="menuCatFilter"><option value="">Toutes les catégories</option></select>
+          <input id="menuSearch" placeholder="Rechercher un plat…" />
+        </div>
+        <div class="menu-editor" id="menuEditor"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Menus du jour de la semaine</h2></div>
+        <div id="specialsEditor"></div>
+        <div style="margin-top:.8rem"><button class="mini primary" id="saveSpecialsBtn">💾 Enregistrer les menus du jour</button></div>
+      </div>
+    </section>
+
+    <!-- ---------- Paramètres ---------- -->
+    <section id="tab-settings" class="tab-panel" hidden>
+      <div class="card">
+        <div class="card-head"><h2>Coordonnées &amp; livraison</h2></div>
+        <div class="grid-2">
+          <div class="field"><label>Nom du restaurant</label><input id="sName" /></div>
+          <div class="field"><label>Numéro WhatsApp (format international)</label><input id="sWhatsapp" placeholder="241XXXXXXXX" /></div>
+          <div class="field"><label>Téléphone affiché</label><input id="sPhone" /></div>
+          <div class="field"><label>E-mail</label><input id="sEmail" /></div>
+          <div class="field" style="grid-column:1/-1"><label>Adresse</label><input id="sAddress" /></div>
+          <div class="field"><label>Recherche Google Maps</label><input id="sMaps" /></div>
+          <div class="field"><label>Horaires (texte affiché)</label><input id="sHours" /></div>
+          <div class="field"><label>Ouverture (heure, 0-23)</label><input id="sOpen" type="number" min="0" max="23" /></div>
+          <div class="field"><label>Fermeture (heure, 0-24)</label><input id="sClose" type="number" min="0" max="24" /></div>
+          <div class="field"><label>Frais de livraison (FCFA)</label><input id="sFee" type="number" min="0" /></div>
+          <div class="field"><label>Livraison offerte à partir de (FCFA)</label><input id="sFree" type="number" min="0" /></div>
+          <div class="field"><label>Commande minimum (FCFA)</label><input id="sMin" type="number" min="0" /></div>
+        </div>
+        <div class="field" style="margin-top:.6rem">
+          <label>Bandeau d'annonce (haut du site)</label>
+          <input id="sAnnounce" />
+          <label style="display:flex;gap:.5rem;align-items:center;margin-top:.4rem;text-transform:none;letter-spacing:0">
+            <input type="checkbox" id="sAnnounceActive" style="width:auto" /> Afficher le bandeau
+          </label>
+        </div>
+        <div class="field"><label>Texte de présentation (page d'accueil)</label><textarea id="sAbout" rows="3"></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Zones de livraison</h2><div class="spacer"></div><button class="mini" id="addZone">＋ Ajouter une zone</button></div>
+        <div id="zonesEditor"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Paiements</h2></div>
+        <label class="chk" style="display:flex;gap:.5rem;align-items:center;margin-bottom:.8rem"><input type="checkbox" id="sCash" style="width:auto" /> Espèces à la réception</label>
+        <div class="grid-2">
+          <div class="field"><label>Airtel Money — numéro</label><input id="sAirtelNum" /></div>
+          <div class="field"><label>Airtel Money — nom du bénéficiaire</label><input id="sAirtelName" /></div>
+          <div class="field"><label>Moov Money — numéro</label><input id="sMoovNum" /></div>
+          <div class="field"><label>Moov Money — nom du bénéficiaire</label><input id="sMoovName" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Réseaux sociaux</h2></div>
+        <div class="grid-2">
+          <div class="field"><label>Facebook</label><input id="sFb" /></div>
+          <div class="field"><label>Instagram</label><input id="sInsta" /></div>
+          <div class="field"><label>TikTok</label><input id="sTiktok" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Sécurité</h2></div>
+        <div class="grid-2">
+          <div class="field"><label>Nouveau mot de passe administrateur</label><input id="sNewPwd" type="password" placeholder="6 caractères minimum" /></div>
+        </div>
+        <p class="hint">Laissez vide pour conserver le mot de passe actuel.</p>
+      </div>
+
+      <button class="btn btn-gold btn-lg" id="saveSettingsBtn">💾 Enregistrer les paramètres</button>
+    </section>
+
+    <!-- ---------- QR / Affiche / App ---------- -->
+    <section id="tab-share" class="tab-panel" hidden>
+      <div class="card">
+        <div class="card-head"><h2>Adresse de votre site</h2></div>
+        <p class="hint" id="siteUrlNote">Cette adresse s'affiche automatiquement selon l'hébergement utilisé (Netlify, Render, VPS…).</p>
+        <code class="url" id="siteUrl">—</code>
+        <div class="pill-line" style="margin-top:.8rem">
+          <button class="mini" id="copyUrl">📋 Copier le lien</button>
+          <a class="mini" id="openSite" href="/" target="_blank" rel="noopener">↗ Ouvrir le site</a>
+          <a class="mini" target="_blank" rel="noopener" id="waShare">💬 Partager sur WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>QR code du menu en ligne</h2></div>
+        <div class="qr-box">
+          <img id="qrImg" alt="QR code du menu en ligne" />
+          <p class="hint">Imprimez-le et posez-le sur les tables, la vitrine ou les flyers : vos clients scannent et commandent.</p>
+          <div class="pill-line">
+            <a class="mini primary" id="qrPng" download="qr-royal-tavern.png">⬇️ Télécharger le QR</a>
+            <a class="mini" href="/affiche" target="_blank" rel="noopener">🖨️ Imprimer l'affiche</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Application Android (APK)</h2></div>
+        <p>Le dossier <code>mobile/</code> du projet contient le code source complet de l'application Android (WebView + site embarqué + support hors ligne).</p>
+        <ol style="font-size:.92rem;color:var(--ink-soft)">
+          <li>Téléchargez le ZIP de la plateforme depuis votre espace de travail.</li>
+          <li>Ouvrez le dossier <code>mobile/</code> dans Android Studio (Build ▸ Build APK) ou lancez <code>./gradlew assembleDebug</code>.</li>
+          <li>Installez l'APK <code>app/build/outputs/apk/debug/app-debug.apk</code> sur les téléphones de l'équipe et des livreurs.</li>
+          <li>Pour publier sur le Play Store : <code>./gradlew assembleRelease</code> avec votre clé de signature, puis envoi du fichier <code>.aab</code>.</li>
+        </ol>
+        <p class="hint">Le guide complet se trouve dans <b>GUIDE-INSTALLATION.md</b> à la racine du projet.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>Avis clients</h2></div>
+        <button class="mini" id="addReview">＋ Ajouter un avis</button>
+        <div id="reviewsEditor" style="margin-top:1rem"></div>
+        <div style="margin-top:.8rem"><button class="mini primary" id="saveReviewsBtn">💾 Enregistrer les avis</button></div>
+      </div>
+    </section>
+
+    <!-- ---------- Aide ---------- -->
+    <section id="tab-help" class="tab-panel" hidden>
+      <div class="card">
+        <h2>Mode d'emploi rapide</h2>
+        <ol style="font-size:.95rem;color:var(--ink-soft)">
+          <li><b>Réception des commandes :</b> chaque commande arrivée sur WhatsApp est aussi enregistrée ici (onglet « Commandes »). Une nouvelle commande apparaît avec le statut « Nouvelle ».</li>
+          <li><b>Faire avancer une commande :</b> utilisez les boutons de la colonne « Actions » — Confirmer → En préparation → En livraison → Livrée.</li>
+          <li><b>Modifier le menu :</b> onglet « Menu &amp; prix », changez les textes et prix puis cliquez sur « Enregistrer le menu ». Les modifications sont visibles immédiatement sur le site.</li>
+          <li><b>Changer le numéro WhatsApp :</b> onglet « Paramètres », champ « Numéro WhatsApp » au format international sans espaces (ex. 24174000000).</li>
+          <li><b>Suivre une commande pour un client :</b> le client entre son numéro (RT-…) et son téléphone sur la page « Suivre ma commande » du site.</li>
+          <li><b>Alertes :</b> cliquez sur « 🔔 Alertes » pour autoriser les notifications du navigateur. Le tableau de bord se rafraîchit automatiquement toutes les 30 secondes.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Sauvegardes</h2>
+        <p class="hint">Les données sont stockées dans le dossier <code>data/</code> : <code>menu.json</code> (carte), <code>settings.json</code> (paramètres), <code>orders.json</code> (commandes). Copiez ce dossier régulièrement (ou lancez <code>npm run backup</code>).</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="modal" id="orderModal" hidden>
+  <div class="modal-card modal-wide" role="dialog" aria-modal="true">
+    <button class="icon-btn modal-close" data-close aria-label="Fermer">✕</button>
+    <div id="orderDetail"></div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s, c = document) => c.querySelector(s);
+  const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+  const FC = (n) => `${Number(n || 0).toLocaleString('fr-FR')} FCFA`;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const TOKEN_KEY = 'rt_admin_token';
+  // Stockage sécurisé (l'accès peut être bloqué dans certains contextes)
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+
+  const state = { token: store.get(TOKEN_KEY) || '', data: null, menu: null, settings: null, orders: [], tab: 'dashboard', lastNewCount: 0 };
+
+  function toast(msg, type = '') {
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.innerHTML = `<span>${type === 'ok' ? '✅' : type === 'err' ? '⚠️' : '👑'}</span><span>${esc(msg)}</span>`;
+    $('#toastWrap').appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 320); }, 3000);
+  }
+
+  async function api(path, options = {}) {
+    const res = await fetch(path, {
+      ...options,
+      headers: {
+        'content-type': 'application/json',
+        'x-admin-token': state.token,
+        ...(options.headers || {})
+      }
+    });
+    if (res.status === 401) { logout(true); throw new Error('Session expirée.'); }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur.');
+    return data;
+  }
+
+  /* ------------------------------ Connexion ------------------------------ */
+  $('#loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pwd = $('#pwd').value;
+    const err = $('#loginError');
+    err.style.display = 'none';
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password: pwd })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Connexion impossible.');
+      state.token = data.token;
+      store.set(TOKEN_KEY, data.token);
+      $('#loginScreen').hidden = true;
+      $('#adminApp').hidden = false;
+      if (data.isDefaultPassword) toast('Connexion réussie — pensez à changer le mot de passe (Paramètres).');
+      await load();
+    } catch (e2) {
+      err.textContent = e2.message;
+      err.style.display = 'block';
+    }
+  });
+
+  function logout(silent) {
+    if (!silent) {
+      fetch('/api/admin/logout', { method: 'POST', headers: { 'content-type': 'application/json', 'x-admin-token': state.token } }).catch(() => {});
+    }
+    store.remove(TOKEN_KEY);
+    state.token = '';
+    $('#adminApp').hidden = true;
+    $('#loginScreen').hidden = false;
+    if (!silent) toast('Déconnecté.');
+  }
+  $('#logoutBtn').addEventListener('click', () => logout(false));
+
+  /* ------------------------------ Chargement ----------------------------- */
+  async function load() {
+    const data = await api('/api/admin/data');
+    state.data = data;
+    state.menu = data.menu;
+    state.settings = data.settings;
+    state.orders = data.orders || [];
+    renderAll();
+  }
+
+  function renderAll() {
+    renderKpis();
+    renderDashOrders();
+    renderTopDishes();
+    renderOrders();
+    renderMenuEditor();
+    renderSpecialsEditor();
+    renderSettingsForm();
+    renderZones();
+    renderReviews();
+    renderShare();
+  }
+
+  /* ------------------------------ Onglets -------------------------------- */
+  $('#adminTabs').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-tab]');
+    if (!b) return;
+    switchTab(b.dataset.tab);
+  });
+  function switchTab(tab) {
+    state.tab = tab;
+    $$('#adminTabs button').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
+    $$('.tab-panel').forEach((p) => { p.hidden = p.id !== `tab-${tab}`; });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  $$('[data-goto]').forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.goto)));
+
+  /* ------------------------------ Tableau de bord ------------------------ */
+  function stats() {
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const today = state.orders.filter((o) => new Date(o.createdAt).getTime() >= startOfDay && o.status !== 'annulee');
+    const ca = today.reduce((s, o) => s + Number(o.total || 0), 0);
+    const pending = state.orders.filter((o) => ['nouvelle', 'confirmee', 'en_preparation', 'en_livraison'].includes(o.status));
+    const delivered = state.orders.filter((o) => o.status === 'livree');
+    const avg = delivered.length ? delivered.reduce((s, o) => s + Number(o.total || 0), 0) / delivered.length : 0;
+    return { today, ca, pending, avg, total: state.orders.length };
+  }
+
+  function renderKpis() {
+    const s = stats();
+    $('#kpiRow').innerHTML = `
+      <div class="kpi gold"><span>CA du jour</span><b>${FC(s.ca)}</b></div>
+      <div class="kpi"><span>Commandes aujourd'hui</span><b>${s.today.length}</b></div>
+      <div class="kpi"><span>À traiter</span><b>${s.pending.length}</b></div>
+      <div class="kpi"><span>Panier moyen</span><b>${FC(Math.round(s.avg))}</b></div>
+      <div class="kpi"><span>Total commandes</span><b>${s.total}</b></div>`;
+
+    const newOnes = state.orders.filter((o) => o.status === 'nouvelle').length;
+    const badge = $('#newBadge');
+    badge.style.display = newOnes ? 'inline-block' : 'none';
+    badge.textContent = newOnes;
+    badge.style.background = 'var(--gold)';
+    badge.style.color = '#241a05';
+  }
+
+  function ordersTableHTML(list, { compact = false } = {}) {
+    if (!list.length) return '<tbody><tr><td class="empty">Aucune commande.</td></tr></tbody>';
+    const rows = list.map((o) => `
+      <tr>
+        <td><b>${esc(o.number)}</b><br><small style="color:var(--ink-soft)">${new Date(o.createdAt).toLocaleString('fr-FR')}</small></td>
+        <td>${esc(o.customer?.name || '')}<br><small style="color:var(--ink-soft)">${esc(o.customer?.phone || '')}</small></td>
+        <td>${esc({ livraison: '🛵 Livraison', emporter: '🥡 À emporter', surplace: '🪑 Sur place' }[o.mode] || o.mode)}</td>
+        <td><b>${FC(o.total)}</b></td>
+        <td><span class="status-pill st-${esc(o.status)}">${esc((state.data.statusLabels || {})[o.status] || o.status)}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="mini" data-view="${esc(o.id)}">Détail</button>
+            ${!compact ? `<button class="mini" data-print="${esc(o.id)}">🖨️</button>
+            <button class="mini primary" data-next="${esc(o.id)}">Avancer ▸</button>` : ''}
+          </div>
+        </td>
+      </tr>`).join('');
+    return `<thead><tr><th>Commande</th><th>Client</th><th>Service</th><th>Total</th><th>Statut</th><th>Actions</th></tr></thead><tbody>${rows}</tbody>`;
+  }
+
+  function renderDashOrders() {
+    $('#dashOrders').innerHTML = ordersTableHTML(state.orders.slice(0, 6), { compact: true });
+    bindOrderActions($('#dashOrders'));
+  }
+
+  function renderOrders() {
+    const q = ($('#orderSearch').value || '').trim().toLowerCase();
+    const st = $('#orderStatusFilter').value;
+    const period = $('#orderPeriod').value;
+    const now = Date.now();
+    const limits = { today: 24 * 3600e3, '7d': 7 * 24 * 3600e3, '30d': 30 * 24 * 3600e3 };
+    const list = state.orders.filter((o) => {
+      const txt = `${o.number} ${o.customer?.name} ${o.customer?.phone}`.toLowerCase();
+      const okQ = !q || txt.includes(q);
+      const okSt = !st || o.status === st;
+      const okP = period === 'all' || (period === 'today'
+        ? new Date(o.createdAt).toDateString() === new Date().toDateString()
+        : now - new Date(o.createdAt).getTime() <= limits[period]);
+      return okQ && okSt && okP;
+    });
+    $('#ordersTable').innerHTML = ordersTableHTML(list);
+    $('#ordersEmpty').hidden = list.length > 0;
+    bindOrderActions($('#ordersTable'));
+  }
+
+  function bindOrderActions(root) {
+    $$('[data-view]', root).forEach((b) => b.addEventListener('click', () => showOrder(b.dataset.view)));
+    $$('[data-print]', root).forEach((b) => b.addEventListener('click', () => printTicket(b.dataset.print)));
+    $$('[data-next]', root).forEach((b) => b.addEventListener('click', () => advance(b.dataset.next)));
+  }
+
+  const NEXT = { nouvelle: 'confirmee', confirmee: 'en_preparation', en_preparation: 'en_livraison', en_livraison: 'livree' };
+
+  async function advance(id) {
+    const order = state.orders.find((o) => o.id === id);
+    if (!order) return;
+    const next = NEXT[order.status];
+    if (!next) { toast('Commande déjà terminée.'); return; }
+    try {
+      await api(`/api/admin/orders/${id}`, { method: 'PUT', body: JSON.stringify({ status: next }) });
+      order.status = next;
+      renderKpis(); renderOrders(); renderDashOrders();
+      toast(`Commande ${order.number} → ${state.data.statusLabels[next]}`, 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  }
+
+  async function setStatus(id, status) {
+    try {
+      await api(`/api/admin/orders/${id}`, { method: 'PUT', body: JSON.stringify({ status }) });
+      const o = state.orders.find((x) => x.id === id || x.number === id);
+      if (o) o.status = status;
+      renderKpis(); renderOrders(); renderDashOrders();
+      $('#orderModal').hidden = true;
+      toast('Statut mis à jour.', 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  }
+
+  function showOrder(id) {
+    const o = state.orders.find((x) => x.id === id || x.number === id);
+    if (!o) return;
+    const labels = state.data.statusLabels || {};
+    $('#orderDetail').innerHTML = `
+      <h3>Commande ${esc(o.number)}</h3>
+      <p style="color:var(--ink-soft);margin-top:-.4rem">${new Date(o.createdAt).toLocaleString('fr-FR')}</p>
+      <div class="summary-box">
+        ${o.items.map((i) => `<div class="row"><span>${i.qty} × ${esc(i.name)}${i.extras?.length ? `<br><small style="color:var(--gold-dark)">${esc(i.extras.join(' · '))}</small>` : ''}</span><span>${FC(i.lineTotal)}</span></div>`).join('')}
+        <div class="row"><span>Sous-total</span><span>${FC(o.subtotal)}</span></div>
+        ${o.mode === 'livraison' ? `<div class="row"><span>Livraison ${esc(o.zone || '')}</span><span>${o.deliveryFee ? FC(o.deliveryFee) : 'Offerte'}</span></div>` : ''}
+        <div class="row total"><span>Total</span><span>${FC(o.total)}</span></div>
+      </div>
+      <div style="margin:1rem 0;display:grid;gap:.35rem;font-size:.92rem">
+        <div><b>Client :</b> ${esc(o.customer?.name || '')} ${o.clientId ? '<span class="status-pill st-livree">✔ Compte client</span>' : '<span style="color:var(--ink-soft);font-size:.82rem">(commande invité)</span>'}</div>
+        <div><b>Téléphone :</b> ${esc(o.customer?.phone || '')} — <a href="tel:${esc(o.customer?.phone)}">appeler</a> ·
+          <a target="_blank" rel="noopener" href="https://wa.me/${(o.customer?.phone || '').replace(/\\D/g, '')}">WhatsApp</a></div>
+        <div><b>Service :</b> ${esc({ livraison: 'Livraison', emporter: 'À emporter', surplace: 'Sur place' }[o.mode] || o.mode)} ${o.zone ? `— ${esc(o.zone)}` : ''}</div>
+        ${o.customer?.address ? `<div><b>Adresse :</b> ${esc(o.customer.address)}</div>` : ''}
+        ${o.customer?.landmark ? `<div><b>Repère :</b> ${esc(o.customer.landmark)}</div>` : ''}
+        <div><b>Paiement :</b> ${esc({ cash: 'Espèces', airtel: 'Airtel Money', moov: 'Moov Money' }[o.payment] || o.payment)}</div>
+        <div><b>Moment :</b> ${o.when === 'scheduled' ? esc(o.scheduledFor || 'planifié') : 'Dès que possible'}</div>
+        ${o.notes ? `<div><b>Note :</b> ${esc(o.notes)}</div>` : ''}
+        <div><b>Statut actuel :</b> <span class="status-pill st-${esc(o.status)}">${esc(labels[o.status] || o.status)}</span></div>
+      </div>
+      <div class="row-actions" style="margin-bottom:.6rem">
+        ${Object.entries(labels).map(([k, v]) => `<button class="mini ${k === o.status ? 'primary' : ''}" data-set="${k}">${esc(v)}</button>`).join('')}
+      </div>
+      <button class="mini danger" data-del="${esc(o.id)}">🗑️ Supprimer cette commande</button>`;
+    $$('#orderDetail [data-set]').forEach((b) => b.addEventListener('click', () => setStatus(o.id, b.dataset.set)));
+    $('#orderDetail [data-del]').addEventListener('click', async () => {
+      if (!confirm('Supprimer définitivement cette commande ?')) return;
+      try {
+        await api(`/api/admin/orders/${o.id}`, { method: 'DELETE' });
+        state.orders = state.orders.filter((x) => x.id !== o.id);
+        $('#orderModal').hidden = true;
+        renderAll();
+        toast('Commande supprimée.');
+      } catch (e) { toast(e.message, 'err'); }
+    });
+    $('#orderModal').hidden = false;
+  }
+
+  function printTicket(id) {
+    const o = state.orders.find((x) => x.id === id);
+    if (!o) return;
+    const w = window.open('', '_blank', 'width=380,height=600');
+    if (!w) { toast('Autorisez les fenêtres pop-up pour imprimer.', 'err'); return; }
+    w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Ticket ${esc(o.number)}</title>
+      <style>body{font-family:ui-monospace,Menlo,Consolas,monospace;padding:14px;max-width:320px;font-size:12px}
+      h2{text-align:center;font-size:15px;margin:0 0 4px}.c{text-align:center}.row{display:flex;justify-content:space-between;gap:8px}
+      hr{border:0;border-top:1px dashed #999;margin:8px 0}.b{font-weight:700}</style></head><body>
+      <h2>LE ROYAL TAVERN</h2>
+      <p class="c" style="margin:0">${esc(state.settings.address || '')}<br>${esc(state.settings.phone || '')}</p>
+      <hr>
+      <div class="row"><span class="b">${esc(o.number)}</span><span>${new Date(o.createdAt).toLocaleString('fr-FR')}</span></div>
+      <div class="row"><span>${esc(o.customer?.name || '')}</span><span>${esc(o.customer?.phone || '')}</span></div>
+      <div class="row"><span>${esc({ livraison: 'LIVRAISON', emporter: 'A EMPORTER', surplace: 'SUR PLACE' }[o.mode] || o.mode)}</span><span>${esc(o.payment)}</span></div>
+      ${o.customer?.address ? `<div>${esc(o.customer.address)}</div>` : ''}
+      <hr>
+      ${o.items.map((i) => `<div class="row"><span>${i.qty} x ${esc(i.name)}${i.extras?.length ? `<br><i>${esc(i.extras.join(', '))}</i>` : ''}</span><span>${FC(i.lineTotal)}</span></div>`).join('')}
+      <hr>
+      <div class="row"><span>SOUS-TOTAL</span><span>${FC(o.subtotal)}</span></div>
+      ${o.mode === 'livraison' ? `<div class="row"><span>LIVRAISON</span><span>${FC(o.deliveryFee)}</span></div>` : ''}
+      <div class="row b"><span>TOTAL</span><span>${FC(o.total)}</span></div>
+      <hr>
+      ${o.notes ? `<div>NOTE : ${esc(o.notes)}</div><hr>` : ''}
+      <p class="c">Merci et bon appétit ! 👑</p>
+      <script>window.onload=()=>window.print()<\/script></body></html>`);
+    w.document.close();
+  }
+
+  function renderTopDishes() {
+    const counts = {};
+    state.orders.forEach((o) => (o.items || []).forEach((i) => { counts[i.name] = (counts[i.name] || 0) + i.qty; }));
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    $('#topDishes').innerHTML = top.length
+      ? `<thead><tr><th>Plat</th><th>Quantité vendue</th></tr></thead><tbody>${top.map(([n, c]) => `<tr><td>${esc(n)}</td><td><b>${c}</b></td></tr>`).join('')}</tbody>`
+      : '<tbody><tr><td class="empty">Pas encore de ventes enregistrées.</td></tr></tbody>';
+  }
+
+  /* ------------------------------ Menu ----------------------------------- */
+  function dishRow(d, idx) {
+    const cats = (state.menu.categories || []).map((c) => `<option value="${esc(c.id)}" ${c.id === d.cat ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+    return `
+      <div class="dish-row" data-idx="${idx}">
+        <input data-field="name" value="${esc(d.name)}" placeholder="Nom du plat" />
+        <select data-field="cat">${cats}</select>
+        <input data-field="price" type="number" min="0" step="50" value="${Number(d.price) || 0}" />
+        <input data-field="desc" value="${esc(d.desc || '')}" placeholder="Description" />
+        <input data-field="badge" value="${esc(d.badge || '')}" placeholder="Badge (ex. Nouveau)" />
+        <div class="chk">
+          <label><input type="checkbox" data-field="available" ${d.available !== false ? 'checked' : ''} style="width:auto" /> Disponible</label>
+          <label><input type="checkbox" data-field="popular" ${d.popular ? 'checked' : ''} style="width:auto" /> Populaire</label>
+        </div>
+        <button class="mini danger" data-del-dish="${idx}">🗑️</button>
+      </div>`;
+  }
+
+  function renderMenuEditor() {
+    const catFilter = $('#menuCatFilter');
+    if (catFilter.options.length <= 1) {
+      catFilter.innerHTML = '<option value="">Toutes les catégories</option>' +
+        (state.menu.categories || []).map((c) => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+    }
+    const q = ($('#menuSearch').value || '').toLowerCase();
+    const cf = catFilter.value;
+    const dishes = (state.menu.dishes || []).map((d, i) => ({ d, i }))
+      .filter(({ d }) => (!cf || d.cat === cf) && (!q || d.name.toLowerCase().includes(q)));
+    $('#menuEditor').innerHTML = dishes.length
+      ? `<div class="dish-row" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);border-bottom:2px solid var(--line)">
+           <b>Nom</b><b>Catégorie</b><b>Prix (FCFA)</b><b>Description</b><b>Badge</b><b>État</b><b></b></div>` +
+        dishes.map(({ d, i }) => dishRow(d, i)).join('')
+      : '<p class="empty">Aucun plat trouvé.</p>';
+
+    $$('#menuEditor [data-del-dish]').forEach((b) => b.addEventListener('click', () => {
+      const i = Number(b.dataset.delDish);
+      if (!confirm(`Supprimer « ${state.menu.dishes[i].name} » du menu ?`)) return;
+      state.menu.dishes.splice(i, 1);
+      toast('Plat supprimé — pensez à enregistrer.', 'ok');
+      renderMenuEditor();
+    }));
+
+    $$('#menuEditor [data-field]').forEach((inp) => inp.addEventListener('change', () => {
+      const idx = Number(inp.closest('.dish-row').dataset.idx);
+      const field = inp.dataset.field;
+      const dish = state.menu.dishes[idx];
+      if (!dish) return;
+      if (inp.type === 'checkbox') dish[field] = inp.checked;
+      else if (field === 'price') dish[field] = Number(inp.value) || 0;
+      else dish[field] = inp.value;
+    }));
+  }
+
+  $('#addDishBtn').addEventListener('click', () => {
+    state.menu.dishes.unshift({
+      id: 'd' + Date.now().toString(36), cat: (state.menu.categories[0] || {}).id || 'plats',
+      name: 'Nouveau plat', desc: '', price: 1000, img: '', badge: '', available: true, popular: false
+    });
+    renderMenuEditor();
+    toast('Plat ajouté en haut de la liste — complétez puis enregistrez.');
+  });
+  $('#saveMenuBtn').addEventListener('click', async () => {
+    try {
+      const res = await api('/api/admin/menu', { method: 'PUT', body: JSON.stringify(state.menu) });
+      state.menu = res.menu;
+      renderMenuEditor();
+      toast('Menu enregistré, il est déjà en ligne 🎉', 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  });
+  $('#menuCatFilter').addEventListener('change', renderMenuEditor);
+  $('#menuSearch').addEventListener('input', renderMenuEditor);
+
+  function renderSpecialsEditor() {
+    const days = { 1: 'Lundi', 2: 'Mardi', 3: 'Mercredi', 4: 'Jeudi', 5: 'Vendredi', 6: 'Samedi', 0: 'Dimanche' };
+    const order = [1, 2, 3, 4, 5, 6, 0];
+    const list = state.menu.specials || [];
+    $('#specialsEditor').innerHTML = order.map((day) => {
+      const s = list.find((x) => x.day === day) || { day, name: '', desc: '', price: 0 };
+      return `<div class="dish-row" data-day="${day}" style="grid-template-columns:1.6fr 1.2fr .7fr 1.6fr">
+        <input data-sf="name" value="${esc(s.name)}" placeholder="${days[day]} : nom du plat" />
+        <input data-sf="desc" value="${esc(s.desc || '')}" placeholder="Description" />
+        <input data-sf="price" type="number" min="0" step="50" value="${Number(s.price) || 0}" />
+        <input value="${days[day]}" disabled />
+      </div>`;
+    }).join('');
+
+    $$('#specialsEditor [data-sf]').forEach((inp) => inp.addEventListener('change', () => {
+      const day = Number(inp.closest('.dish-row').dataset.day);
+      if (!state.menu.specials) state.menu.specials = [];
+      let s = state.menu.specials.find((x) => x.day === day);
+      if (!s) { s = { day, name: '', desc: '', price: 0 }; state.menu.specials.push(s); }
+      const f = inp.dataset.sf;
+      s[f] = f === 'price' ? Number(inp.value) || 0 : inp.value;
+    }));
+  }
+  $('#saveSpecialsBtn').addEventListener('click', async () => {
+    try {
+      await api('/api/admin/menu', { method: 'PUT', body: JSON.stringify(state.menu) });
+      toast('Menus du jour enregistrés.', 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  });
+
+  /* ------------------------------ Paramètres ----------------------------- */
+  function renderSettingsForm() {
+    const s = state.settings;
+    const v = (id, val) => { const el = $(id); if (el) el.value = val == null ? '' : val; };
+    v('#sName', s.name); v('#sWhatsapp', s.whatsapp); v('#sPhone', s.phone); v('#sEmail', s.email);
+    v('#sAddress', s.address); v('#sMaps', s.mapsQuery); v('#sHours', s.hoursText);
+    v('#sOpen', s.openHour); v('#sClose', s.closeHour);
+    v('#sFee', s.deliveryFee); v('#sFree', s.freeDeliveryFrom); v('#sMin', s.minOrder);
+    v('#sAnnounce', s.announcement); $('#sAnnounceActive').checked = s.announcementActive !== false;
+    v('#sAbout', s.about);
+    $('#sCash').checked = s.payments?.cash !== false;
+    v('#sAirtelNum', s.payments?.airtel?.number || ''); v('#sAirtelName', s.payments?.airtel?.name || '');
+    v('#sMoovNum', s.payments?.moov?.number || ''); v('#sMoovName', s.payments?.moov?.name || '');
+    v('#sFb', s.social?.facebook || ''); v('#sInsta', s.social?.instagram || ''); v('#sTiktok', s.social?.tiktok || '');
+  }
+
+  function renderZones() {
+    const zones = state.settings.deliveryZones || [];
+    $('#zonesEditor').innerHTML = zones.map((z, i) => `
+      <div class="zone-row" data-idx="${i}">
+        <input data-zf="name" value="${esc(z.name)}" placeholder="Zones desservies (ex. Nzeng-Ayong, PK)" />
+        <input data-zf="fee" type="number" min="0" step="100" value="${Number(z.fee) || 0}" placeholder="Frais" />
+        <button class="mini danger" data-del-zone="${i}">🗑️</button>
+      </div>`).join('');
+    $$('#zonesEditor [data-zf]').forEach((inp) => inp.addEventListener('change', () => {
+      const i = Number(inp.closest('.zone-row').dataset.idx);
+      const f = inp.dataset.zf;
+      state.settings.deliveryZones[i][f] = f === 'fee' ? Number(inp.value) || 0 : inp.value;
+    }));
+    $$('#zonesEditor [data-del-zone]').forEach((b) => b.addEventListener('click', () => {
+      state.settings.deliveryZones.splice(Number(b.dataset.delZone), 1);
+      renderZones();
+    }));
+  }
+  $('#addZone').addEventListener('click', () => {
+    state.settings.deliveryZones = state.settings.deliveryZones || [];
+    state.settings.deliveryZones.push({ name: 'Nouvelle zone', fee: 1000 });
+    renderZones();
+  });
+
+  function renderReviews() {
+    const list = state.settings.reviews || [];
+    $('#reviewsEditor').innerHTML = list.map((r, i) => `
+      <div class="dish-row" data-idx="${i}" style="grid-template-columns:1fr .8fr .5fr 2fr auto">
+        <input data-rf="name" value="${esc(r.name)}" placeholder="Nom du client" />
+        <input data-rf="city" value="${esc(r.city || '')}" placeholder="Quartier" />
+        <input data-rf="stars" type="number" min="1" max="5" value="${Number(r.stars) || 5}" />
+        <input data-rf="text" value="${esc(r.text)}" placeholder="Avis" />
+        <button class="mini danger" data-del-review="${i}">🗑️</button>
+      </div>`).join('');
+    $$('#reviewsEditor [data-rf]').forEach((inp) => inp.addEventListener('change', () => {
+      const i = Number(inp.closest('.dish-row').dataset.idx);
+      const f = inp.dataset.rf;
+      state.settings.reviews[i][f] = f === 'stars' ? Math.max(1, Math.min(5, Number(inp.value) || 5)) : inp.value;
+    }));
+    $$('#reviewsEditor [data-del-review]').forEach((b) => b.addEventListener('click', () => {
+      state.settings.reviews.splice(Number(b.dataset.delReview), 1);
+      renderReviews();
+    }));
+  }
+  $('#addReview').addEventListener('click', () => {
+    state.settings.reviews = state.settings.reviews || [];
+    state.settings.reviews.push({ name: '', city: '', stars: 5, text: '' });
+    renderReviews();
+  });
+  $('#saveReviewsBtn').addEventListener('click', () => $('#saveSettingsBtn').click());
+
+  $('#saveSettingsBtn').addEventListener('click', async () => {
+    const payload = {
+      name: $('#sName').value, whatsapp: $('#sWhatsapp').value.replace(/[^\d+]/g, ''),
+      phone: $('#sPhone').value, email: $('#sEmail').value,
+      address: $('#sAddress').value, mapsQuery: $('#sMaps').value,
+      hoursText: $('#sHours').value,
+      openHour: Number($('#sOpen').value) || 0, closeHour: Number($('#sClose').value) || 24,
+      deliveryFee: Number($('#sFee').value) || 0, freeDeliveryFrom: Number($('#sFree').value) || 0,
+      minOrder: Number($('#sMin').value) || 0,
+      announcement: $('#sAnnounce').value, announcementActive: $('#sAnnounceActive').checked,
+      about: $('#sAbout').value,
+      deliveryZones: state.settings.deliveryZones,
+      reviews: state.settings.reviews,
+      payments: {
+        cash: $('#sCash').checked,
+        airtel: { enabled: !!$('#sAirtelNum').value, number: $('#sAirtelNum').value, name: $('#sAirtelName').value },
+        moov: { enabled: !!$('#sMoovNum').value, number: $('#sMoovNum').value, name: $('#sMoovName').value }
+      },
+      social: { facebook: $('#sFb').value, instagram: $('#sInsta').value, tiktok: $('#sTiktok').value }
+    };
+    const pwd = $('#sNewPwd').value;
+    if (pwd) payload.newPassword = pwd;
+    try {
+      const res = await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify(payload) });
+      state.settings = res.settings;
+      $('#sNewPwd').value = '';
+      renderSettingsForm();
+      toast('Paramètres enregistrés — le site est à jour 🎉', 'ok');
+    } catch (e) { toast(e.message, 'err'); }
+  });
+
+  /* ------------------------------ QR / partage --------------------------- */
+  function renderShare() {
+    const url = location.origin + '/';
+    $('#siteUrl').textContent = url;
+    $('#qrImg').src = `/api/qr.png?data=${encodeURIComponent(url)}`;
+    $('#qrPng').href = `/api/qr.png?data=${encodeURIComponent(url)}&size=900`;
+    $('#openSite').href = url;
+    $('#waShare').href = `https://wa.me/?text=${encodeURIComponent(`Commandez vos plats du Royal Tavern en ligne 👑 ${url}`)}`;
+  }
+  $('#copyUrl').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.origin + '/'); toast('Lien copié !', 'ok'); }
+    catch (e) { toast('Copiez le lien manuellement.', 'err'); }
+  });
+
+  /* ------------------------------ Divers --------------------------------- */
+  $('#orderSearch').addEventListener('input', renderOrders);
+  $('#orderStatusFilter').addEventListener('change', renderOrders);
+  $('#orderPeriod').addEventListener('change', renderOrders);
+  $('#refreshOrders').addEventListener('click', async () => { await load(); toast('Données actualisées.', 'ok'); });
+  $('#exportCsv').addEventListener('click', () => {
+    window.open(`/api/admin/export.csv?token=${encodeURIComponent(state.token)}`, '_blank');
+  });
+  $$('[data-close]').forEach((b) => b.addEventListener('click', () => { $('#orderModal').hidden = true; }));
+  $('#orderModal').addEventListener('click', (e) => { if (e.target.id === 'orderModal') $('#orderModal').hidden = true; });
+
+  // Alertes navigateur
+  $('#notifBtn').addEventListener('click', async () => {
+    if (!('Notification' in window)) { toast('Notifications non supportées par ce navigateur.', 'err'); return; }
+    const p = await Notification.requestPermission();
+    toast(p === 'granted' ? 'Alertes activées 🔔' : 'Alertes refusées.', p === 'granted' ? 'ok' : 'err');
+  });
+
+  // Rafraîchissement automatique + alerte nouvelle commande
+  let knownFirst = null;
+  async function poll() {
+    if (!state.token) return;
+    try {
+      const data = await api('/api/admin/data');
+      const prevTop = state.orders[0]?.id;
+      state.orders = data.orders || [];
+      state.data = data; state.menu = data.menu; state.settings = data.settings;
+      if (prevTop && state.orders[0] && state.orders[0].id !== prevTop && state.orders[0].status === 'nouvelle') {
+        const o = state.orders[0];
+        toast(`Nouvelle commande ${o.number} — ${FC(o.total)}`, 'ok');
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(`Nouvelle commande ${o.number}`, { body: `${o.customer?.name || ''} · ${FC(o.total)}`, icon: '/icons/icon-192.png' });
+        }
+      }
+      renderKpis(); renderDashOrders(); renderOrders(); renderTopDishes();
+      if (state.tab === 'menu') renderMenuEditor();
+    } catch (e) { /* silencieux */ }
+  }
+  setInterval(poll, 30000);
+
+  /* ------------------------------ Démarrage ------------------------------ */
+  (async function boot() {
+    if (!state.token) return; // écran de connexion
+    try {
+      const res = await fetch('/api/admin/session', { headers: { 'x-admin-token': state.token } });
+      const data = await res.json();
+      if (!data.ok) { logout(true); return; }
+      $('#loginScreen').hidden = true;
+      $('#adminApp').hidden = false;
+      await load();
+      if (data.usingDefaultPassword) toast('Mot de passe par défaut actif — changez-le dans Paramètres.');
+    } catch (e) { logout(true); }
+  })();
+})();
+</script>
+</body>
+</html>

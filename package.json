@@ -1,0 +1,27 @@
+{
+  "name": "royal-tavern",
+  "version": "1.0.0",
+  "description": "Plateforme vitrine + commande en ligne du restaurant Le Royal Tavern (Charbonnage, Libreville)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "icons": "node scripts/make-icons.js",
+    "build:data": "node scripts/build-embedded-data.js",
+    "android:sync": "bash scripts/sync-mobile-assets.sh",
+    "android:build": "cd mobile && ./gradlew assembleRelease",
+    "android:debug": "cd mobile && ./gradlew assembleDebug",
+    "backup": "mkdir -p sauvegardes && cp -r data sauvegardes/data-$(date +%F-%H%M)",
+    "postinstall": "node scripts/build-embedded-data.js || true"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "qrcode": "^1.5.4"
+  },
+  "keywords": ["restaurant", "commande en ligne", "PWA", "APK", "Libreville", "Gabon"],
+  "license": "UNLICENSED",
+  "private": true
+}

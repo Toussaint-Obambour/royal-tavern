@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#16233d"/><stop offset="100%" stop-color="#0b1120"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6dc9c"/><stop offset="55%" stop-color="#d9a83c"/><stop offset="100%" stop-color="#a9761f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="196" fill="none" stroke="#d9a83c" stroke-opacity=".28" stroke-width="6"/>
+  <path fill="url(#gold)" d="M96 206l52 46 46-80 62 80 62-80 46 80 52-46-24 128H120L96 206z"/>
+  <rect x="120" y="348" width="272" height="30" rx="10" fill="url(#gold)"/>
+  <circle cx="256" cy="168" r="20" fill="#f6dc9c"/>
+  <text x="256" y="450" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="54" fill="#f0d08a" letter-spacing="6">TAVERN</text>
+</svg>

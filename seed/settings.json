@@ -1,0 +1,77 @@
+{
+  "name": "Le Royal Tavern",
+  "tagline": "Grillades, braisés & saveurs royales au cœur du Charbonnage",
+  "slogan": "Commandez en ligne, on s'occupe du reste.",
+  "about": "Le Royal Tavern est un restaurant convivial situé au Charbonnage, juste derrière la Chapelle des Vainqueurs à Libreville. Nous préparons chaque jour des plats frais : poulets braisés au charbon, poissons entiers, brochettes, poulet DG, riz sauté, burgers maison et jus naturels. Sur place, à emporter ou en livraison, notre équipe vous régale avec des produits du marché et nos sauces faites maison.",
+  "whatsapp": "24100000000",
+  "phone": "+241 00 00 00 00",
+  "email": "contact@royaltavern.ga",
+  "address": "Charbonnage, derrière la Chapelle des Vainqueurs, Libreville, Gabon",
+  "mapsQuery": "Charbonnage derrière la Chapelle des Vainqueurs Libreville Gabon",
+  "hoursText": "Tous les jours : 10h00 – 23h00",
+  "openHour": 10,
+  "closeHour": 23,
+  "deliveryFee": 1000,
+  "freeDeliveryFrom": 25000,
+  "deliveryZones": [
+    {
+      "name": "Charbonnage, Nzeng-Ayong, PK",
+      "fee": 1000
+    },
+    {
+      "name": "Centre-ville, Mont-Bouët, Glass",
+      "fee": 1500
+    },
+    {
+      "name": "Akébé, Owendo, Louis, Ntoum",
+      "fee": 2000
+    }
+  ],
+  "payments": {
+    "cash": true,
+    "airtel": {
+      "enabled": true,
+      "number": "+241 00 00 00 00",
+      "name": "Le Royal Tavern"
+    },
+    "moov": {
+      "enabled": true,
+      "number": "+241 00 00 00 00",
+      "name": "Le Royal Tavern"
+    }
+  },
+  "services": {
+    "delivery": true,
+    "takeaway": true,
+    "dinein": true
+  },
+  "social": {
+    "facebook": "https://facebook.com/leroyaltavern",
+    "instagram": "https://instagram.com/leroyaltavern",
+    "tiktok": "https://tiktok.com/@leroyaltavern"
+  },
+  "reviews": [
+    {
+      "name": "Marielle O.",
+      "city": "Charbonnage",
+      "stars": 5,
+      "text": "Le poulet braisé est incroyable, la commande WhatsApp est rapide et la livraison arrive chaude. Bravo !"
+    },
+    {
+      "name": "Serge N.",
+      "city": "Nzeng-Ayong",
+      "stars": 5,
+      "text": "J'ai commandé le plateau duo pour la famille, tout le monde s'est régalé. Rapport qualité-prix au top."
+    },
+    {
+      "name": "Aline B.",
+      "city": "Centre-ville",
+      "stars": 4,
+      "text": "Le poisson braisé et le jus de bissap maison valent le détour. Service souriant au restaurant."
+    }
+  ],
+  "announcement": "🚚 Livraison offerte à partir de 25 000 FCFA de commande — Charbonnage, Nzeng-Ayong, PK, centre-ville.",
+  "announcementActive": true,
+  "minOrder": 2000,
+  "adminPasswordHash": "20fc386ccb99e9cc3791f5fb43f9c232b708bb8ee90bcb6c32c86d20847ad54f"
+}

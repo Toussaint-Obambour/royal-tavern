@@ -1,0 +1,582 @@
+/* Généré automatiquement le 2026-10-16T10:58:48.655Z — ne pas modifier à la main.
+   Source : data/menu.json + data/settings.json  (npm run build:data) */
+window.RT_FALLBACK = {
+ "generatedAt": "2026-10-16T10:58:48.655Z",
+ "settings": {
+  "name": "Le Royal Tavern",
+  "tagline": "Grillades, braisés & saveurs royales au cœur du Charbonnage",
+  "slogan": "Commandez en ligne, on s'occupe du reste.",
+  "about": "Le Royal Tavern est un restaurant convivial situé au Charbonnage, juste derrière la Chapelle des Vainqueurs à Libreville. Nous préparons chaque jour des plats frais : poulets braisés au charbon, poissons entiers, brochettes, poulet DG, riz sauté, burgers maison et jus naturels. Sur place, à emporter ou en livraison, notre équipe vous régale avec des produits du marché et nos sauces faites maison.",
+  "whatsapp": "24100000000",
+  "phone": "+241 00 00 00 00",
+  "email": "contact@royaltavern.ga",
+  "address": "Charbonnage, derrière la Chapelle des Vainqueurs, Libreville, Gabon",
+  "mapsQuery": "Charbonnage derrière la Chapelle des Vainqueurs Libreville Gabon",
+  "hoursText": "Tous les jours : 10h00 – 23h00",
+  "openHour": 10,
+  "closeHour": 23,
+  "deliveryFee": 1000,
+  "freeDeliveryFrom": 25000,
+  "deliveryZones": [
+   {
+    "name": "Charbonnage, Nzeng-Ayong, PK",
+    "fee": 1000
+   },
+   {
+    "name": "Centre-ville, Mont-Bouët, Glass",
+    "fee": 1500
+   },
+   {
+    "name": "Akébé, Owendo, Louis, Ntoum",
+    "fee": 2000
+   }
+  ],
+  "payments": {
+   "cash": true,
+   "airtel": {
+    "enabled": true,
+    "number": "+241 00 00 00 00",
+    "name": "Le Royal Tavern"
+   },
+   "moov": {
+    "enabled": true,
+    "number": "+241 00 00 00 00",
+    "name": "Le Royal Tavern"
+   }
+  },
+  "services": {
+   "delivery": true,
+   "takeaway": true,
+   "dinein": true
+  },
+  "social": {
+   "facebook": "https://facebook.com/leroyaltavern",
+   "instagram": "https://instagram.com/leroyaltavern",
+   "tiktok": "https://tiktok.com/@leroyaltavern"
+  },
+  "reviews": [
+   {
+    "name": "Marielle O.",
+    "city": "Charbonnage",
+    "stars": 5,
+    "text": "Le poulet braisé est incroyable, la commande WhatsApp est rapide et la livraison arrive chaude. Bravo !"
+   },
+   {
+    "name": "Serge N.",
+    "city": "Nzeng-Ayong",
+    "stars": 5,
+    "text": "J'ai commandé le plateau duo pour la famille, tout le monde s'est régalé. Rapport qualité-prix au top."
+   },
+   {
+    "name": "Aline B.",
+    "city": "Centre-ville",
+    "stars": 4,
+    "text": "Le poisson braisé et le jus de bissap maison valent le détour. Service souriant au restaurant."
+   }
+  ],
+  "announcement": "🚚 Livraison offerte à partir de 25 000 FCFA de commande — Charbonnage, Nzeng-Ayong, PK, centre-ville.",
+  "announcementActive": true,
+  "minOrder": 2000
+ },
+ "categories": [
+  {
+   "id": "formules",
+   "name": "Menus & Formules",
+   "icon": "👑"
+  },
+  {
+   "id": "entrees",
+   "name": "Entrées",
+   "icon": "🥗"
+  },
+  {
+   "id": "grillades",
+   "name": "Grillades & Braisés",
+   "icon": "🔥"
+  },
+  {
+   "id": "signature",
+   "name": "Plats Signature",
+   "icon": "🍛"
+  },
+  {
+   "id": "burgers",
+   "name": "Burgers & Snacks",
+   "icon": "🍔"
+  },
+  {
+   "id": "boissons",
+   "name": "Boissons",
+   "icon": "🥤"
+  },
+  {
+   "id": "desserts",
+   "name": "Desserts",
+   "icon": "🍨"
+  }
+ ],
+ "dishes": [
+  {
+   "id": "d001",
+   "cat": "formules",
+   "name": "Menu Royal",
+   "desc": "Entrée au choix + plat royal au choix + dessert + boisson fraîche. Notre formule complète.",
+   "price": 8500,
+   "img": "",
+   "badge": "Best-seller",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d002",
+   "cat": "formules",
+   "name": "Formule Express",
+   "desc": "1 plat au choix + 1 boisson (eau ou sucrerie). Servi rapidement, midi comme soir.",
+   "price": 4500,
+   "img": "",
+   "badge": "Midi",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d003",
+   "cat": "formules",
+   "name": "Plateau Duo à Partager",
+   "desc": "Demi-poulet braisé + 3 brochettes + frites maison + alloco + 2 boissons. Pour 2 personnes.",
+   "price": 12000,
+   "img": "img/poulet-braise.jpg",
+   "badge": "À partager",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d004",
+   "cat": "formules",
+   "name": "Menu Enfant",
+   "desc": "Petite portion de poulet pané + frites + jus ou sucrerie + petit dessert.",
+   "price": 3000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d010",
+   "cat": "entrees",
+   "name": "Salade de crudités royale",
+   "desc": "Salade fraîche, tomates, concombre, maïs, œuf, vinaigrette maison.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d011",
+   "cat": "entrees",
+   "name": "Beignets de crevettes",
+   "desc": "6 beignets croustillants de crevettes fraîches, sauce pimentée maison.",
+   "price": 2500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d012",
+   "cat": "entrees",
+   "name": "Samoussas au bœuf",
+   "desc": "6 samoussas dorés, farcis au bœuf épicé, servis avec sauce aigre-douce.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d013",
+   "cat": "entrees",
+   "name": "Nems au poulet",
+   "desc": "4 nems croustillants au poulet et légumes, sauce sucrée-salée.",
+   "price": 2000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d014",
+   "cat": "entrees",
+   "name": "Bouillon de poisson pimenté",
+   "desc": "Bouillon chaud de poisson frais, herbes locales et piment doux.",
+   "price": 2000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d020",
+   "cat": "grillades",
+   "name": "Demi-poulet braisé",
+   "desc": "Demi-poulet mariné et braisé au charbon, sauce piment, oignons et plantain frit.",
+   "price": 3000,
+   "img": "img/poulet-braise.jpg",
+   "badge": "Le + commandé",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d021",
+   "cat": "grillades",
+   "name": "Poulet braisé entier",
+   "desc": "Poulet entier braisé au charbon, servi avec alloco, oignons et sauce maison.",
+   "price": 6000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d022",
+   "cat": "grillades",
+   "name": "Poisson braisé (bar)",
+   "desc": "Bar entier braisé, tomates, oignons, citron vert, servi avec plantain et attiéké.",
+   "price": 5500,
+   "img": "img/poisson-braise.jpg",
+   "badge": "Spécialité",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d023",
+   "cat": "grillades",
+   "name": "Capitaine braisé entier",
+   "desc": "Capitaine frais du jour braisé au charbon, farce d'herbes et piment.",
+   "price": 7000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d024",
+   "cat": "grillades",
+   "name": "Brochettes de bœuf (3)",
+   "desc": "3 brochettes de bœuf grillées, épices tavernières, sauce piment et oignons.",
+   "price": 3500,
+   "img": "img/brochettes.jpg",
+   "badge": "",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d025",
+   "cat": "grillades",
+   "name": "Côtelettes de porc grillées",
+   "desc": "Côtelettes marinées grillées au charbon, sauce au poivre ou piment.",
+   "price": 4500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d026",
+   "cat": "grillades",
+   "name": "Gambas grillées (6)",
+   "desc": "6 grosses gambas grillées à l'ail et beurre citronné, riz parfumé.",
+   "price": 8000,
+   "img": "",
+   "badge": "Premium",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d027",
+   "cat": "grillades",
+   "name": "Poulet pané croustillant",
+   "desc": "Filets de poulet panés maison, croustillants, servis avec frites.",
+   "price": 4000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d030",
+   "cat": "signature",
+   "name": "Riz sauté Royal",
+   "desc": "Riz sauté au poulet, petits pois, carottes, omelette et épices de la maison.",
+   "price": 3500,
+   "img": "img/riz-saute.jpg",
+   "badge": "Signature",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d031",
+   "cat": "signature",
+   "name": "Poulet DG",
+   "desc": "Poulet sauté, plantain mûr frit, haricots, carottes et poivrons, sauce onctueuse.",
+   "price": 5000,
+   "img": "img/poulet-dg.jpg",
+   "badge": "Plat du pays",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d032",
+   "cat": "signature",
+   "name": "Riz au gras au poulet",
+   "desc": "Riz cuisiné au bouillon, morceaux de poulet, servi avec sauce tomate épicée.",
+   "price": 3000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d033",
+   "cat": "signature",
+   "name": "Attiéké poisson",
+   "desc": "Attiéké frais, poisson frit, sauce piment et oignons frais.",
+   "price": 3500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d034",
+   "cat": "signature",
+   "name": "Poisson salé + bâton de manioc",
+   "desc": "Poisson salé mijoté, bâton de manioc, sauce graine ou piment vert.",
+   "price": 3000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d040",
+   "cat": "burgers",
+   "name": "Burger Royal Tavern",
+   "desc": "Double steak, cheddar fondu, salade, tomate, oignons caramélisés, sauce maison + frites.",
+   "price": 4500,
+   "img": "img/burger.jpg",
+   "badge": "Nouveau",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d041",
+   "cat": "burgers",
+   "name": "Cheeseburger double",
+   "desc": "Deux steaks, double cheddar, bacon de bœuf, pain brioché toasté + frites.",
+   "price": 5500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d042",
+   "cat": "burgers",
+   "name": "Chicken burger",
+   "desc": "Filet de poulet pané croustillant, crudités, sauce blanche + frites.",
+   "price": 4000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d043",
+   "cat": "burgers",
+   "name": "Sandwich au poulet",
+   "desc": "Pain croustillant garni de poulet grillé, crudités et sauce pimentée.",
+   "price": 2500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d044",
+   "cat": "burgers",
+   "name": "Frites maison",
+   "desc": "Grande portion de frites fraîches, croustillantes et dorées.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d045",
+   "cat": "burgers",
+   "name": "Alloco (plantain frit)",
+   "desc": "Bananes plantain mûres frites, sauce piment et oignons.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d050",
+   "cat": "boissons",
+   "name": "Jus de bissap frais",
+   "desc": "Jus d'hibiscus maison, frais et légèrement sucré, servi avec glace.",
+   "price": 1000,
+   "img": "img/boissons.jpg",
+   "badge": "Fait maison",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d051",
+   "cat": "boissons",
+   "name": "Jus de gingembre",
+   "desc": "Jus de gingembre maison, tonique et rafraîchissant.",
+   "price": 1000,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d052",
+   "cat": "boissons",
+   "name": "Jus de fruits frais (mangue / odika)",
+   "desc": "Jus pressés du jour selon la saison, sans arôme artificiel.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d053",
+   "cat": "boissons",
+   "name": "Eau minérale 1 L",
+   "desc": "Bouteille d'eau minérale fraîche.",
+   "price": 500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d054",
+   "cat": "boissons",
+   "name": "Sucrerie (Coca, Fanta, Sprite)",
+   "desc": "Bouteille 33 cl bien fraîche.",
+   "price": 700,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d055",
+   "cat": "boissons",
+   "name": "Bière locale (Régab)",
+   "desc": "Bière blonde locale servie glacée. L'abus d'alcool est dangereux pour la santé.",
+   "price": 1000,
+   "img": "",
+   "badge": "18+",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d056",
+   "cat": "boissons",
+   "name": "Castel / Beaufort",
+   "desc": "Bière premium 65 cl, service frais. L'abus d'alcool est dangereux pour la santé.",
+   "price": 1500,
+   "img": "",
+   "badge": "18+",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d060",
+   "cat": "desserts",
+   "name": "Salade de fruits tropicaux",
+   "desc": "Mangue, ananas, papaye, fruit de la passion, menthe fraîche + glace vanille.",
+   "price": 1500,
+   "img": "img/dessert.jpg",
+   "badge": "",
+   "available": true,
+   "popular": true
+  },
+  {
+   "id": "d061",
+   "cat": "desserts",
+   "name": "Crêpe au chocolat",
+   "desc": "Crêpe tiède, chocolat fondu et poudre d'arachide grillée.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  },
+  {
+   "id": "d062",
+   "cat": "desserts",
+   "name": "Glace 2 boules",
+   "desc": "Deux boules au choix : vanille, chocolat, fraise ou coco.",
+   "price": 1500,
+   "img": "",
+   "badge": "",
+   "available": true,
+   "popular": false
+  }
+ ],
+ "specials": [
+  {
+   "day": 1,
+   "name": "Lundi : Riz sauce graine + porc",
+   "price": 3500,
+   "desc": "Plat du jour servi de 11h30 à 15h, avec boisson à -50%."
+  },
+  {
+   "day": 2,
+   "name": "Mardi : Poisson braisé + alloco",
+   "price": 4000,
+   "desc": "Bar braisé au charbon, alloco et sauce piment maison."
+  },
+  {
+   "day": 3,
+   "name": "Mercredi : Poulet DG royal",
+   "price": 4200,
+   "desc": "Version midi du Poulet DG, généreuse et servie chaude."
+  },
+  {
+   "day": 4,
+   "name": "Jeudi : Brochettes + frites",
+   "price": 3500,
+   "desc": "3 brochettes de bœuf, frites maison et sauce épicée."
+  },
+  {
+   "day": 5,
+   "name": "Vendredi : Capitaine braisé",
+   "price": 5000,
+   "desc": "Capitaine entier frais du jour, plantain et attiéké."
+  },
+  {
+   "day": 6,
+   "name": "Samedi : Plateau Royal grillades",
+   "price": 9000,
+   "desc": "Assortiment de grillades pour 2, ambiance live au restaurant."
+  },
+  {
+   "day": 0,
+   "name": "Dimanche : Brunch Royal Famille",
+   "price": 7500,
+   "desc": "Buffet familial : poulet, poisson, riz, plantain, jus maison."
+  }
+ ]
+};

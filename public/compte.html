@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mon compte — Le Royal Tavern</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#0b1120" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body{background:var(--cream);padding-bottom:2rem}
+  .acc-head{background:linear-gradient(120deg,var(--navy),var(--navy-soft));color:#fff;padding:1.1rem 0 1.6rem}
+  .acc-head .wrap{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .acc-head .brand-text em{color:var(--gold-light)}
+  .acc-head .spacer{margin-left:auto}
+  .acc-head .btn{--btn-fg:#fff}
+  .acc-head .btn-outline{--btn-bd:rgba(255,255,255,.45)}
+  .acc-hello{display:flex;align-items:center;gap:.8rem;margin-top:1.3rem;position:relative;z-index:1}
+  .avatar{
+    width:54px;height:54px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));color:#241a05;
+    font-family:var(--serif);font-size:1.4rem;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.25)
+  }
+  .acc-hello h1{font-size:1.5rem;margin:0}
+  .acc-hello p{margin:0;color:#cbd5e8;font-size:.88rem}
+  .acc-main{padding:1.6rem 0 0}
+  .acc-grid{display:grid;gap:1.2rem}
+  .orders-list{display:grid;gap:.9rem}
+  .order-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1rem 1.1rem;box-shadow:var(--shadow-sm)}
+  .order-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;flex-wrap:wrap;padding-bottom:.6rem;border-bottom:1px dashed var(--line)}
+  .order-top b{font-family:var(--serif);font-size:1.08rem}
+  .order-meta{font-size:.8rem;color:var(--ink-soft)}
+  .order-items{font-size:.88rem;color:var(--ink);margin:.6rem 0;display:grid;gap:.15rem}
+  .order-foot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding-top:.5rem}
+  .order-total{font-weight:800;font-size:1.02rem}
+  .timeline{display:flex;gap:.3rem;margin-top:.7rem;flex-wrap:wrap}
+  .tl-step{flex:1 1 90px;text-align:center;font-size:.68rem;color:var(--ink-soft);position:relative;padding-top:1.35rem}
+  .tl-step::before{content:"";position:absolute;top:.35rem;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#e2dbcd}
+  .tl-step.done{color:var(--var--ok, #1e9e6a);font-weight:700}
+  .tl-step.done::before{background:var(--ok)}
+  .tl-step.current::before{background:var(--gold);box-shadow:0 0 0 4px rgba(217,168,60,.25)}
+  .empty-orders{background:#fff;border:1px dashed var(--line);border-radius:18px;padding:2rem 1.2rem;text-align:center;color:var(--ink-soft)}
+  .empty-orders .big{font-size:2.4rem;display:block;margin-bottom:.4rem}
+  .profile-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.2rem;box-shadow:var(--shadow-sm)}
+  .danger-zone{margin-top:1rem;border-top:1px dashed var(--line);padding-top:1rem}
+  @media (min-width:900px){ .acc-grid{grid-template-columns:1.6fr 1fr;align-items:start} }
+</style>
+</head>
+<body>
+<header class="acc-head">
+  <div class="wrap">
+    <a class="brand" href="/" style="color:#fff">
+      <span class="brand-mark">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+      </span>
+      <span class="brand-text"><strong>Le Royal Tavern</strong><em>Mon espace client</em></span>
+    </a>
+    <span class="spacer"></span>
+    <a class="btn btn-outline" href="/">🍽️ Retour au menu</a>
+  </div>
+  <div class="wrap acc-hello">
+    <span class="avatar" id="avatar">👤</span>
+    <div>
+      <h1 id="helloName">Bonjour</h1>
+      <p id="helloPhone">—</p>
+    </div>
+  </div>
+</header>
+
+<main class="acc-main">
+  <div class="wrap">
+    <!-- Non connecté -->
+    <div class="empty-orders" id="needLogin" hidden>
+      <span class="big">🔒</span>
+      <h2 style="font-size:1.2rem">Connectez-vous pour voir vos commandes</h2>
+      <p>Votre espace garde l'historique de vos commandes, vos adresses et vos préférences.</p>
+      <a class="btn btn-gold" href="connexion.html?mode=connexion&next=/compte">Se connecter ou créer un compte</a>
+    </div>
+
+    <div class="acc-grid" id="accContent" hidden>
+      <!-- Commandes -->
+      <section>
+        <h2 style="font-size:1.3rem">📦 Mes commandes</h2>
+        <p class="hint" style="margin-top:-.5rem">Suivez l'avancement et recommandez vos plats préférés en un clic.</p>
+        <div class="orders-list" id="ordersList"></div>
+      </section>
+
+      <!-- Profil -->
+      <aside>
+        <div class="profile-card">
+          <h2 style="font-size:1.15rem">👤 Mes informations</h2>
+          <form id="profileForm">
+            <div class="field">
+              <label for="pName">Nom complet</label>
+              <input id="pName" required minlength="2" />
+            </div>
+            <div class="field">
+              <label>Téléphone (identifiant de connexion)</label>
+              <input id="pPhone" disabled />
+            </div>
+            <div class="field">
+              <label for="pAddress">Adresse de livraison habituelle</label>
+              <input id="pAddress" placeholder="Quartier, rue, immeuble" />
+            </div>
+            <div class="field">
+              <label for="pLandmark">Repère / précision</label>
+              <input id="pLandmark" placeholder="Ex. portail vert, en face de la pharmacie" />
+            </div>
+            <details style="margin-bottom:.9rem">
+              <summary style="cursor:pointer;font-size:.86rem;font-weight:700;color:var(--gold-dark)">Changer mon mot de passe</summary>
+              <div class="field" style="margin-top:.7rem">
+                <label for="pNewPwd">Nouveau mot de passe</label>
+                <input id="pNewPwd" type="password" minlength="4" placeholder="4 caractères minimum" />
+              </div>
+            </details>
+            <button class="btn btn-gold btn-block" type="submit" id="saveProfile">💾 Enregistrer</button>
+          </form>
+          <div class="danger-zone">
+            <button class="btn btn-ghost btn-block" id="logoutBtn">🚪 Se déconnecter</button>
+          </div>
+        </div>
+
+        <div class="profile-card" style="margin-top:1.2rem;background:linear-gradient(135deg,var(--navy),var(--navy-soft));color:#fff;border:0">
+          <h3 style="color:var(--gold-light);font-size:1.05rem">🎁 Un petit creux ?</h3>
+          <p style="color:#cbd5e8;font-size:.88rem">Retournez au menu : poulet braisé, poisson, brochettes, Poulet DG, burgers et jus naturels.</p>
+          <a class="btn btn-gold btn-block" href="/#menu">Commander maintenant</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const FC = (n) => Number(n || 0).toLocaleString('fr-FR') + ' FCFA';
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const TOKEN_KEY = 'rt_client_token';
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  const FLOW = ['nouvelle', 'confirmee', 'en_preparation', 'en_livraison', 'livree'];
+  const FLOW_LABELS = { nouvelle: 'Reçue', confirmee: 'Confirmée', en_preparation: 'En cuisine', en_livraison: 'En livraison', livree: 'Terminée' };
+
+  let user = null;
+  let dishes = [];
+
+  function toast(msg, type = '') {
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.innerHTML = '<span>' + (type === 'ok' ? '✅' : type === 'err' ? '⚠️' : '👑') + '</span><span>' + msg + '</span>';
+    $('#toastWrap').appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 320); }, 3200);
+  }
+
+  function token() { return store.get(TOKEN_KEY) || ''; }
+
+  async function api(path, options = {}) {
+    const res = await fetch(path, {
+      ...options,
+      headers: { 'content-type': 'application/json', 'x-client-token': token(), ...(options.headers || {}) }
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 401) { store.remove(TOKEN_KEY); needLogin(); throw new Error(data.error || 'Session expirée.'); }
+    if (!res.ok) throw new Error(data.error || 'Erreur.');
+    return data;
+  }
+
+  function needLogin() {
+    $('#needLogin').hidden = false;
+    $('#accContent').hidden = true;
+    $('#helloName').textContent = 'Bonjour';
+    $('#helloPhone').textContent = 'Connectez-vous pour accéder à votre espace';
+    $('#avatar').textContent = '👤';
+  }
+
+  function fillUser() {
+    $('#needLogin').hidden = true;
+    $('#accContent').hidden = false;
+    $('#helloName').textContent = 'Bonjour ' + (user.name || '');
+    $('#helloPhone').textContent = user.phone + ' · compte créé le ' + new Date(user.createdAt).toLocaleDateString('fr-FR');
+    $('#avatar').textContent = (user.name || '?').trim().charAt(0).toUpperCase();
+    $('#pName').value = user.name || '';
+    $('#pPhone').value = user.phone || '';
+    $('#pAddress').value = user.address || '';
+    $('#pLandmark').value = user.landmark || '';
+  }
+
+  async function loadOrders() {
+    const box = $('#ordersList');
+    box.innerHTML = '<p class="hint">Chargement de vos commandes…</p>';
+    try {
+      const data = await api('/api/auth/orders');
+      const list = data.orders || [];
+      if (!list.length) {
+        box.innerHTML = '<div class="empty-orders"><span class="big">🍽️</span>' +
+          '<p>Aucune commande pour l’instant.<br>Parcourez le menu et commandez, tout s’enregistrera ici.</p>' +
+          '<a class="btn btn-gold" href="/#menu">Voir la carte</a></div>';
+        return;
+      }
+      box.innerHTML = list.map((o) => {
+        const idx = FLOW.indexOf(o.status);
+        const steps = o.status === 'annulee'
+          ? '<p style="color:var(--danger);font-size:.85rem;margin:.5rem 0 0">Commande annulée — contactez-nous si besoin.</p>'
+          : '<div class="timeline">' + FLOW.map((f, i) =>
+              '<span class="tl-step ' + (i < idx ? 'done' : '') + ' ' + (i === idx ? 'current' : '') + '">' + FLOW_LABELS[f] + '</span>').join('') + '</div>';
+        return `
+          <article class="order-card">
+            <div class="order-top">
+              <div>
+                <b>${esc(o.number)}</b>
+                <div class="order-meta">${new Date(o.createdAt).toLocaleString('fr-FR')} · ${
+                  { livraison: '🛵 Livraison', emporter: '🥡 À emporter', surplace: '🪑 Sur place' }[o.mode] || o.mode}</div>
+              </div>
+              <span class="status-pill st-${esc(o.status)}">${esc(o.statusLabel)}</span>
+            </div>
+            <div class="order-items">${o.items.map((i) => `<span>${i.qty} × ${esc(i.name)}</span>`).join('')}</div>
+            ${steps}
+            <div class="order-foot">
+              <span class="order-total">${FC(o.total)}</span>
+              <div class="row-actions">
+                <button class="mini" data-track="${esc(o.number)}">Suivre</button>
+                <button class="mini primary" data-reorder="${esc(o.number)}">🔁 Commander à nouveau</button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      box.querySelectorAll('[data-track]').forEach((b) => b.addEventListener('click', () => {
+        location.href = '/suivi?number=' + encodeURIComponent(b.dataset.track) + '&phone=' + encodeURIComponent(String(user.phone).slice(-6));
+      }));
+      box.querySelectorAll('[data-reorder]').forEach((b) => b.addEventListener('click', () => reorder(b.dataset.reorder, list)));
+
+    } catch (e) {
+      box.innerHTML = '<p style="color:var(--danger)">' + esc(e.message) + '</p>';
+    }
+  }
+
+  /** Remet les plats d'une ancienne commande dans le panier puis ouvre le menu */
+  function reorder(number, list) {
+    const order = list.find((o) => o.number === number);
+    if (!order) return;
+    const byId = new Map(dishes.map((d) => [d.id, d]));
+    const cart = order.items
+      .filter((i) => byId.has(i.id))
+      .map((i) => ({
+        key: i.id + '|', id: i.id, name: byId.get(i.id).name, price: byId.get(i.id).price,
+        qty: i.qty, extras: i.extras || [], img: byId.get(i.id).img || ''
+      }));
+    if (!cart.length) { toast('Ces plats ne sont plus au menu.', 'err'); return; }
+    store.set('rt_cart_v1', JSON.stringify(cart));
+    toast('Plats ajoutés au panier 🛒', 'ok');
+    setTimeout(() => location.href = '/#menu', 700);
+  }
+
+  /* ---------------- Profil ---------------- */
+  $('#profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = $('#saveProfile');
+    btn.disabled = true; btn.textContent = 'Enregistrement…';
+    try {
+      const payload = { name: $('#pName').value, address: $('#pAddress').value, landmark: $('#pLandmark').value };
+      if ($('#pNewPwd').value) payload.newPassword = $('#pNewPwd').value;
+      const data = await api('/api/auth/profile', { method: 'PUT', body: JSON.stringify(payload) });
+      user = data.user;
+      store.set('rt_client', JSON.stringify(user));
+      $('#pNewPwd').value = '';
+      fillUser();
+      toast('Informations enregistrées ✅', 'ok');
+    } catch (err) { toast(err.message, 'err'); }
+    finally { btn.disabled = false; btn.textContent = '💾 Enregistrer'; }
+  });
+
+  $('#logoutBtn').addEventListener('click', async () => {
+    try { await api('/api/auth/logout', { method: 'POST' }); } catch (e) {}
+    store.remove(TOKEN_KEY);
+    store.remove('rt_client');
+    toast('Vous êtes déconnecté.');
+    setTimeout(() => location.href = '/connexion.html?mode=connexion', 600);
+  });
+
+  /* ---------------- Démarrage ---------------- */
+  (async function boot() {
+    // Carte des plats (pour « commander à nouveau »)
+    try {
+      const r = await fetch('/api/public');
+      const d = await r.json();
+      dishes = d.dishes || [];
+    } catch (e) { /* hors ligne : on utilise les données embarquées */ }
+    if (!dishes.length && window.RT_FALLBACK) dishes = window.RT_FALLBACK.dishes || [];
+
+    if (!token()) { needLogin(); return; }
+    try {
+      const me = await api('/api/auth/me');
+      if (!me.ok) { needLogin(); return; }
+      user = me.user;
+      store.set('rt_client', JSON.stringify(user));
+      fillUser();
+      loadOrders();
+    } catch (e) { needLogin(); }
+  })();
+})();
+</script>
+<script src="js/embedded-data.js"></script>
+</body>
+</html>
