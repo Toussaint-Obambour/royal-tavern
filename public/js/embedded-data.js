@@ -1,7 +1,7 @@
-/* Généré automatiquement le 2026-10-17T10:37:12.993Z — ne pas modifier à la main.
+/* Généré automatiquement le 2026-10-17T12:10:38.860Z — ne pas modifier à la main.
    Source : data/menu.json + data/settings.json  (npm run build:data) */
 window.RT_FALLBACK = {
- "generatedAt": "2026-10-17T10:37:12.993Z",
+ "generatedAt": "2026-10-17T12:10:38.860Z",
  "settings": {
   "name": "Le Royal Tavern",
   "tagline": "Lounge · Terrasse panoramique · Grillades au feu de bois — Charbonnages, Libreville",
@@ -80,7 +80,7 @@ window.RT_FALLBACK = {
     "text": "Bonne adresse pour les grillades. La terrasse en hauteur vaut le détour, surtout en fin de journée."
    }
   ],
-  "announcement": "🌇 Terrasse panoramique ouverte · Cuisine du mercredi au dimanche 12h–21h40 · ☎ 074 68 90 00 / 066 23 47 33",
+  "announcement": "🌇 Terrasse panoramique · Cuisine mer–dim 12h–21h40 · ☎ 074 68 90 00",
   "announcementActive": true,
   "minOrder": 2000,
   "phone2": "+241 66 23 47 33",

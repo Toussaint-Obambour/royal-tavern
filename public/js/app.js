@@ -234,8 +234,11 @@
     const chip = $('#accountName');
     if (!chip) return;
     if (state.user) {
-      const first = String(state.user.name || '').split(' ')[0];
-      chip.textContent = first || 'Mon compte';
+      // On affiche le pseudo (plus personnel et unique qu'un prénom)
+      const identifiant = state.user.pseudo
+        ? '@' + state.user.pseudo
+        : String(state.user.name || '').split(' ')[0];
+      chip.textContent = identifiant || 'Mon compte';
       const el = $('#accountChip');
       if (el) el.title = `Mon compte (${state.user.phone})`;
     } else if (store.get('rt_guest') === '1') {
@@ -567,7 +570,7 @@
     const m = typeof sel === 'string' ? $(sel) : sel;
     if (m) {
       m.hidden = false;
-      document.body.classList.add('no-scroll');
+      document.body.classList.add('no-scroll', 'modal-open');
     }
   }
 
@@ -723,18 +726,62 @@
       $('#checkoutModal').hidden = true;
       $('#confirmNumber').textContent = data.order.number;
       $('#confirmWhatsapp').href = data.whatsappUrl || waLink(data.whatsappText || '');
-    $('#confirmWhatsapp').setAttribute('data-external', '1');
-      $('#confirmText').textContent =
-        `Commande n° ${data.order.number} enregistrée — total ${FC(data.order.total)}. ` +
-        `Un message WhatsApp pré-rempli va s'ouvrir pour l'envoyer au restaurant. ` +
-        `Gardez ce numéro pour suivre votre commande.`;
+      $('#confirmWhatsapp').setAttribute('data-external', '1');
+
+      // Paiement Mobile Money en ligne (simulateur en mode test)
+      let payUrl = '';
+      const online = !state.offline && ['airtel', 'moov'].includes(data.order.payment);
+      if (online) {
+        try {
+          const pr = await fetch('/api/payments/init', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              orderNumber: data.order.number,
+              operator: data.order.payment,
+              phone: payload.phone
+            })
+          });
+          const pd = await pr.json();
+          if (pr.ok && pd.payUrl) payUrl = pd.payUrl;
+        } catch (err) { /* le paiement reste possible depuis le suivi */ }
+      }
+
+      const payBtn = $('#confirmPay');
+      if (payBtn) {
+        if (payUrl) {
+          payBtn.href = payUrl;
+          payBtn.hidden = false;
+          payBtn.style.display = '';
+          payBtn.className = 'btn btn-gold btn-block btn-lg';
+          payBtn.textContent = `💳 Payer ${FC(data.order.total)} par ${data.order.payment === 'moov' ? 'Moov Money' : 'Airtel Money'}`;
+          // WhatsApp devient une option secondaire quand le paiement en ligne est proposé.
+          $('#confirmWhatsapp').className = 'btn btn-ghost btn-block';
+          $('#confirmWhatsapp').textContent = '💬 Envoyer aussi sur WhatsApp';
+        } else {
+          payBtn.hidden = true;
+          payBtn.style.display = 'none';
+          $('#confirmWhatsapp').className = 'btn btn-gold btn-block btn-lg';
+          $('#confirmWhatsapp').textContent = '💬 Ouvrir WhatsApp';
+        }
+      }
+
+      $('#confirmText').textContent = payUrl
+        ? `Commande n° ${data.order.number} enregistrée — total ${FC(data.order.total)}. ` +
+          `Réglez par Mobile Money pour confirmer, ou envoyez simplement la commande sur WhatsApp. ` +
+          `Gardez ce numéro pour suivre votre commande.`
+        : `Commande n° ${data.order.number} enregistrée — total ${FC(data.order.total)}. ` +
+          `Un message WhatsApp pré-rempli va s'ouvrir pour l'envoyer au restaurant. ` +
+          `Gardez ce numéro pour suivre votre commande.`;
       openModal('#confirmModal');
 
       state.cart = []; saveCart(); syncCart();
 
-      // Ouverture automatique de WhatsApp (application native dans l'APK)
-      try { openExternal($('#confirmWhatsapp').href); } catch (err) {}
-      toast('Commande enregistrée !', 'ok');
+      // WhatsApp ne s'ouvre automatiquement que si le client n'a pas choisi de payer en ligne.
+      if (!payUrl) {
+        try { openExternal($('#confirmWhatsapp').href); } catch (err) {}
+      }
+      toast(payUrl ? 'Commande enregistrée — paiement en attente' : 'Commande enregistrée !', 'ok');
     } catch (err) {
       toast(err.message || 'Impossible d’envoyer la commande.', 'err');
     } finally {
@@ -936,6 +983,7 @@
     $$('.modal').forEach((m) => { m.hidden = true; });
     const drawer = $('#cartDrawer');
     if (!drawer || !drawer.classList.contains('open')) document.body.classList.remove('no-scroll');
+    document.body.classList.remove('modal-open');
   }
 
   /* ------------------------------------------------------------------ */

@@ -1,13 +1,15 @@
 /* Service worker — Le Royal Tavern
    Stratégie : réseau d'abord pour l'API et les commandes, cache pour la coquille
    de l'application (fonctionne partiellement hors ligne). */
-const VERSION = 'royal-tavern-v2';
+const VERSION = 'royal-tavern-v3';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/connexion.html',
   '/compte.html',
   '/suivi.html',
+  '/paiement.html',
+  '/terminal.html',
   '/css/style.css',
   '/js/app.js',
   '/manifest.webmanifest',

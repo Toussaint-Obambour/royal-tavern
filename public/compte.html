@@ -98,7 +98,14 @@
               <input id="pName" required minlength="2" />
             </div>
             <div class="field">
-              <label>Téléphone (identifiant de connexion)</label>
+              <label for="pPseudo">Pseudo (identifiant de connexion)</label>
+              <input id="pPseudo" required minlength="3" maxlength="20"
+                     pattern="[A-Za-z0-9._-]{3,20}" autocomplete="username"
+                     autocapitalize="none" spellcheck="false" placeholder="marie_ondo" />
+              <p class="hint">Vous pouvez vous connecter avec ce pseudo <b>ou</b> avec votre téléphone.</p>
+            </div>
+            <div class="field">
+              <label>Téléphone</label>
               <input id="pPhone" disabled />
             </div>
             <div class="field">
@@ -185,10 +192,11 @@
   function fillUser() {
     $('#needLogin').hidden = true;
     $('#accContent').hidden = false;
-    $('#helloName').textContent = 'Bonjour ' + (user.name || '');
+    $('#helloName').textContent = user.pseudo ? 'Bonjour @' + user.pseudo : 'Bonjour ' + (user.name || '');
     $('#helloPhone').textContent = user.phone + ' · compte créé le ' + new Date(user.createdAt).toLocaleDateString('fr-FR');
     $('#avatar').textContent = (user.name || '?').trim().charAt(0).toUpperCase();
     $('#pName').value = user.name || '';
+    if ($('#pPseudo')) $('#pPseudo').value = user.pseudo || '';
     $('#pPhone').value = user.phone || '';
     $('#pAddress').value = user.address || '';
     $('#pLandmark').value = user.landmark || '';
@@ -267,7 +275,12 @@
     const btn = $('#saveProfile');
     btn.disabled = true; btn.textContent = 'Enregistrement…';
     try {
-      const payload = { name: $('#pName').value, address: $('#pAddress').value, landmark: $('#pLandmark').value };
+      const payload = {
+        name: $('#pName').value,
+        pseudo: $('#pPseudo') ? $('#pPseudo').value : undefined,
+        address: $('#pAddress').value,
+        landmark: $('#pLandmark').value
+      };
       if ($('#pNewPwd').value) payload.newPassword = $('#pNewPwd').value;
       const data = await api('/api/auth/profile', { method: 'PUT', body: JSON.stringify(payload) });
       user = data.user;

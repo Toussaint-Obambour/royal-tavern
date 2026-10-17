@@ -34,6 +34,10 @@
   .order-summary .r{display:flex;justify-content:space-between;gap:1rem}
   .order-summary .r.tot{font-weight:800;border-top:1px dashed var(--line);padding-top:.35rem}
   .help-line{margin-top:1.3rem;font-size:.88rem;color:var(--ink-soft);text-align:center}
+  .pay-banner{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;justify-content:space-between;
+    background:#FFF8E6;border:1px solid #EBD9A8;border-radius:14px;padding:.85rem 1rem;margin-top:1rem;font-size:.88rem}
+  .pay-banner.ok{background:#E9F8F0;border-color:#B7E4CC;color:#12764A;font-weight:700}
+  .pay-banner .btn{margin:0;padding:.6rem 1rem;font-size:.85rem;width:auto}
 </style>
 </head>
 <body>
@@ -118,6 +122,21 @@
   if (params.get('number')) $('#number').value = params.get('number');
   if (params.get('phone')) $('#phone').value = params.get('phone');
 
+
+  function payBanner(o) {
+    if (o.status === 'annulee') return '';
+    const online = ['airtel', 'moov'].includes(o.payment);
+    if (!online) return '';
+    if (o.paymentStatus === 'reussi') {
+      return `<div class="pay-banner ok">✔ Commande payée${o.paymentOperator ? ' par ' + (o.paymentOperator === 'moov' ? 'Moov Money' : 'Airtel Money') : ''}</div>`;
+    }
+    const op = encodeURIComponent(o.payment);
+    return `<div class="pay-banner">
+        <div><b>Paiement en attente</b><br><small>Réglez par Mobile Money pour confirmer votre commande.</small></div>
+        <a class="btn btn-gold" href="/paiement.html?order=${encodeURIComponent(o.number)}&op=${op}">Payer ${FC(o.total)}</a>
+      </div>`;
+  }
+
   async function search(number, phone) {
     const box = $('#result');
     box.hidden = false;
@@ -146,7 +165,8 @@
         <div class="order-summary" style="margin-top:1.2rem">
           ${o.items.map((i) => `<div class="r"><span>${i.qty} × ${esc(i.name)}</span><span>${FC(i.lineTotal)}</span></div>`).join('')}
           <div class="r tot"><span>Total</span><span>${FC(o.total)}</span></div>
-        </div>`;
+        </div>
+        ${payBanner(o)}`;
     } catch (e) {
       box.innerHTML = `<p style="color:var(--danger);margin-top:1rem">${esc(e.message)}</p>`;
     }

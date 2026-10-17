@@ -553,10 +553,16 @@
 <div class="modal" id="confirmModal" hidden>
   <div class="modal-card" role="dialog" aria-modal="true">
     <div class="confirm">
-      <div class="confirm-icon">✅</div>
+      <div class="confirm-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="52" height="52" fill="none">
+          <circle cx="24" cy="24" r="22" fill="#E7F6EE" stroke="#1E9E6A" stroke-width="1.4"/>
+          <path d="M14 24.5 21 31.5 34 17.5" stroke="#1E9E6A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <h3>Commande enregistrée !</h3>
       <p class="confirm-num">Numéro : <b id="confirmNumber">—</b></p>
       <p id="confirmText">Un message WhatsApp va s'ouvrir pour envoyer votre commande au restaurant. Si WhatsApp ne s'ouvre pas, utilisez le bouton ci-dessous ou appelez-nous.</p>
+      <a class="btn btn-gold btn-block btn-lg" id="confirmPay" href="#" hidden style="display:none">💳 Payer maintenant par Mobile Money</a>
       <a class="btn btn-gold btn-block btn-lg" id="confirmWhatsapp" href="#" target="_blank" rel="noopener">💬 Ouvrir WhatsApp</a>
       <button class="btn btn-dark btn-block" id="confirmTrack">🔎 Suivre ma commande</button>
       <a class="btn btn-ghost btn-block" id="confirmCall" href="#">📞 Appeler le restaurant</a>

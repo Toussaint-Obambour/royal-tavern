@@ -49,6 +49,13 @@
   tr:hover td{background:#fdfbf7}
   .status-pill{display:inline-block;padding:.25rem .6rem;border-radius:999px;font-size:.75rem;font-weight:700;white-space:nowrap}
   .st-nouvelle{background:#fdf0d5;color:#8a5a09}
+  #payKpis .kpi b{font-size:1.22rem}
+  .p-pill{display:inline-block;padding:.16rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;white-space:nowrap}
+  .p-reussi{background:#e2f7ec;color:#12764a}
+  .p-en_attente{background:#fdf0d5;color:#8a5a09}
+  .p-echoue,.p-annule{background:#fde6e1;color:#9c3220}
+  .p-expire{background:#eceef2;color:#5b6474}
+  .p-rembourse{background:#e8eefc;color:#2b4b9c}
   .st-confirmee{background:#e2eefc;color:#1a4f8a}
   .st-en_preparation{background:#fdeacd;color:#9a5a06}
   .st-en_livraison{background:#e3e0fb;color:#453aa6}
@@ -125,6 +132,7 @@
     <nav class="admin-tabs" id="adminTabs">
       <button data-tab="dashboard" class="active">📊 Tableau de bord</button>
       <button data-tab="orders">🧾 Commandes <span id="newBadge" class="badge" style="position:static;display:none">0</span></button>
+      <button data-tab="payments">💳 Paiements <span id="payBadge" class="badge" style="position:static;display:none">0</span></button>
       <button data-tab="menu">🍽️ Menu &amp; prix</button>
       <button data-tab="settings">⚙️ Paramètres</button>
       <button data-tab="share">📲 QR, affiche &amp; app</button>
@@ -177,6 +185,34 @@
         </div>
         <div class="table-scroll"><table id="ordersTable"></table></div>
         <div id="ordersEmpty" class="empty" hidden>Aucune commande pour ces critères.</div>
+      </div>
+    </section>
+
+    <!-- ---------- Paiements ---------- -->
+    <section id="tab-payments" class="tab-panel" hidden>
+      <div class="card">
+        <div class="card-head">
+          <h2>Paiements Mobile Money</h2>
+          <div class="spacer"></div>
+          <button class="mini" id="refreshPayments">🔄 Actualiser</button>
+          <button class="mini" id="exportPayments">⬇️ Export CSV</button>
+        </div>
+        <p style="color:var(--ink-soft);font-size:.86rem;margin:.2rem 0 .9rem" id="payModeNote"></p>
+        <div class="kpis" id="payKpis" style="margin-bottom:1rem"></div>
+        <div class="toolbar">
+          <input id="paySearch" placeholder="Rechercher (réf., commande, téléphone)…" />
+          <select id="payStatusFilter">
+            <option value="">Tous les statuts</option>
+            <option value="reussi">Payés</option>
+            <option value="en_attente">En attente</option>
+            <option value="echoue">Échoués</option>
+            <option value="annule">Annulés</option>
+            <option value="expire">Expirés</option>
+            <option value="rembourse">Remboursés</option>
+          </select>
+        </div>
+        <div class="table-scroll"><table id="paymentsTable"></table></div>
+        <div id="paymentsEmpty" class="empty" hidden>Aucun paiement pour ces critères.</div>
       </div>
     </section>
 
@@ -358,7 +394,7 @@
     remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
   };
 
-  const state = { token: store.get(TOKEN_KEY) || '', data: null, menu: null, settings: null, orders: [], tab: 'dashboard', lastNewCount: 0 };
+  const state = { token: store.get(TOKEN_KEY) || '', data: null, menu: null, settings: null, orders: [], payments: [], tab: 'dashboard', lastNewCount: 0 };
 
   function toast(msg, type = '') {
     const el = document.createElement('div');
@@ -426,6 +462,9 @@
     state.menu = data.menu;
     state.settings = data.settings;
     state.orders = data.orders || [];
+    state.payments = data.payments || [];
+    state.paymentLabels = data.paymentLabels || {};
+    state.paymentMode = data.paymentMode || 'sandbox';
     renderAll();
   }
 
@@ -434,6 +473,7 @@
     renderDashOrders();
     renderTopDishes();
     renderOrders();
+    renderPayments();
     renderMenuEditor();
     renderSpecialsEditor();
     renderSettingsForm();
@@ -492,7 +532,7 @@
         <td><b>${esc(o.number)}</b><br><small style="color:var(--ink-soft)">${new Date(o.createdAt).toLocaleString('fr-FR')}</small></td>
         <td>${esc(o.customer?.name || '')}<br><small style="color:var(--ink-soft)">${esc(o.customer?.phone || '')}</small></td>
         <td>${esc({ livraison: '🛵 Livraison', emporter: '🥡 À emporter', surplace: '🪑 Sur place' }[o.mode] || o.mode)}</td>
-        <td><b>${FC(o.total)}</b></td>
+        <td><b>${FC(o.total)}</b>${payTagForOrder(o)}</td>
         <td><span class="status-pill st-${esc(o.status)}">${esc((state.data.statusLabels || {})[o.status] || o.status)}</span></td>
         <td>
           <div class="row-actions">
@@ -659,6 +699,94 @@
         </div>
         <button class="mini danger" data-del-dish="${idx}">🗑️</button>
       </div>`;
+  }
+
+  /* ------------------------------ Paiements ------------------------------ */
+  function payTagForOrder(o) {
+    const map = { reussi: ['p-reussi', '💳 Payé'], en_attente: ['p-en_attente', '⏳ Paiement en attente'], echoue: ['p-echoue', 'Paiement échoué'], annule: ['p-annule', 'Paiement annulé'], expire: ['p-expire', 'Paiement expiré'], rembourse: ['p-rembourse', 'Remboursé'] };
+    const m = map[o.paymentStatus];
+    if (!m) return '';
+    return `<br><span class="p-pill ${m[0]}">${m[1]}</span>`;
+  }
+
+  function renderPayments() {
+    const list = state.payments || [];
+    const labels = state.paymentLabels || {};
+    const okList = list.filter((p) => p.status === 'reussi');
+    const totalOk = okList.reduce((s, p) => s + Number(p.amount || 0), 0);
+    const waiting = list.filter((p) => p.status === 'en_attente').length;
+    const failed = list.filter((p) => ['echoue', 'annule', 'expire'].includes(p.status)).length;
+    const rate = list.length ? Math.round((okList.length / list.length) * 100) : 0;
+
+    $('#payKpis').innerHTML = `
+      <div class="kpi gold"><span>Encaissé (total)</span><b>${FC(totalOk)}</b></div>
+      <div class="kpi"><span>Paiements réussis</span><b>${okList.length}</b></div>
+      <div class="kpi"><span>En attente</span><b>${waiting}</b></div>
+      <div class="kpi"><span>Taux de réussite</span><b>${rate}%</b></div>`;
+
+    const note = $('#payModeNote');
+    if (note) {
+      const dot = (color) => `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${color};margin-right:.35rem;vertical-align:middle"></span>`;
+      note.innerHTML = state.paymentMode === 'live'
+        ? `${dot('#2FBF71')}Mode réel — les paiements sont traités par la passerelle.`
+        : `${dot('#D9A83C')}<b>Mode test</b> — aucun argent n’est débité. Code secret de démonstration : <b>1234</b>. Le <a href="/terminal" target="_blank" rel="noopener">terminal de test</a> permet de simuler un encaissement.`;
+    }
+
+    const q = ($('#paySearch').value || '').trim().toLowerCase();
+    const st = $('#payStatusFilter').value;
+    const filtered = list.filter((p) => {
+      const txt = `${p.ref} ${p.orderNumber || ''} ${p.phoneMasked || ''} ${p.label || ''}`.toLowerCase();
+      return (!q || txt.includes(q)) && (!st || p.status === st);
+    });
+
+    if (!filtered.length) {
+      $('#paymentsTable').innerHTML = '';
+      $('#paymentsEmpty').hidden = false;
+      return;
+    }
+    $('#paymentsEmpty').hidden = true;
+
+    const rows = filtered.map((p) => `
+      <tr>
+        <td><b>${esc(p.ref)}</b><br><small style="color:var(--ink-soft)">${new Date(p.createdAt).toLocaleString('fr-FR')}</small></td>
+        <td>${p.orderNumber ? `<b>${esc(p.orderNumber)}</b>` : '<span style="color:var(--ink-soft)">Test libre</span>'}</td>
+        <td>${p.operator === 'moov' ? '🔵 Moov' : '🔴 Airtel'}<br><small style="color:var(--ink-soft)">${esc(p.phoneMasked || '')}</small></td>
+        <td><b>${FC(p.amount)}</b></td>
+        <td><span class="p-pill p-${esc(p.status)}">${esc(labels[p.status] || p.status)}</span></td>
+        <td>
+          <div class="row-actions">
+            ${p.status !== 'reussi' ? `<button class="mini primary" data-pay-ok="${esc(p.ref)}">Valider</button>` : ''}
+            ${p.status === 'reussi' ? `<button class="mini" data-pay-refund="${esc(p.ref)}">Rembourser</button>` : ''}
+            ${p.status === 'en_attente' ? `<a class="mini" href="/paiement.html?ref=${encodeURIComponent(p.ref)}" target="_blank" rel="noopener">Voir</a>` : ''}
+          </div>
+        </td>
+      </tr>`).join('');
+
+    $('#paymentsTable').innerHTML = `<thead><tr><th>Référence</th><th>Commande</th><th>Opérateur</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead><tbody>${rows}</tbody>`;
+
+    $$('[data-pay-ok]', $('#paymentsTable')).forEach((b) => b.addEventListener('click', () => payAction(b.dataset.payOk, 'validate')));
+    $$('[data-pay-refund]', $('#paymentsTable')).forEach((b) => b.addEventListener('click', () => payAction(b.dataset.payRefund, 'refund')));
+
+    const badge = $('#payBadge');
+    if (badge) {
+      const pending = list.filter((p) => p.status === 'en_attente').length;
+      badge.style.display = pending ? 'inline-block' : 'none';
+      badge.textContent = pending;
+      badge.style.background = '#E4573D';
+      badge.style.color = '#fff';
+    }
+  }
+
+  async function payAction(ref, action) {
+    const label = action === 'refund' ? 'rembourser ce paiement' : 'valider ce paiement manuellement';
+    if (!confirm(`Confirmer : ${label} ?\n${ref}`)) return;
+    try {
+      const res = await api(`/api/admin/payments/${encodeURIComponent(ref)}/${action}`, { method: 'POST' });
+      const i = state.payments.findIndex((p) => p.ref === ref);
+      if (i >= 0) state.payments[i] = res.payment;
+      toast(action === 'refund' ? 'Paiement remboursé.' : 'Paiement validé.', 'ok');
+      await load();
+    } catch (e) { toast(e.message, 'err'); }
   }
 
   function renderMenuEditor() {
@@ -859,6 +987,16 @@
 
   /* ------------------------------ Divers --------------------------------- */
   $('#orderSearch').addEventListener('input', renderOrders);
+  const paySearchEl = $('#paySearch');
+  if (paySearchEl) paySearchEl.addEventListener('input', renderPayments);
+  const payFilterEl = $('#payStatusFilter');
+  if (payFilterEl) payFilterEl.addEventListener('change', renderPayments);
+  const refreshPayEl = $('#refreshPayments');
+  if (refreshPayEl) refreshPayEl.addEventListener('click', () => load());
+  const exportPayEl = $('#exportPayments');
+  if (exportPayEl) exportPayEl.addEventListener('click', () => {
+    window.open(`/api/admin/payments.csv?token=${encodeURIComponent(state.token)}`, '_blank');
+  });
   $('#orderStatusFilter').addEventListener('change', renderOrders);
   $('#orderPeriod').addEventListener('change', renderOrders);
   $('#refreshOrders').addEventListener('click', async () => { await load(); toast('Données actualisées.', 'ok'); });

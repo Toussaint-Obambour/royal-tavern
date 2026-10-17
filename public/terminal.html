@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#080E1A" />
+<title>Terminal de test — Le Royal Tavern</title>
+<link rel="icon" href="icons/icon-192.png" />
+<style>
+  :root{
+    --night:#080E1A; --card:#101C30; --card2:#132340; --line:rgba(255,255,255,.09);
+    --gold:#D9A83C; --gold-l:#FBEBB8; --cream:#FBF7EE; --muted:#93A1B8;
+    --green:#2FBF71; --red:#E4573D; --airtel:#E4002B; --moov:#0B5CAB;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:var(--sans);color:var(--cream);background:var(--night);
+    background-image:radial-gradient(900px 500px at 50% -10%,rgba(217,168,60,.13),transparent 70%);
+    min-height:100vh;display:flex;flex-direction:column}
+  .bar{display:flex;align-items:center;gap:.7rem;padding:1rem 1.1rem;max-width:620px;margin:0 auto;width:100%}
+  .crest{width:38px;height:38px;border-radius:11px;background:linear-gradient(160deg,#1b2942,#0b1322);
+    border:1px solid rgba(217,168,60,.45);display:grid;place-items:center;flex:none}
+  .brand b{font-family:var(--serif);font-size:1rem;display:block}
+  .brand span{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .pill{margin-left:auto;font-size:.68rem;color:#f0dca2;border:1px dashed rgba(217,168,60,.45);
+    background:rgba(217,168,60,.08);padding:.3rem .55rem;border-radius:999px;white-space:nowrap}
+  main{flex:1;width:100%;max-width:620px;margin:0 auto;padding:.5rem 1rem 2.4rem}
+  .card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:18px;padding:1.1rem;box-shadow:0 24px 60px -30px #000}
+  .card + .card{margin-top:1rem}
+  h1{font-family:var(--serif);font-size:1.35rem;font-weight:400;margin:.1rem 0 .3rem}
+  .sub{color:var(--muted);font-size:.82rem;margin:0 0 1rem;line-height:1.45}
+  .eyebrow{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.3rem}
+
+  .display{background:#0a1424;border:1.5px solid var(--line);border-radius:14px;padding:1rem;text-align:right;margin-bottom:.9rem}
+  .display small{display:block;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;margin-bottom:.2rem}
+  .display b{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--gold-l)}
+  .display b em{font-family:var(--sans);font-style:normal;font-size:.72rem;color:var(--gold);letter-spacing:.1em;margin-left:.3rem}
+
+  .chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+  .chip{background:#0d1729;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.42rem .7rem;font-size:.75rem;cursor:pointer;font-family:var(--sans)}
+  .chip:active{background:#16233a}
+  .chip.active{border-color:rgba(217,168,60,.6);color:var(--gold-l);background:rgba(217,168,60,.1)}
+
+  .label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 .45rem;display:block}
+  .ops{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:1rem}
+  .op{display:flex;align-items:center;gap:.55rem;padding:.7rem;border-radius:13px;cursor:pointer;
+    background:#0d1729;border:1.5px solid var(--line);color:inherit;font:inherit;text-align:left;position:relative}
+  .op .logo{width:26px;height:26px;flex:none;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:.66rem;color:#fff}
+  .op[data-op="airtel"] .logo{background:var(--airtel)}
+  .op[data-op="moov"] .logo{background:var(--moov)}
+  .op b{font-size:.78rem;font-weight:600;display:block;white-space:nowrap}
+  .op small{font-size:.68rem;color:var(--muted)}
+  .op.active{border-color:var(--gold);background:linear-gradient(180deg,rgba(217,168,60,.14),rgba(217,168,60,.04))}
+  .op.active{box-shadow:inset 0 0 0 1px rgba(217,168,60,.45)}
+
+  .field{display:flex;align-items:center;gap:.5rem;background:#0a1424;border:1.5px solid var(--line);border-radius:12px;padding:.1rem .8rem;margin-bottom:1rem}
+  .field span{font-size:.8rem;color:var(--muted);font-weight:600;padding-right:.5rem;border-right:1px solid var(--line)}
+  .field input{background:none;border:0;outline:0;color:var(--cream);font-size:1rem;letter-spacing:.05em;padding:.8rem 0;width:100%;font-family:var(--sans)}
+
+  .btn{width:100%;border:0;border-radius:13px;padding:.95rem;font-size:.92rem;font-weight:700;font-family:var(--sans);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem;margin-top:.5rem;transition:transform .12s}
+  .btn:active{transform:scale(.99)}
+  .btn-primary{background:linear-gradient(180deg,#EFC961,#C89430);color:#231a05;box-shadow:0 12px 30px -12px rgba(217,168,60,.65)}
+  .btn-primary[disabled]{opacity:.55;filter:grayscale(.4)}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.16);color:var(--cream)}
+
+  .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin-bottom:1rem}
+  .kpi{background:#0d1729;border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem}
+  .kpi span{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi b{font-family:var(--serif);font-size:1.15rem;font-weight:400;margin-top:.15rem;display:block}
+  .kpi.gold b{color:var(--gold-l)}
+  .kpi.ok b{color:var(--green)}
+
+  table{width:100%;border-collapse:collapse;font-size:.78rem}
+  th{text-align:left;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.4rem .3rem;border-bottom:1px solid var(--line)}
+  td{padding:.55rem .3rem;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:middle}
+  td b{font-weight:600}
+  .small{color:var(--muted);font-size:.7rem;display:block}
+  .tag{display:inline-block;padding:.18rem .45rem;border-radius:999px;font-size:.65rem;font-weight:700;white-space:nowrap}
+  .t-ok{background:rgba(47,191,113,.13);color:#7fe0a7}
+  .t-wait{background:rgba(217,168,60,.14);color:#f0dca2}
+  .t-bad{background:rgba(228,87,61,.14);color:#f09b8b}
+  .empty{text-align:center;color:var(--muted);font-size:.8rem;padding:1.4rem .5rem}
+  .footnote{margin-top:1rem;text-align:center;font-size:.7rem;color:#6f7f96;line-height:1.5}
+  .footnote a{color:var(--muted)}
+  .row-link{color:var(--gold);text-decoration:none;font-weight:600;white-space:nowrap}
+  @media (max-width:380px){.kpis{grid-template-columns:1fr}.display b{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="crest">
+    <svg viewBox="0 0 24 24" fill="none" width="21" height="21"><path d="M3 8l3.2 2.2L12 5l5.8 5.2L21 8l-1.6 9.2H4.6L3 8Z" stroke="#D9A83C" stroke-width="1.3" stroke-linejoin="round"/><circle cx="3" cy="7" r="1.3" fill="#D9A83C"/><circle cx="21" cy="7" r="1.3" fill="#D9A83C"/><circle cx="12" cy="4" r="1.3" fill="#D9A83C"/></svg>
+  </div>
+  <div class="brand"><b>Terminal de test</b><span>Le Royal Tavern</span></div>
+  <div class="pill">MODE TEST</div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="eyebrow">Caisse simulée</div>
+    <h1>Encaisser un paiement</h1>
+    <p class="sub">Créez une demande Mobile Money de démonstration. Aucun argent réel ne circule : idéal pour former l'équipe et tester le parcours client.</p>
+
+    <div class="display">
+      <small>Montant</small>
+      <b id="amountDisplay">0<em>FCFA</em></b>
+    </div>
+
+    <div class="chips" id="chips">
+      <button class="chip" data-add="1000">+1 000</button>
+      <button class="chip" data-add="2000">+2 000</button>
+      <button class="chip" data-add="5000">+5 000</button>
+      <button class="chip" data-add="10000">+10 000</button>
+      <button class="chip" data-add="25000">+25 000</button>
+      <button class="chip" data-clear="1">Effacer</button>
+    </div>
+
+    <span class="label">Opérateur</span>
+    <div class="ops" id="ops">
+      <button class="op active" data-op="airtel" type="button">
+        <span class="logo">air</span>
+        <span><b>Airtel Money</b><small>Simulation</small></span>
+      </button>
+      <button class="op" data-op="moov" type="button">
+        <span class="logo">mv</span>
+        <span><b>Moov Money</b><small>Simulation</small></span>
+      </button>
+    </div>
+
+    <span class="label">Numéro du client</span>
+    <div class="field">
+      <span>+241</span>
+      <input id="phone" inputmode="numeric" placeholder="06 12 34 56 78" maxlength="17" />
+    </div>
+
+    <button class="btn btn-primary" id="createBtn">Créer la demande de paiement</button>
+    <button class="btn btn-ghost" id="resetBtn">Réinitialiser</button>
+  </div>
+
+  <div class="card">
+    <div class="eyebrow">Aujourd'hui</div>
+    <div class="kpis" id="kpis"></div>
+    <h1 style="font-size:1.1rem">Transactions récentes</h1>
+    <div id="recent"><div class="empty">Aucune transaction pour l'instant.</div></div>
+  </div>
+
+  <div class="footnote">
+    Terminal réservé aux tests · <a href="/admin">Espace administration</a> · <a href="/">Retour au site</a><br>
+    Le passage au paiement réel (PVit / Moov) se fera sans changer cette interface.
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const FC = (n) => new Intl.NumberFormat('fr-FR').format(Math.round(Number(n) || 0));
+
+  const state = { amount: 0, operator: 'airtel', payments: [] };
+
+  function renderAmount() {
+    $('#amountDisplay').innerHTML = FC(state.amount) + '<em>FCFA</em>';
+  }
+
+  $$('.chip').forEach((c) => c.addEventListener('click', () => {
+    if (c.dataset.clear) state.amount = 0;
+    else state.amount += Number(c.dataset.add) || 0;
+    if (state.amount > 500000) state.amount = 500000;
+    renderAmount();
+  }));
+
+  $$('.op').forEach((b) => b.addEventListener('click', () => {
+    $$('.op').forEach((x) => x.classList.remove('active'));
+    b.classList.add('active');
+    state.operator = b.dataset.op;
+  }));
+
+  $('#phone').addEventListener('input', (e) => {
+    const d = e.target.value.replace(/\D/g, '').replace(/^241/, '');
+    e.target.value = d.replace(/(\d{2})(?=\d)/g, '$1 ').trim().slice(0, 14);
+  });
+
+  $('#resetBtn').addEventListener('click', () => {
+    state.amount = 0; renderAmount(); $('#phone').value = '';
+  });
+
+  $('#createBtn').addEventListener('click', async () => {
+    const phone = $('#phone').value.replace(/\D/g, '');
+    if (!state.amount) return alert('Saisissez d\u2019abord un montant.');
+    if (phone.length < 8) return alert('Saisissez un numéro de téléphone valide.');
+    const btn = $('#createBtn');
+    btn.disabled = true; btn.textContent = 'Création…';
+    try {
+      const res = await fetch('/api/payments/init', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ amount: state.amount, operator: state.operator, phone, label: 'Test terminal' })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur');
+      location.href = '/paiement.html?ref=' + encodeURIComponent(data.payment.ref);
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      btn.disabled = false; btn.textContent = 'Créer la demande de paiement';
+    }
+  });
+
+  async function loadRecent() {
+    try {
+      const res = await fetch('/api/payments/recent?limit=12');
+      const data = await res.json();
+      state.payments = data.payments || [];
+    } catch (e) { state.payments = []; }
+    renderKpis();
+    renderTable();
+  }
+
+  function renderKpis() {
+    const ok = state.payments.filter((p) => p.status === 'reussi');
+    const waiting = state.payments.filter((p) => p.status === 'en_attente');
+    const total = ok.reduce((s, p) => s + Number(p.amount || 0), 0);
+    $('#kpis').innerHTML = `
+      <div class="kpi gold"><span>Encaissé (test)</span><b>${FC(total)} F</b></div>
+      <div class="kpi ok"><span>Paiements réussis</span><b>${ok.length}</b></div>
+      <div class="kpi"><span>En attente</span><b>${waiting.length}</b></div>
+      <div class="kpi"><span>Transactions</span><b>${state.payments.length}</b></div>`;
+  }
+
+  function renderTable() {
+    const host = $('#recent');
+    if (!state.payments.length) {
+      host.innerHTML = '<div class="empty">Aucune transaction pour l\u2019instant.</div>';
+      return;
+    }
+    const cls = { reussi: 't-ok', en_attente: 't-wait', echoue: 't-bad', annule: 't-bad', expire: 't-bad', rembourse: 't-wait' };
+    host.innerHTML = `<div style="overflow-x:auto"><table>
+      <thead><tr><th>Réf.</th><th>Montant</th><th>Opérateur</th><th>Statut</th><th></th></tr></thead>
+      <tbody>${state.payments.map((p) => `
+        <tr>
+          <td><b>${p.ref.replace('PAY-', '')}</b><span class="small">${new Date(p.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span></td>
+          <td><b>${FC(p.amount)} F</b><span class="small">${p.phone}</span></td>
+          <td>${p.operator === 'moov' ? 'Moov' : 'Airtel'}</td>
+          <td><span class="tag ${cls[p.status] || 't-wait'}">${p.statusLabel}</span></td>
+          <td>${p.status === 'en_attente' ? `<a class="row-link" href="/paiement.html?ref=${encodeURIComponent(p.ref)}">Payer →</a>` : ''}</td>
+        </tr>`).join('')}</tbody></table></div>`;
+  }
+
+  renderAmount();
+  loadRecent();
+  setInterval(loadRecent, 15000);
+})();
+</script>
+</body>
+</html>

@@ -72,6 +72,16 @@
   .auth-title{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;font-weight:700;letter-spacing:-.01em;margin:0 0 .2rem}
   .auth-sub{color:var(--ink-soft);font-size:.9rem;margin:0 0 1.1rem}
   .auth-box .field{margin-bottom:.85rem}
+  .lbl-help{font-weight:400;color:var(--ink-soft);font-size:.76rem}
+  .pseudo-wrap{position:relative;display:flex;align-items:center}
+  .pseudo-at{
+    position:absolute;left:.8rem;color:var(--gold-dark);font-weight:800;font-size:.95rem;pointer-events:none
+  }
+  .pseudo-wrap input{padding-left:1.9rem;padding-right:2.2rem}
+  .pseudo-state{position:absolute;right:.75rem;font-size:1rem;line-height:1;opacity:0;transition:opacity .18s}
+  .pseudo-state.show{opacity:1}
+  .pseudo-state.ok{color:#1e9e6a}
+  .pseudo-state.ko{color:#c0392b}
   .pwd-wrap{position:relative}
   .pwd-wrap input{padding-right:3.2rem}
   .pwd-toggle{
@@ -163,6 +173,17 @@
           <div class="field">
             <label for="suName">Nom complet *</label>
             <input id="suName" name="name" required minlength="2" autocomplete="name" placeholder="Ex. Marie Ondo" />
+          </div>
+          <div class="field">
+            <label for="suPseudo">Pseudo * <span class="lbl-help">— votre nom d'utilisateur, visible dans l'app</span></label>
+            <div class="pseudo-wrap">
+              <span class="pseudo-at">@</span>
+              <input id="suPseudo" name="pseudo" required minlength="3" maxlength="20"
+                     autocomplete="username" autocapitalize="none" spellcheck="false"
+                     placeholder="marie_ondo" pattern="[A-Za-z0-9._-]{3,20}" />
+              <span class="pseudo-state" id="pseudoState" aria-live="polite"></span>
+            </div>
+            <p class="hint" id="pseudoHint">3 à 20 caractères : lettres, chiffres, point, tiret ou souligné. Vous vous connecterez avec ce pseudo.</p>
           </div>
           <div class="field">
             <label for="suPhone">Téléphone / WhatsApp *</label>
@@ -288,6 +309,64 @@
     b.textContent = visible ? 'Afficher' : 'Masquer';
   }));
 
+  /* ---------- Pseudo : disponibilité en direct ---------- */
+  (function pseudoLiveCheck() {
+    const champ = $('#suPseudo');
+    const etat = $('#pseudoState');
+    const aide = $('#pseudoHint');
+    if (!champ || !etat || !aide) return;
+
+    const aideParDefaut = aide.textContent;
+    let dernier = '';
+    let minuteur = null;
+
+    function afficher(type, texte) {
+      etat.textContent = type === 'ok' ? '✓' : type === 'ko' ? '✕' : '…';
+      etat.className = 'pseudo-state show ' + (type === 'ok' ? 'ok' : type === 'ko' ? 'ko' : '');
+      aide.textContent = texte;
+      aide.style.color = type === 'ko' ? '#c0392b' : type === 'ok' ? '#1e9e6a' : '';
+    }
+
+    function reinitialiser() {
+      etat.className = 'pseudo-state';
+      etat.textContent = '';
+      aide.textContent = aideParDefaut;
+      aide.style.color = '';
+    }
+
+    champ.addEventListener('input', () => {
+      // on ne garde que les caractères autorisés
+      const propre = champ.value.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 20);
+      if (propre !== champ.value) champ.value = propre;
+
+      clearTimeout(minuteur);
+      const valeur = propre.trim();
+      if (valeur === dernier) return;
+      dernier = valeur;
+
+      if (!valeur) { reinitialiser(); return; }
+      if (valeur.length < 3) { afficher('ko', 'Encore ' + (3 - valeur.length) + ' caractère(s) minimum.'); return; }
+
+      afficher('', 'Vérification…');
+      minuteur = setTimeout(async () => {
+        try {
+          const r = await fetch('/api/auth/pseudo?pseudo=' + encodeURIComponent(valeur));
+          const d = await r.json();
+          if (valeur !== champ.value.trim()) return; // réponse obsolète
+          if (d.valide && d.disponible) {
+            afficher('ok', '@' + valeur + ' est disponible.');
+          } else if (d.valide && !d.disponible) {
+            afficher('ko', '@' + valeur + ' est déjà pris.' + (d.suggestion ? ' Essayez @' + d.suggestion : ''));
+          } else {
+            afficher('ko', d.message || 'Pseudo invalide.');
+          }
+        } catch (e) {
+          reinitialiser();
+        }
+      }, 320);
+    });
+  })();
+
   /* ---------- Connexion ---------- */
   $('#loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -297,14 +376,14 @@
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ phone: $('#liPhone').value, password: $('#liPassword').value })
+        body: JSON.stringify({ identifiant: $('#liPhone').value, password: $('#liPassword').value })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Connexion impossible.');
       store.set(TOKEN_KEY, data.token);
       store.set('rt_client', JSON.stringify(data.user));
       store.remove('rt_guest');
-      toast('Bienvenue ' + data.user.name.split(' ')[0] + ' ! 👑', 'ok');
+      toast('Bienvenue @' + (data.user.pseudo || data.user.name.split(' ')[0]) + ' ! 👑', 'ok');
       setTimeout(() => location.replace(NEXT), 500);
     } catch (err) {
       showError(err.message);
@@ -327,6 +406,7 @@
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           name: $('#suName').value,
+          pseudo: $('#suPseudo').value,
           phone: $('#suPhone').value,
           address: $('#suAddress').value,
           password: $('#suPassword').value,
@@ -338,7 +418,7 @@
       store.set(TOKEN_KEY, data.token);
       store.set('rt_client', JSON.stringify(data.user));
       store.remove('rt_guest');
-      toast('Compte créé — bienvenue ' + data.user.name.split(' ')[0] + ' ! 👑', 'ok');
+      toast('Compte créé — bienvenue @' + (data.user.pseudo || data.user.name.split(' ')[0]) + ' ! 👑', 'ok');
       setTimeout(() => location.replace(NEXT), 600);
     } catch (err) {
       showError(err.message);

@@ -424,6 +424,8 @@ p{margin:0 0 1em}
 
 /* ------------------------------ Toasts / divers -------------------------- */
 .toast-wrap{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:200;display:grid;gap:.5rem;width:min(420px,calc(100% - 2rem))}
+body.modal-open .toast-wrap{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 12px)}
+body.modal-open .floating-cart{display:none}
 .toast{
   background:var(--navy);color:#fff;border-radius:14px;padding:.8rem 1rem;font-size:.9rem;
   box-shadow:var(--shadow);border:1px solid var(--line-dark);animation:pop .25s ease;display:flex;gap:.6rem;align-items:center
