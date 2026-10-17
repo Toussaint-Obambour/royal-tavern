@@ -1,0 +1,117 @@
+{
+  "name": "Le Royal Tavern",
+  "tagline": "Lounge · Terrasse panoramique · Grillades au feu de bois — Charbonnages, Libreville",
+  "slogan": "Le goût royal, la vue en plus.",
+  "about": "Le Royal Tavern est un restaurant-lounge perché sur les hauteurs du Charbonnages, à Libreville, avec une terrasse panoramique unique sur la ville. Avant l'école conventionnée, à la nouvelle station Ola en allant vers la Chapelle des Vainqueurs (2ᵉ ruelle après la poubelle, pont Assélé). Notre cuisine ouvre du mercredi au dimanche de 12h00 à 21h40 : poulets braisés au charbon, poissons entiers, brochettes, poulet DG, burgers maison, jus naturels et cocktails. Sur place, en terrasse, à emporter ou en livraison — et le week-end, ambiance musicale jusqu'à minuit.",
+  "whatsapp": "24174689000",
+  "phone": "+241 74 68 90 00",
+  "email": "contact@royaltavern.ga",
+  "address": "Charbonnages, avant l'école conventionnée — station Ola, 2ᵉ ruelle après la poubelle (pont Assélé), avant la Chapelle des Vainqueurs. Libreville, Gabon",
+  "mapsQuery": "ROYAL TAVERN Charbonnages Libreville Gabon",
+  "hoursText": "Cuisine : mercredi–dimanche 12h00–21h40 · Terrasse : 12h00–00h00",
+  "openHour": 12,
+  "closeHour": 22,
+  "deliveryFee": 1000,
+  "freeDeliveryFrom": 25000,
+  "deliveryZones": [
+    {
+      "name": "Charbonnage, Nzeng-Ayong, PK",
+      "fee": 1000
+    },
+    {
+      "name": "Centre-ville, Mont-Bouët, Glass",
+      "fee": 1500
+    },
+    {
+      "name": "Akébé, Owendo, Louis, Ntoum",
+      "fee": 2000
+    }
+  ],
+  "payments": {
+    "cash": true,
+    "airtel": {
+      "enabled": true,
+      "number": "+241 00 00 00 00",
+      "name": "Le Royal Tavern"
+    },
+    "moov": {
+      "enabled": true,
+      "number": "+241 00 00 00 00",
+      "name": "Le Royal Tavern"
+    }
+  },
+  "services": {
+    "delivery": true,
+    "takeaway": true,
+    "dinein": true
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/p/ROYAL-Tavern-100063259776229/",
+    "tiktok": "https://www.tiktok.com/@royaltavern",
+    "instagram": "https://www.instagram.com/royaltavern"
+  },
+  "reviews": [
+    {
+      "name": "Marielle O.",
+      "city": "Charbonnages",
+      "stars": 5,
+      "text": "Le poulet braisé est incroyable et la vue depuis la terrasse est magique le soir. Commande WhatsApp rapide, livrée chaude."
+    },
+    {
+      "name": "Serge N.",
+      "city": "Nzeng-Ayong",
+      "stars": 5,
+      "text": "J'ai commandé le plateau duo pour la famille, tout le monde s'est régalé. Rapport qualité-prix au top."
+    },
+    {
+      "name": "Aline B.",
+      "city": "Centre-ville",
+      "stars": 5,
+      "text": "Poisson braisé et jus de bissap maison au top. On y est allés pour un anniversaire, le buffet était superbe."
+    },
+    {
+      "name": "Jean-Paul M.",
+      "city": "Akébé",
+      "stars": 4,
+      "text": "Bonne adresse pour les grillades. La terrasse en hauteur vaut le détour, surtout en fin de journée."
+    }
+  ],
+  "announcement": "🌇 Terrasse panoramique · Cuisine mer–dim 12h–21h40 · ☎ 074 68 90 00",
+  "announcementActive": true,
+  "minOrder": 2000,
+  "adminPasswordHash": "20fc386ccb99e9cc3791f5fb43f9c232b708bb8ee90bcb6c32c86d20847ad54f",
+  "phone2": "+241 66 23 47 33",
+  "addressShort": "Charbonnages · avant la Chapelle des Vainqueurs",
+  "landmark": "Avant l'école conventionnée, à la station Ola, ruelle pont Assélé",
+  "kitchenHours": "Mercredi – Dimanche · 12h00 à 21h40",
+  "loungeHours": "Tous les jours · 12h00 à 00h00",
+  "highlights": [
+    {
+      "icon": "🌇",
+      "title": "Terrasse panoramique",
+      "text": "Une vue plongeante sur Libreville, en hauteur, à l'abri du bruit."
+    },
+    {
+      "icon": "🔥",
+      "title": "Braises de charbon",
+      "text": "Poulets, poissons et brochettes braisés au feu, jamais frits à l'avance."
+    },
+    {
+      "icon": "🎶",
+      "title": "Ambiance lounge",
+      "text": "Musique live le week-end, cocktails et jus naturels jusqu'à minuit."
+    },
+    {
+      "icon": "🎂",
+      "title": "Événements privés",
+      "text": "Buffets anniversaire et groupes sur réservation — dès 20 personnes."
+    }
+  ],
+  "openDays": [
+    3,
+    4,
+    5,
+    6,
+    0
+  ]
+}

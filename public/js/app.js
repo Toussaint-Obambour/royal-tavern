@@ -117,10 +117,46 @@
     return zones.find((z) => z.name === wanted) || zones[0] || null;
   }
 
+  /** Heure de fermeture lisible (ex. « 21h40 »). */
+  function fermetureLabel(s) {
+    const h = Number(s.closeHour != null ? s.closeHour : 22);
+    return `${String(h).padStart(2, '0')}h00`;
+  }
+
+  /** Message affiché quand le restaurant est fermé. */
+  function messageFermeture(s) {
+    const jours = Array.isArray(s.openDays) ? s.openDays : [3, 4, 5, 6, 0];
+    const ouverture = Number(s.openHour != null ? s.openHour : 12);
+    const now = new Date();
+    if (!jours.includes(now.getDay())) {
+      return `Fermé aujourd'hui · cuisine du mercredi au dimanche, dès ${String(ouverture).padStart(2, '0')}h00`;
+    }
+    const h = now.getHours() + now.getMinutes() / 60;
+    if (h < ouverture) {
+      const minutes = Math.max(1, Math.round((ouverture - h) * 60));
+      return minutes <= 90
+        ? `Fermé · ouverture dans ${minutes} min`
+        : `Fermé · ouverture à ${String(ouverture).padStart(2, '0')}h00`;
+    }
+    return `Fermé · réouverture demain à ${String(ouverture).padStart(2, '0')}h00`;
+  }
+
+  /**
+   * Ouverture réelle du restaurant.
+   * Cuisine : du mercredi au dimanche, 12h00 → 21h40.
+   * La terrasse reste ouverte plus tard, mais les commandes sont prises
+   * pendant les heures de cuisine.
+   */
   function isOpenNow() {
-    const { openHour = 10, closeHour = 23 } = state.settings;
-    const h = new Date().getHours() + new Date().getMinutes() / 60;
-    return h >= openHour && h < closeHour;
+    const s = state.settings || {};
+    const ouverture = Number(s.openHour != null ? s.openHour : 12);
+    const fermeture = Number(s.closeHour != null ? s.closeHour : 22);
+    const jours = Array.isArray(s.openDays) ? s.openDays : [3, 4, 5, 6, 0]; // mer → dim
+    const now = new Date();
+    const jour = now.getDay();
+    if (!jours.includes(jour)) return false;
+    const h = now.getHours() + now.getMinutes() / 60;
+    return h >= ouverture && h < fermeture;
   }
 
 
@@ -211,7 +247,7 @@
 
   function renderHeaderAndFooter() {
     const s = state.settings;
-    document.title = `${s.name || 'Le Royal Tavern'} — Grillades & plats à commander en ligne | Libreville`;
+    document.title = `${s.name || 'Le Royal Tavern'} — Lounge & terrasse panoramique | Charbonnages, Libreville`;
 
     if (s.announcement && s.announcementActive !== false) {
       $('#announceText').textContent = s.announcement;
@@ -224,21 +260,31 @@
     $('#heroAddress').textContent = s.address || '';
     $('#heroHours').textContent = s.hoursText || '';
     const freeFrom = Number(s.freeDeliveryFrom || 0);
-    $('#heroDelivery').textContent = s.deliveryFee != null
-      ? `À partir de ${FC(s.deliveryFee)}${freeFrom ? ` · offerte dès ${FC(freeFrom)}` : ''}`
-      : '';
+    const heroDelivery = $('#heroDelivery');
+    if (heroDelivery) {
+      heroDelivery.textContent = s.deliveryFee != null
+        ? `À partir de ${FC(s.deliveryFee)}${freeFrom ? ` · offerte dès ${FC(freeFrom)}` : ''}`
+        : '';
+    }
 
     const open = isOpenNow();
     const pill = $('#heroStatus');
     pill.classList.toggle('closed', !open);
+    // Message clair : ouvert, ou dans combien de temps nous ouvrons
     $('#heroStatusText').textContent = open
-      ? `Ouvert maintenant · ${s.hoursText || ''}`
-      : `Fermé actuellement · ${s.hoursText || 'ouvre bientôt'}`;
+      ? `Ouvert maintenant · commandez jusqu'à ${fermetureLabel(s)}`
+      : messageFermeture(s);
 
     const waDefault = waLink(`Bonjour ${s.name || ''}, je souhaite passer une commande. 🍽️`);
     ['#heroWhatsapp', '#aboutWhatsapp', '#footerWhatsapp', '#contactWhatsapp'].forEach((sel) => {
       const el = $(sel); if (el) el.href = waDefault;
     });
+    // Réservation d'événement / buffet anniversaire
+    const eventWa = waLink(`Bonjour ${s.name || ''}, je souhaite organiser un événement (anniversaire / groupe) sur votre terrasse. Pouvez-vous me faire une proposition ? 🎉`);
+    const eventEl = $('#eventWhatsapp');
+    if (eventEl) eventEl.href = eventWa;
+    const bookEl = $('#heroBook');
+    if (bookEl) bookEl.href = eventWa;
     $('#reviewWhatsapp').href = waLink(`Bonjour ${s.name || ''}, je souhaite laisser un avis sur votre restaurant : `);
 
     // Dans l'application Android, les liens externes s'ouvrent dans les applis natives
@@ -282,11 +328,19 @@
 
     const social = s.social || {};
     const icons = { facebook: '📘', instagram: '📸', tiktok: '🎵' };
-    const row = $('#socialRow');
-    row.innerHTML = Object.entries(social)
+    const socialHtml = Object.entries(social)
       .filter(([, url]) => !!url)
-      .map(([k, url]) => `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(k)}">${icons[k] || '🔗'}</a>`)
+      .map(([k, url]) => {
+        const label = k === 'facebook' ? 'Facebook' : k === 'tiktok' ? 'TikTok' : k === 'instagram' ? 'Instagram' : k;
+        return `<a href="${esc(url)}" target="_blank" rel="noopener" title="${esc(label)}">${icons[k] || '🔗'} ${esc(label)}</a>`;
+      })
       .join('');
+    const row = $('#socialRow');
+    if (row) row.innerHTML = socialHtml;
+    const rowFooter = $('#socialRowFooter');
+    if (rowFooter) rowFooter.innerHTML = socialHtml;
+
+    renderHighlights();
 
     // Réseaux : désactiver les paiements non activés
     $$('#paySeg button').forEach((b) => {
@@ -294,6 +348,25 @@
       const ok = v === 'cash' || s.payments?.[v]?.enabled;
       b.hidden = !ok;
     });
+  }
+
+  /** Bandeau des 4 points forts (terrasse, braises, lounge, événements). */
+  function renderHighlights() {
+    const box = $('#highlightsGrid');
+    if (!box) return;
+    const list = (state.settings && Array.isArray(state.settings.highlights) && state.settings.highlights.length)
+      ? state.settings.highlights
+      : [
+          { icon: '🌇', title: 'Terrasse panoramique', text: 'Vue plongeante sur Libreville' },
+          { icon: '🔥', title: 'Braises de charbon', text: 'Jamais frits à l\'avance' },
+          { icon: '🎶', title: 'Ambiance lounge', text: 'Musique live le week-end' },
+          { icon: '🎂', title: 'Événements privés', text: 'Buffets dès 20 personnes' }
+        ];
+    box.innerHTML = list.map((h) => `
+      <article class="hl">
+        <span>${esc(h.icon || '✦')}</span>
+        <div><b>${esc(h.title || '')}</b><p>${esc(h.text || '')}</p></div>
+      </article>`).join('');
   }
 
   function renderCategories() {

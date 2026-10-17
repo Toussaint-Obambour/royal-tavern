@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBEBB8"/>
+      <stop offset="35%" stop-color="#E8C168"/>
+      <stop offset="62%" stop-color="#D4A03A"/>
+      <stop offset="100%" stop-color="#9C6C16"/>
+    </linearGradient>
+    <linearGradient id="goldSoft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F6E2A6"/>
+      <stop offset="100%" stop-color="#C99733"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#1B2C4C"/>
+      <stop offset="65%" stop-color="#101A2E"/>
+      <stop offset="100%" stop-color="#080E1A"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fond bleu nuit avec halo -->
+  <rect width="400" height="400" rx="96" fill="url(#halo)"/>
+
+  <!-- Filet doré intérieur -->
+  <rect x="16" y="16" width="368" height="368" rx="82" fill="none" stroke="url(#gold)" stroke-width="1.4" opacity=".45"/>
+  <rect x="24" y="24" width="352" height="352" rx="76" fill="none" stroke="url(#gold)" stroke-width="0.7" opacity=".22"/>
+
+  <!-- Couronne -->
+  <g filter="url(#glow)">
+    <path d="M92 150 L112 196 L140 120 L170 176 L200 108 L230 176 L260 120 L288 196 L308 150 L296 232 L104 232 Z"
+          fill="url(#gold)" stroke="#8A5F12" stroke-width="1.2" stroke-linejoin="round"/>
+    <!-- perles de la couronne -->
+    <circle cx="140" cy="112" r="6.5" fill="url(#goldSoft)"/>
+    <circle cx="200" cy="98" r="8" fill="url(#goldSoft)"/>
+    <circle cx="260" cy="112" r="6.5" fill="url(#goldSoft)"/>
+    <circle cx="92" cy="144" r="5" fill="url(#goldSoft)"/>
+    <circle cx="308" cy="144" r="5" fill="url(#goldSoft)"/>
+    <!-- bandeau de base -->
+    <rect x="104" y="238" width="192" height="14" rx="6" fill="url(#gold)"/>
+    <!-- joyaux -->
+    <circle cx="200" cy="196" r="9" fill="#0B1120" opacity=".55"/>
+    <circle cx="200" cy="196" r="4.6" fill="#FBEBB8"/>
+    <circle cx="150" cy="205" r="6" fill="#0B1120" opacity=".45"/>
+    <circle cx="150" cy="205" r="3" fill="#F6E2A6"/>
+    <circle cx="250" cy="205" r="6" fill="#0B1120" opacity=".45"/>
+    <circle cx="250" cy="205" r="3" fill="#F6E2A6"/>
+  </g>
+
+  <!-- Filet séparateur -->
+  <path d="M120 274 H280" stroke="url(#gold)" stroke-width="1.2" opacity=".55"/>
+  <circle cx="200" cy="274" r="2.6" fill="url(#gold)"/>
+
+  <!-- ROYAL -->
+  <text x="200" y="312" text-anchor="middle" fill="url(#gold)"
+        font-family="Georgia, 'Times New Roman', serif" font-size="42"
+        font-weight="600" letter-spacing="9">ROYAL</text>
+  <!-- TAVERN -->
+  <text x="200" y="346" text-anchor="middle" fill="#F3E7CE"
+        font-family="Georgia, 'Times New Roman', serif" font-size="23"
+        letter-spacing="13">TAVERN</text>
+
+  <!-- Mention -->
+  <text x="200" y="366" text-anchor="middle" fill="#8FA2C4"
+        font-family="Helvetica, Arial, sans-serif" font-size="8.4" letter-spacing="3.4">CHARBONNAGES · LIBREVILLE</text>
+</svg>

@@ -3,36 +3,42 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Le Royal Tavern — Grillades & Plats à commander en ligne | Libreville</title>
-<meta name="description" content="Le Royal Tavern, Charbonnage derrière la Chapelle des Vainqueurs (Libreville) : poulet braisé, poisson braisé, brochettes, poulet DG, burgers, jus naturels. Commandez en ligne, livraison, à emporter ou sur place." />
-<meta name="theme-color" content="#0b1120" />
+<title>Le Royal Tavern — Lounge & terrasse panoramique | Charbonnages, Libreville</title>
+<meta name="description" content="Le Royal Tavern, à Charbonnages (Libreville) : terrasse panoramique en hauteur, grillades au feu de bois, poissons braisés, brochettes, burgers et cocktails. Commandez en ligne — livraison, à emporter ou sur place. ☎ 074 68 90 00." />
+<meta name="theme-color" content="#080E1A" />
 <link rel="manifest" href="manifest.webmanifest" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/favicon-64.png" sizes="64x64" />
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="mobile-web-app-capable" content="yes" />
-<meta property="og:title" content="Le Royal Tavern — Commandez vos plats en ligne" />
-<meta property="og:description" content="Grillades, braisés et saveurs royales au cœur du Charbonnage, Libreville." />
-<meta property="og:image" content="img/hero.jpg" />
+<meta property="og:title" content="Le Royal Tavern — Le goût royal, la vue en plus" />
+<meta property="og:description" content="Terrasse panoramique, grillades au feu de bois et cocktails au Charbonnages, Libreville. Commandez en ligne." />
+<meta property="og:image" content="img/site/hero-terrasse.jpg" />
 <meta property="og:type" content="restaurant" />
+<link rel="preload" href="img/site/hero-terrasse.jpg" as="image" />
 <link rel="stylesheet" href="css/style.css" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Restaurant",
   "name": "Le Royal Tavern",
-  "servesCuisine": ["Africaine", "Grillades", "Burgers"],
-  "priceRange": "1500 - 12000 FCFA",
-  "telephone": "+24100000000",
+  "description": "Lounge, terrasse panoramique et grillades au feu de bois au Charbonnages, Libreville.",
+  "servesCuisine": ["Africaine", "Grillades", "Burgers", "Cocktails"],
+  "priceRange": "1000 - 12000 FCFA",
+  "telephone": "+24174689000",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Charbonnage, derrière la Chapelle des Vainqueurs",
+    "streetAddress": "Charbonnages, avant l'école conventionnée — ruelle pont Assélé",
     "addressLocality": "Libreville",
     "addressCountry": "GA"
   },
-  "openingHours": "Mo-Su 10:00-23:00",
-  "acceptsReservations": "True"
+  "openingHoursSpecification": [
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"12:00","closes":"21:40"}
+  ],
+  "acceptsReservations": "True",
+  "sameAs": ["https://www.facebook.com/p/ROYAL-Tavern-100063259776229/","https://www.tiktok.com/@royaltavern"]
 }
 </script>
 </head>
@@ -61,13 +67,14 @@
       </span>
       <span class="brand-text">
         <strong>Le Royal Tavern</strong>
-        <em>Charbonnage · Libreville</em>
+        <em>Charbonnages · Libreville</em>
       </span>
     </a>
 
     <nav class="main-nav" aria-label="Navigation principale">
       <a href="#menu">Menu</a>
-      <a href="#jour">Menu du jour</a>
+      <a href="#terrasse">Terrasse</a>
+      <a href="#evenements">Événements</a>
       <a href="#apropos">Le restaurant</a>
       <a href="#avis">Avis</a>
       <a href="#contact">Contact</a>
@@ -82,9 +89,9 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         <span id="accountName">Mon compte</span>
       </a>
-      <a class="btn btn-ghost hide-sm" id="phoneTop" href="#contact">
+      <a class="btn btn-ghost hide-sm" id="phoneTop" href="tel:+24174689000">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 006 6L15 14l5 2v4a1 1 0 01-1.1 1A16 16 0 013 5.1A1 1 0 014 4z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-        Appeler
+        074 68 90 00
       </a>
       <button class="btn btn-gold cart-btn" id="cartOpenBtn" aria-label="Ouvrir le panier">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h2l2.2 9.5a2 2 0 002 1.5h7.1a2 2 0 002-1.6L21 8H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/></svg>
@@ -96,36 +103,55 @@
 </header>
 
 <main id="top">
-  <!-- ============ Hero ============ -->
-  <section class="hero" id="accueil">
+
+  <!-- ============ HERO : terrasse panoramique ============ -->
+  <section class="hero hero-v3" id="accueil">
     <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-veil" aria-hidden="true"></div>
     <div class="wrap hero-inner">
       <div class="hero-copy">
         <span class="pill" id="heroStatus">
           <span class="dot"></span> <span id="heroStatusText">Ouvert aujourd'hui</span>
         </span>
-        <h1>Le goût royal,<br>livré chez vous.</h1>
-        <p class="hero-sub" id="heroTagline">Poulets braisés au charbon, poissons entiers, brochettes, poulet DG, burgers maison et jus naturels — préparés chaque jour au Charbonnage.</p>
+        <p class="hero-kicker">Lounge · Terrasse panoramique · Charbonnages</p>
+        <h1>Le goût royal,<br><span class="gold-word">la vue en plus.</span></h1>
+        <p class="hero-sub" id="heroTagline">Grillades au feu de bois, poissons braisés, brochettes et cocktails — servis sur la plus belle terrasse du Charbonnages, à Libreville.</p>
         <div class="hero-cta">
           <a class="btn btn-gold btn-lg" href="#menu">🍽️ Voir le menu &amp; commander</a>
-          <a class="btn btn-outline btn-lg" id="heroWhatsapp" href="#" target="_blank" rel="noopener">💬 Commander sur WhatsApp</a>
+          <a class="btn btn-glass btn-lg" id="heroWhatsapp" href="#" target="_blank" rel="noopener">💬 Commander sur WhatsApp</a>
         </div>
         <ul class="hero-facts">
+          <li><b>🌇</b> Terrasse panoramique</li>
+          <li><b>🔥</b> Braises de charbon</li>
           <li><b>🛵</b> Livraison &amp; à emporter</li>
-          <li><b>📱</b> Airtel &amp; Moov Money</li>
-          <li><b>⏱️</b> Prêt en 20–35 min</li>
         </ul>
       </div>
-      <aside class="hero-card">
-        <h3>Commande express</h3>
-        <p>Appelez, écrivez sur WhatsApp ou commandez directement sur le site. Nous confirmons en quelques minutes.</p>
+      <aside class="hero-card hero-card-glass">
+        <div class="hero-card-head">
+          <span class="hero-card-badge">Aujourd'hui</span>
+          <h3>Réserver ou commander</h3>
+          <p>Une table en terrasse, un buffet d'anniversaire ou une commande à emporter ? Nous répondons en quelques minutes.</p>
+        </div>
         <div class="hero-card-rows">
-          <div><span>📍 Adresse</span><strong id="heroAddress">Charbonnage, derrière la Chapelle des Vainqueurs</strong></div>
-          <div><span>🕒 Horaires</span><strong id="heroHours">Tous les jours : 10h – 23h</strong></div>
-          <div><span>🛵 Livraison</span><strong id="heroDelivery">À partir de 1 000 FCFA</strong></div>
+          <div><span>📍 Adresse</span><strong id="heroAddress">Charbonnages · av. Chapelle des Vainqueurs</strong></div>
+          <div><span>🕒 Cuisine</span><strong id="heroHours">Mer – Dim · 12h – 21h40</strong></div>
+          <div><span>📞 Téléphone</span><strong><a href="tel:+24174689000">074 68 90 00</a> · <a href="tel:+24166234733">066 23 47 33</a></strong></div>
+          <div><span>🛵 Livraison</span><strong id="heroDelivery">1 000 F · offerte dès 25 000 F</strong></div>
         </div>
         <button class="btn btn-gold btn-block" id="heroOrderBtn">Je passe commande</button>
+        <a class="btn btn-outline btn-block hero-card-alt" id="heroBook" href="#" target="_blank" rel="noopener">🎉 Réserver un événement</a>
       </aside>
+    </div>
+    <div class="hero-scroll" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- ============ Points forts ============ -->
+  <section class="highlights">
+    <div class="wrap highlights-grid" id="highlightsGrid">
+      <article class="hl"><span>🌇</span><div><b>Terrasse panoramique</b><p>Vue plongeante sur Libreville</p></div></article>
+      <article class="hl"><span>🔥</span><div><b>Braises de charbon</b><p>Jamais frits à l'avance</p></div></article>
+      <article class="hl"><span>🎶</span><div><b>Ambiance lounge</b><p>Musique live le week-end</p></div></article>
+      <article class="hl"><span>🎂</span><div><b>Événements privés</b><p>Buffets dès 20 personnes</p></div></article>
     </div>
   </section>
 
@@ -140,17 +166,17 @@
       <article class="step">
         <span class="step-num">2</span>
         <h3>Envoyez la commande</h3>
-        <p>Votre commande part directement sur WhatsApp du restaurant, avec un numéro de suivi automatique.</p>
+        <p>Votre commande part directement sur le WhatsApp du restaurant, avec un numéro de suivi automatique.</p>
       </article>
       <article class="step">
         <span class="step-num">3</span>
         <h3>Payez &amp; dégustez</h3>
-        <p>Espèces à la réception, Airtel Money ou Moov Money. Livraison, à emporter ou service sur place.</p>
+        <p>Espèces à la réception, Airtel Money ou Moov Money. Livraison, à emporter ou service en terrasse.</p>
       </article>
     </div>
   </section>
 
-  <!-- ============ Menu ============ -->
+  <!-- ============ MENU ============ -->
   <section class="section" id="menu">
     <div class="wrap">
       <header class="section-head">
@@ -169,40 +195,102 @@
 
       <div class="dish-grid" id="dishGrid" aria-live="polite"></div>
       <p class="empty-state" id="menuEmpty" hidden>Aucun plat ne correspond à votre recherche.</p>
+
+      <div class="menu-foot">
+        <p>💡 <b>Bon à savoir :</b> les prix sont en FCFA, taxes comprises. Livraison offerte dès 25 000 FCFA d'achat.</p>
+      </div>
     </div>
   </section>
 
-  <!-- ============ Menu du jour ============ -->
+  <!-- ============ TERRASSE / GALERIE ============ -->
+  <section class="section section-dark" id="terrasse">
+    <div class="wrap">
+      <header class="section-head light">
+        <span class="eyebrow">Le lieu</span>
+        <h2>Une terrasse en hauteur,<br>une vue sur toute la ville</h2>
+        <p class="section-sub">Perché au-dessus des toits du Charbonnages, le Royal Tavern vous accueille du coucher du soleil jusqu'à minuit : cocktails, musique douce et grillades au feu.</p>
+      </header>
+
+      <div class="gallery">
+        <figure class="gal gal-big">
+          <img src="img/site/hero-terrasse.jpg" alt="Terrasse panoramique du Royal Tavern au coucher du soleil" loading="lazy" />
+          <figcaption><b>La terrasse panoramique</b><span>Le meilleur spot pour admirer le coucher de soleil sur Libreville.</span></figcaption>
+        </figure>
+        <figure class="gal">
+          <img src="img/site/ambiance-nuit.jpg" alt="Ambiance lounge du Royal Tavern à la tombée de la nuit" loading="lazy" />
+          <figcaption><b>L'ambiance lounge</b><span>Lumières chaudes, musique et cocktails.</span></figcaption>
+        </figure>
+        <figure class="gal">
+          <img src="img/site/ambiance-bar.jpg" alt="Bar et cocktails du Royal Tavern" loading="lazy" />
+          <figcaption><b>Le bar</b><span>Jus naturels, cocktails et boissons fraîches.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="terrasse-info">
+        <div><span>12h00</span><b>Ouverture du bar &amp; de la terrasse</b></div>
+        <div><span>12h30</span><b>Service de la cuisine</b></div>
+        <div><span>18h30</span><b>Golden hour — le meilleur moment</b></div>
+        <div><span>21h40</span><b>Dernière commande cuisine</b></div>
+        <div><span>00h00</span><b>Fermeture de la terrasse</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPÉCIALITÉS / MENU DU JOUR ============ -->
   <section class="section section-alt" id="jour">
     <div class="wrap">
       <header class="section-head">
-        <span class="eyebrow">Chaque semaine</span>
-        <h2>Suggestions &amp; menus du jour</h2>
-        <p class="section-sub">Des plats à prix doux servis du lundi au dimanche. Aujourd'hui, c'est surligné 👇</p>
+        <span class="eyebrow">Les incontournables</span>
+        <h2>Nos spécialités de la maison</h2>
+        <p class="section-sub">Les plats que nos clients commandent le plus souvent — préparés à la commande.</p>
       </header>
       <div class="specials" id="specialsGrid"></div>
     </div>
   </section>
 
-  <!-- ============ À propos ============ -->
-  <section class="section" id="apropos">
+  <!-- ============ ÉVÉNEMENTS ============ -->
+  <section class="section" id="evenements">
+    <div class="wrap event-grid">
+      <div class="event-media">
+        <img src="img/site/buffet-fete.jpg" alt="Buffet anniversaire dressé sur la terrasse du Royal Tavern" loading="lazy" />
+      </div>
+      <div class="event-copy">
+        <span class="eyebrow">Anniversaires &amp; groupes</span>
+        <h2>Votre événement,<br>version royale</h2>
+        <p>Anniversaire, pot de départ, dîner d'équipe ou réception privée : nous dressons un buffet sur mesure et privatisons une partie de la terrasse.</p>
+        <ul class="event-list">
+          <li><b>Buffet dès 20 personnes</b> — entrées, grillades, accompagnements, dessert et boissons.</li>
+          <li><b>Menus sur mesure</b> — options végétariennes et spécialités gabonaises.</li>
+          <li><b>Décoration &amp; sonorisation</b> — sur demande pour votre soirée.</li>
+          <li><b>Réservation simple</b> — un message WhatsApp suffit pour recevoir une proposition.</li>
+        </ul>
+        <div class="event-cta">
+          <a class="btn btn-gold" id="eventWhatsapp" href="#" target="_blank" rel="noopener">🎉 Demander un devis</a>
+          <a class="btn btn-outline" href="tel:+24174689000">📞 074 68 90 00</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ À PROPOS ============ -->
+  <section class="section section-alt" id="apropos">
     <div class="wrap about-grid">
       <div class="about-media">
-        <img src="img/ambiance.jpg" alt="Terrasse du restaurant Le Royal Tavern à Libreville" loading="lazy" />
+        <img src="img/site/plat-grillades.jpg" alt="Plateau de grillades au feu de bois du Royal Tavern" loading="lazy" />
         <div class="about-badge">
-          <strong>+12</strong>
-          <span>plats au feu de bois</span>
+          <strong>🔥</strong>
+          <span>braisé au charbon,<br>jamais frit à l'avance</span>
         </div>
       </div>
       <div class="about-copy">
         <span class="eyebrow">Le restaurant</span>
-        <h2>Une table conviviale au Charbonnage</h2>
-        <p id="aboutText">Le Royal Tavern est un restaurant convivial situé au Charbonnage, juste derrière la Chapelle des Vainqueurs à Libreville.</p>
+        <h2>Une adresse royale<br>au cœur du Charbonnages</h2>
+        <p id="aboutText">Le Royal Tavern est un restaurant-lounge perché sur les hauteurs du Charbonnages, à Libreville.</p>
         <ul class="about-list">
-          <li><b>Braised au charbon</b> — nos poulets et poissons sont braisés au feu, jamais frits à l'avance.</li>
+          <li><b>Le feu de bois</b> — nos poulets, poissons et brochettes sont braisés au charbon, jamais frits à l'avance.</li>
           <li><b>Sauces maison</b> — piment, gingembre, arachide : préparées sur place chaque matin.</li>
           <li><b>Produits frais</b> — achats quotidiens au marché, cuisson à la commande.</li>
-          <li><b>Sur place &amp; à emporter</b> — espace terrasse, ambiance musicale le week-end.</li>
+          <li><b>Vue &amp; ambiance</b> — terrasse panoramique, musique live le week-end.</li>
         </ul>
         <div class="about-cta">
           <a class="btn btn-dark" href="#menu">Découvrir la carte</a>
@@ -212,8 +300,8 @@
     </div>
   </section>
 
-  <!-- ============ Avis ============ -->
-  <section class="section section-alt" id="avis">
+  <!-- ============ AVIS ============ -->
+  <section class="section" id="avis">
     <div class="wrap">
       <header class="section-head">
         <span class="eyebrow">Ils ont goûté</span>
@@ -227,17 +315,17 @@
     </div>
   </section>
 
-  <!-- ============ Contact / localisation ============ -->
-  <section class="section" id="contact">
+  <!-- ============ CONTACT ============ -->
+  <section class="section section-dark" id="contact">
     <div class="wrap contact-grid">
       <div class="contact-copy">
         <span class="eyebrow">Nous trouver</span>
-        <h2>Charbonnage, derrière la Chapelle des Vainqueurs</h2>
-        <p>Passez nous voir, ou faites-vous livrer dans tout Libreville. Un doute sur l'itinéraire ? Appelez-nous, on vous guide.</p>
+        <h2>Charbonnages,<br>avant la Chapelle des Vainqueurs</h2>
+        <p>Avant l'école conventionnée, à la nouvelle station Ola en allant vers la Chapelle des Vainqueurs — 2ᵉ ruelle après la poubelle (pont Assélé). Un doute sur l'itinéraire ? Appelez-nous, on vous guide.</p>
         <ul class="contact-list">
-          <li><span>📍</span><div><b>Adresse</b><p id="contactAddress">Charbonnage, derrière la Chapelle des Vainqueurs, Libreville</p></div></li>
-          <li><span>🕒</span><div><b>Horaires</b><p id="contactHours">Tous les jours : 10h00 – 23h00</p></div></li>
-          <li><span>📞</span><div><b>Téléphone</b><p><a id="contactPhone" href="#">—</a></p></div></li>
+          <li><span>📍</span><div><b>Adresse</b><p id="contactAddress">Charbonnages, Libreville</p></div></li>
+          <li><span>🕒</span><div><b>Horaires</b><p id="contactHours">Cuisine : mer–dim 12h–21h40</p></div></li>
+          <li><span>📞</span><div><b>Téléphone</b><p><a id="contactPhone" href="#">—</a> · <a href="tel:+24166234733">066 23 47 33</a></p></div></li>
           <li><span>💬</span><div><b>WhatsApp</b><p><a id="contactWhatsapp" href="#" target="_blank" rel="noopener">—</a></p></div></li>
           <li><span>🛵</span><div><b>Zones de livraison</b><p id="contactZones">—</p></div></li>
           <li><span>💳</span><div><b>Paiements</b><p id="contactPayments">Espèces · Airtel Money · Moov Money</p></div></li>
@@ -250,7 +338,7 @@
       </div>
       <div class="contact-map">
         <div class="map-illustration">
-          <svg viewBox="0 0 400 300" role="img" aria-label="Plan de situation du Royal Tavern au Charbonnage">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Plan de situation du Royal Tavern au Charbonnages">
             <rect width="400" height="300" fill="#0f1a30"/>
             <g stroke="#1e2e52" stroke-width="2">
               <path d="M0 70h400M0 150h400M0 230h400M80 0v300M200 0v300M320 0v300"/>
@@ -261,7 +349,7 @@
             <path d="M200 108c-14 0-25 11-25 25 0 19 25 43 25 43s25-24 25-43c0-14-11-25-25-25z" fill="#d9a83c"/>
             <circle cx="200" cy="133" r="9" fill="#0b1120"/>
             <text x="200" y="196" text-anchor="middle" fill="#f4e6c6" font-family="Georgia,serif" font-size="15">Le Royal Tavern</text>
-            <text x="200" y="214" text-anchor="middle" fill="#9fb0d0" font-size="11">Charbonnage · derrière la Chapelle des Vainqueurs</text>
+            <text x="200" y="214" text-anchor="middle" fill="#9fb0d0" font-size="11">Charbonnages · avant la Chapelle des Vainqueurs</text>
           </svg>
         </div>
         <a class="btn btn-block btn-dark" id="mapsBtn2" href="#" target="_blank" rel="noopener">Voir sur la carte</a>
@@ -269,11 +357,11 @@
     </div>
   </section>
 
-  <!-- ============ Appel à l'action final ============ -->
+  <!-- ============ CTA final ============ -->
   <section class="cta-band">
     <div class="wrap">
       <h2>Une faim de roi ?</h2>
-      <p>Commandez maintenant, votre repas est préparé dès réception et confirmé par WhatsApp.</p>
+      <p>Commandez maintenant : votre repas est préparé dès réception et confirmé par WhatsApp.</p>
       <div class="hero-cta">
         <button class="btn btn-gold btn-lg" id="ctaOrderBtn">🍽️ Commander en ligne</button>
         <button class="btn btn-outline btn-lg" id="installBtn2" hidden>📲 Installer l'application</button>
@@ -293,13 +381,14 @@
             <rect x="10" y="46" width="44" height="5" rx="1.6" fill="#d9a83c"/>
           </svg>
         </span>
-        <span class="brand-text"><strong>Le Royal Tavern</strong><em>Restaurant · Libreville</em></span>
+        <span class="brand-text"><strong>Le Royal Tavern</strong><em>Restaurant · Lounge · Libreville</em></span>
       </div>
-      <p class="footer-note">Grillades, braisés et plats du pays préparés à la commande. Sur place, à emporter et en livraison au Charbonnage et dans tout Libreville.</p>
+      <p class="footer-note">Terrasse panoramique, grillades au feu de bois et cocktails au Charbonnages. Sur place, à emporter et en livraison dans tout Libreville.</p>
+      <div class="social-row" id="socialRowFooter"></div>
     </div>
     <div>
       <h4>Navigation</h4>
-      <ul><li><a href="#menu">Le menu</a></li><li><a href="#jour">Menus du jour</a></li><li><a href="#apropos">Le restaurant</a></li><li><a href="#avis">Avis clients</a></li><li><a href="#contact">Contact &amp; livraison</a></li></ul>
+      <ul><li><a href="#menu">Le menu</a></li><li><a href="#terrasse">La terrasse</a></li><li><a href="#evenements">Événements</a></li><li><a href="#apropos">Le restaurant</a></li><li><a href="#avis">Avis clients</a></li><li><a href="#contact">Contact &amp; livraison</a></li></ul>
     </div>
     <div>
       <h4>Commander</h4>
@@ -312,17 +401,19 @@
       </ul>
     </div>
     <div>
-      <h4>Le restaurant</h4>
+      <h4>Nous trouver</h4>
       <ul>
         <li><span id="footerAddress">—</span></li>
         <li><span id="footerHours">—</span></li>
         <li><a id="footerMaps" href="#" target="_blank" rel="noopener">Itinéraire</a></li>
+        <li><a href="https://www.facebook.com/p/ROYAL-Tavern-100063259776229/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.tiktok.com/@royaltavern" target="_blank" rel="noopener">TikTok</a></li>
       </ul>
     </div>
   </div>
   <div class="wrap footer-bottom">
     <span>© <span id="year"></span> Le Royal Tavern — Tous droits réservés.</span>
-    <span class="footer-meta">Commande en ligne &amp; application mobile · <span id="footerVersion">v1.0</span></span>
+    <span class="footer-meta">Commande en ligne &amp; application mobile · <span id="footerVersion">v3.0</span></span>
   </div>
 </footer>
 

@@ -1,20 +1,20 @@
-/* Généré automatiquement le 2026-10-16T12:04:17.974Z — ne pas modifier à la main.
+/* Généré automatiquement le 2026-10-17T10:37:12.993Z — ne pas modifier à la main.
    Source : data/menu.json + data/settings.json  (npm run build:data) */
 window.RT_FALLBACK = {
- "generatedAt": "2026-10-16T12:04:17.974Z",
+ "generatedAt": "2026-10-17T10:37:12.993Z",
  "settings": {
   "name": "Le Royal Tavern",
-  "tagline": "Grillades, braisés & saveurs royales au cœur du Charbonnage",
-  "slogan": "Commandez en ligne, on s'occupe du reste.",
-  "about": "Le Royal Tavern est un restaurant convivial situé au Charbonnage, juste derrière la Chapelle des Vainqueurs à Libreville. Nous préparons chaque jour des plats frais : poulets braisés au charbon, poissons entiers, brochettes, poulet DG, riz sauté, burgers maison et jus naturels. Sur place, à emporter ou en livraison, notre équipe vous régale avec des produits du marché et nos sauces faites maison.",
-  "whatsapp": "24100000000",
-  "phone": "+241 00 00 00 00",
+  "tagline": "Lounge · Terrasse panoramique · Grillades au feu de bois — Charbonnages, Libreville",
+  "slogan": "Le goût royal, la vue en plus.",
+  "about": "Le Royal Tavern est un restaurant-lounge perché sur les hauteurs du Charbonnages, à Libreville, avec une terrasse panoramique unique sur la ville. Avant l'école conventionnée, à la nouvelle station Ola en allant vers la Chapelle des Vainqueurs (2ᵉ ruelle après la poubelle, pont Assélé). Notre cuisine ouvre du mercredi au dimanche de 12h00 à 21h40 : poulets braisés au charbon, poissons entiers, brochettes, poulet DG, burgers maison, jus naturels et cocktails. Sur place, en terrasse, à emporter ou en livraison — et le week-end, ambiance musicale jusqu'à minuit.",
+  "whatsapp": "24174689000",
+  "phone": "+241 74 68 90 00",
   "email": "contact@royaltavern.ga",
-  "address": "Charbonnage, derrière la Chapelle des Vainqueurs, Libreville, Gabon",
-  "mapsQuery": "Charbonnage derrière la Chapelle des Vainqueurs Libreville Gabon",
-  "hoursText": "Tous les jours : 10h00 – 23h00",
-  "openHour": 10,
-  "closeHour": 23,
+  "address": "Charbonnages, avant l'école conventionnée — station Ola, 2ᵉ ruelle après la poubelle (pont Assélé), avant la Chapelle des Vainqueurs. Libreville, Gabon",
+  "mapsQuery": "ROYAL TAVERN Charbonnages Libreville Gabon",
+  "hoursText": "Cuisine : mercredi–dimanche 12h00–21h40 · Terrasse : 12h00–00h00",
+  "openHour": 12,
+  "closeHour": 22,
   "deliveryFee": 1000,
   "freeDeliveryFrom": 25000,
   "deliveryZones": [
@@ -50,16 +50,16 @@ window.RT_FALLBACK = {
    "dinein": true
   },
   "social": {
-   "facebook": "https://facebook.com/leroyaltavern",
-   "instagram": "https://instagram.com/leroyaltavern",
-   "tiktok": "https://tiktok.com/@leroyaltavern"
+   "facebook": "https://www.facebook.com/p/ROYAL-Tavern-100063259776229/",
+   "tiktok": "https://www.tiktok.com/@royaltavern",
+   "instagram": "https://www.instagram.com/royaltavern"
   },
   "reviews": [
    {
     "name": "Marielle O.",
-    "city": "Charbonnage",
+    "city": "Charbonnages",
     "stars": 5,
-    "text": "Le poulet braisé est incroyable, la commande WhatsApp est rapide et la livraison arrive chaude. Bravo !"
+    "text": "Le poulet braisé est incroyable et la vue depuis la terrasse est magique le soir. Commande WhatsApp rapide, livrée chaude."
    },
    {
     "name": "Serge N.",
@@ -70,13 +70,53 @@ window.RT_FALLBACK = {
    {
     "name": "Aline B.",
     "city": "Centre-ville",
+    "stars": 5,
+    "text": "Poisson braisé et jus de bissap maison au top. On y est allés pour un anniversaire, le buffet était superbe."
+   },
+   {
+    "name": "Jean-Paul M.",
+    "city": "Akébé",
     "stars": 4,
-    "text": "Le poisson braisé et le jus de bissap maison valent le détour. Service souriant au restaurant."
+    "text": "Bonne adresse pour les grillades. La terrasse en hauteur vaut le détour, surtout en fin de journée."
    }
   ],
-  "announcement": "🚚 Livraison offerte à partir de 25 000 FCFA de commande — Charbonnage, Nzeng-Ayong, PK, centre-ville.",
+  "announcement": "🌇 Terrasse panoramique ouverte · Cuisine du mercredi au dimanche 12h–21h40 · ☎ 074 68 90 00 / 066 23 47 33",
   "announcementActive": true,
-  "minOrder": 2000
+  "minOrder": 2000,
+  "phone2": "+241 66 23 47 33",
+  "addressShort": "Charbonnages · avant la Chapelle des Vainqueurs",
+  "landmark": "Avant l'école conventionnée, à la station Ola, ruelle pont Assélé",
+  "kitchenHours": "Mercredi – Dimanche · 12h00 à 21h40",
+  "loungeHours": "Tous les jours · 12h00 à 00h00",
+  "highlights": [
+   {
+    "icon": "🌇",
+    "title": "Terrasse panoramique",
+    "text": "Une vue plongeante sur Libreville, en hauteur, à l'abri du bruit."
+   },
+   {
+    "icon": "🔥",
+    "title": "Braises de charbon",
+    "text": "Poulets, poissons et brochettes braisés au feu, jamais frits à l'avance."
+   },
+   {
+    "icon": "🎶",
+    "title": "Ambiance lounge",
+    "text": "Musique live le week-end, cocktails et jus naturels jusqu'à minuit."
+   },
+   {
+    "icon": "🎂",
+    "title": "Événements privés",
+    "text": "Buffets anniversaire et groupes sur réservation — dès 20 personnes."
+   }
+  ],
+  "openDays": [
+   3,
+   4,
+   5,
+   6,
+   0
+  ]
  },
  "categories": [
   {
@@ -122,7 +162,7 @@ window.RT_FALLBACK = {
    "name": "Menu Royal",
    "desc": "Entrée au choix + plat royal au choix + dessert + boisson fraîche. Notre formule complète.",
    "price": 8500,
-   "img": "",
+   "img": "img/brochettes.jpg",
    "badge": "Best-seller",
    "available": true,
    "popular": true
@@ -133,7 +173,7 @@ window.RT_FALLBACK = {
    "name": "Formule Express",
    "desc": "1 plat au choix + 1 boisson (eau ou sucrerie). Servi rapidement, midi comme soir.",
    "price": 4500,
-   "img": "",
+   "img": "img/poulet-dg.jpg",
    "badge": "Midi",
    "available": true,
    "popular": true
@@ -155,7 +195,7 @@ window.RT_FALLBACK = {
    "name": "Menu Enfant",
    "desc": "Petite portion de poulet pané + frites + jus ou sucrerie + petit dessert.",
    "price": 3000,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -166,7 +206,7 @@ window.RT_FALLBACK = {
    "name": "Salade de crudités royale",
    "desc": "Salade fraîche, tomates, concombre, maïs, œuf, vinaigrette maison.",
    "price": 1500,
-   "img": "",
+   "img": "img/salade.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -177,7 +217,7 @@ window.RT_FALLBACK = {
    "name": "Beignets de crevettes",
    "desc": "6 beignets croustillants de crevettes fraîches, sauce pimentée maison.",
    "price": 2500,
-   "img": "",
+   "img": "img/entrees.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -188,7 +228,7 @@ window.RT_FALLBACK = {
    "name": "Samoussas au bœuf",
    "desc": "6 samoussas dorés, farcis au bœuf épicé, servis avec sauce aigre-douce.",
    "price": 1500,
-   "img": "",
+   "img": "img/entrees.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -199,7 +239,7 @@ window.RT_FALLBACK = {
    "name": "Nems au poulet",
    "desc": "4 nems croustillants au poulet et légumes, sauce sucrée-salée.",
    "price": 2000,
-   "img": "",
+   "img": "img/entrees.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -210,7 +250,7 @@ window.RT_FALLBACK = {
    "name": "Bouillon de poisson pimenté",
    "desc": "Bouillon chaud de poisson frais, herbes locales et piment doux.",
    "price": 2000,
-   "img": "",
+   "img": "img/poisson-braise.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -232,7 +272,7 @@ window.RT_FALLBACK = {
    "name": "Poulet braisé entier",
    "desc": "Poulet entier braisé au charbon, servi avec alloco, oignons et sauce maison.",
    "price": 6000,
-   "img": "",
+   "img": "img/poulet-braise.jpg",
    "badge": "",
    "available": true,
    "popular": true
@@ -254,7 +294,7 @@ window.RT_FALLBACK = {
    "name": "Capitaine braisé entier",
    "desc": "Capitaine frais du jour braisé au charbon, farce d'herbes et piment.",
    "price": 7000,
-   "img": "",
+   "img": "img/poisson-braise.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -276,7 +316,7 @@ window.RT_FALLBACK = {
    "name": "Côtelettes de porc grillées",
    "desc": "Côtelettes marinées grillées au charbon, sauce au poivre ou piment.",
    "price": 4500,
-   "img": "",
+   "img": "img/porc-grille.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -287,7 +327,7 @@ window.RT_FALLBACK = {
    "name": "Gambas grillées (6)",
    "desc": "6 grosses gambas grillées à l'ail et beurre citronné, riz parfumé.",
    "price": 8000,
-   "img": "",
+   "img": "img/gambas.jpg",
    "badge": "Premium",
    "available": true,
    "popular": false
@@ -298,7 +338,7 @@ window.RT_FALLBACK = {
    "name": "Poulet pané croustillant",
    "desc": "Filets de poulet panés maison, croustillants, servis avec frites.",
    "price": 4000,
-   "img": "",
+   "img": "img/poulet-braise.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -331,7 +371,7 @@ window.RT_FALLBACK = {
    "name": "Riz au gras au poulet",
    "desc": "Riz cuisiné au bouillon, morceaux de poulet, servi avec sauce tomate épicée.",
    "price": 3000,
-   "img": "",
+   "img": "img/riz-saute.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -342,7 +382,7 @@ window.RT_FALLBACK = {
    "name": "Attiéké poisson",
    "desc": "Attiéké frais, poisson frit, sauce piment et oignons frais.",
    "price": 3500,
-   "img": "",
+   "img": "img/attieke.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -353,7 +393,7 @@ window.RT_FALLBACK = {
    "name": "Poisson salé + bâton de manioc",
    "desc": "Poisson salé mijoté, bâton de manioc, sauce graine ou piment vert.",
    "price": 3000,
-   "img": "",
+   "img": "img/attieke.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -375,7 +415,7 @@ window.RT_FALLBACK = {
    "name": "Cheeseburger double",
    "desc": "Deux steaks, double cheddar, bacon de bœuf, pain brioché toasté + frites.",
    "price": 5500,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -386,7 +426,7 @@ window.RT_FALLBACK = {
    "name": "Chicken burger",
    "desc": "Filet de poulet pané croustillant, crudités, sauce blanche + frites.",
    "price": 4000,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -397,7 +437,7 @@ window.RT_FALLBACK = {
    "name": "Sandwich au poulet",
    "desc": "Pain croustillant garni de poulet grillé, crudités et sauce pimentée.",
    "price": 2500,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -408,7 +448,7 @@ window.RT_FALLBACK = {
    "name": "Frites maison",
    "desc": "Grande portion de frites fraîches, croustillantes et dorées.",
    "price": 1500,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -419,7 +459,7 @@ window.RT_FALLBACK = {
    "name": "Alloco (plantain frit)",
    "desc": "Bananes plantain mûres frites, sauce piment et oignons.",
    "price": 1500,
-   "img": "",
+   "img": "img/burger.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -441,7 +481,7 @@ window.RT_FALLBACK = {
    "name": "Jus de gingembre",
    "desc": "Jus de gingembre maison, tonique et rafraîchissant.",
    "price": 1000,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -452,7 +492,7 @@ window.RT_FALLBACK = {
    "name": "Jus de fruits frais (mangue / odika)",
    "desc": "Jus pressés du jour selon la saison, sans arôme artificiel.",
    "price": 1500,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -463,7 +503,7 @@ window.RT_FALLBACK = {
    "name": "Eau minérale 1 L",
    "desc": "Bouteille d'eau minérale fraîche.",
    "price": 500,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -474,7 +514,7 @@ window.RT_FALLBACK = {
    "name": "Sucrerie (Coca, Fanta, Sprite)",
    "desc": "Bouteille 33 cl bien fraîche.",
    "price": 700,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -485,7 +525,7 @@ window.RT_FALLBACK = {
    "name": "Bière locale (Régab)",
    "desc": "Bière blonde locale servie glacée. L'abus d'alcool est dangereux pour la santé.",
    "price": 1000,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "18+",
    "available": true,
    "popular": false
@@ -496,7 +536,7 @@ window.RT_FALLBACK = {
    "name": "Castel / Beaufort",
    "desc": "Bière premium 65 cl, service frais. L'abus d'alcool est dangereux pour la santé.",
    "price": 1500,
-   "img": "",
+   "img": "img/boissons.jpg",
    "badge": "18+",
    "available": true,
    "popular": false
@@ -518,7 +558,7 @@ window.RT_FALLBACK = {
    "name": "Crêpe au chocolat",
    "desc": "Crêpe tiède, chocolat fondu et poudre d'arachide grillée.",
    "price": 1500,
-   "img": "",
+   "img": "img/dessert.jpg",
    "badge": "",
    "available": true,
    "popular": false
@@ -529,7 +569,7 @@ window.RT_FALLBACK = {
    "name": "Glace 2 boules",
    "desc": "Deux boules au choix : vanille, chocolat, fraise ou coco.",
    "price": 1500,
-   "img": "",
+   "img": "img/dessert.jpg",
    "badge": "",
    "available": true,
    "popular": false

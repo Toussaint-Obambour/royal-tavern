@@ -5,19 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Accès — Le Royal Tavern</title>
 <meta name="description" content="Créez votre compte ou connectez-vous pour commander vos plats du Royal Tavern en ligne (Charbonnage, Libreville)." />
-<meta name="theme-color" content="#0b1120" />
+<meta name="theme-color" content="#080E1A" />
 <link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/favicon-64.png" sizes="64x64" />
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="stylesheet" href="css/style.css" />
 <style>
   body{background:var(--navy);padding:0}
   .auth-page{min-height:100dvh;display:grid;grid-template-columns:1fr}
   .auth-visual{
-    position:relative;display:none;color:#fff;padding:2.4rem;
-    background:linear-gradient(160deg,rgba(11,17,32,.92),rgba(11,17,32,.55)),
-               url("img/hero.jpg") center/cover no-repeat;
-    flex-direction:column;justify-content:space-between
+    position:relative;display:none;color:#fff;padding:clamp(1.8rem,3.4vw,3rem);
+    background:
+      radial-gradient(120% 90% at 0% 100%,rgba(8,14,26,.96) 0%,rgba(8,14,26,.62) 45%,rgba(8,14,26,.30) 100%),
+      linear-gradient(180deg,rgba(8,14,26,.90) 0%,rgba(8,14,26,.30) 45%,rgba(8,14,26,.92) 100%),
+      url("img/site/hero-terrasse.jpg") center/cover no-repeat;
+    flex-direction:column;justify-content:space-between;
+    border-right:1px solid rgba(217,168,60,.18)
+  }
+  .auth-visual::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(70% 40% at 20% 100%,rgba(217,168,60,.16),transparent 70%)
+  }
+  .auth-visual > *{position:relative;z-index:1}
+  .auth-visual h1{
+    font-family:"Playfair Display",Georgia,serif;font-weight:700;
+    font-size:clamp(2.1rem,3.6vw,3.2rem);line-height:1.06;letter-spacing:-.02em;margin:.7rem 0 0
+  }
+  .auth-visual h1 .gold-word{
+    background:linear-gradient(100deg,#FBEBB8 0%,#E8C168 45%,#D4A03A 72%,#F6E2A6 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent
+  }
+  .auth-visual .pill{
+    background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.76rem;letter-spacing:.04em
+  }
+  .auth-visual .kicker{
+    font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#D9A83C;font-weight:700;
+    display:flex;align-items:center;gap:10px;margin-top:1.6rem
+  }
+  .auth-visual .kicker::before{content:"";width:28px;height:1px;background:#D9A83C;opacity:.8}
+  .auth-visual ul{gap:.72rem;font-size:.92rem}
+  .auth-visual ul li{
+    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.10);
+    border-radius:12px;padding:.62rem .8rem;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)
   }
   .auth-visual h1{font-size:2.5rem;margin-top:.6rem}
   .auth-visual p{color:#dbe3f2;max-width:26rem}
@@ -31,14 +62,14 @@
   .auth-brand .brand-mark{width:48px;height:48px}
   .auth-brand strong{font-family:var(--serif);font-size:1.3rem;display:block;line-height:1.1}
   .auth-brand em{font-style:normal;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-light)}
-  .auth-box{background:var(--cream);border-radius:22px;padding:1.5rem;box-shadow:var(--shadow-lg)}
-  .tabs{display:flex;background:#efe8db;border-radius:14px;padding:.28rem;margin-bottom:1.2rem}
+  .auth-box{background:linear-gradient(180deg,#FCF9F2,#F6EFE2);border:1px solid rgba(217,168,60,.22);border-radius:22px;padding:clamp(1.2rem,2.4vw,1.7rem);box-shadow:0 30px 70px -30px rgba(8,14,26,.6)}
+  .tabs{display:flex;background:#EDE4D3;border-radius:14px;padding:.28rem;margin-bottom:1.2rem}
   .tabs button{
     flex:1;border:0;background:transparent;padding:.7rem .5rem;border-radius:11px;font-weight:700;
     font-size:.9rem;cursor:pointer;color:var(--ink-soft);transition:.2s
   }
-  .tabs button.active{background:#fff;color:var(--navy);box-shadow:0 4px 12px rgba(11,17,32,.12)}
-  .auth-title{font-size:1.45rem;margin:0 0 .2rem}
+  .tabs button.active{background:linear-gradient(180deg,#fff,#FBF6EC);color:#0B1120;box-shadow:0 4px 12px rgba(11,17,32,.14)}
+  .auth-title{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;font-weight:700;letter-spacing:-.01em;margin:0 0 .2rem}
   .auth-sub{color:var(--ink-soft);font-size:.9rem;margin:0 0 1.1rem}
   .auth-box .field{margin-bottom:.85rem}
   .pwd-wrap{position:relative}
@@ -75,22 +106,27 @@
   <section class="auth-visual">
     <div class="brand" style="color:#fff">
       <span class="brand-mark">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <defs><linearGradient id="gG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f6dc9c"/><stop offset="55%" stop-color="#d9a83c"/><stop offset="100%" stop-color="#a9761f"/></linearGradient></defs>
+          <path fill="url(#gG)" d="M6 22l9 8 8-14 9 14 9-14 8 14 9-8-4 22H10L6 22z"/>
+          <rect x="10" y="46" width="44" height="5" rx="1.6" fill="url(#gG)"/>
+          <circle cx="32" cy="15" r="3.4" fill="#f6dc9c"/>
+        </svg>
       </span>
-      <span class="brand-text"><strong>Le Royal Tavern</strong><em>Charbonnage · Libreville</em></span>
+      <span class="brand-text"><strong>Le Royal Tavern</strong><em>Charbonnages · Libreville</em></span>
     </div>
     <div>
-      <span class="pill"><span class="dot"></span> Commandez en ligne en 2 minutes</span>
-      <h1>Bienvenue au<br>Royal Tavern 👑</h1>
-      <p>Créez votre compte pour commander vos plats préférés : grillades, poissons braisés, brochettes, poulet DG, burgers et jus naturels.</p>
+      <span class="pill"><span class="dot"></span> Cuisine ouverte mer → dim · 12h – 21h40</span>
+      <h1>Le goût royal,<br><span class="gold-word">la vue en plus.</span></h1>
+      <p>Terrasse panoramique, grillades au feu de bois et cocktails — au Charbonnages, Libreville. Créez votre compte pour commander en 2 minutes.</p>
       <ul>
+        <li>🌇 <span>Terrasse panoramique en hauteur</span></li>
+        <li>🔥 <span>Braises de charbon, cuisson à la commande</span></li>
         <li>🛵 <span>Livraison, à emporter ou sur place</span></li>
-        <li>🧾 <span>Vos commandes et leurs statuts, enregistrés dans votre compte</span></li>
         <li>💬 <span>Confirmation immédiate sur WhatsApp</span></li>
-        <li>💳 <span>Espèces, Airtel Money ou Moov Money</span></li>
       </ul>
     </div>
-    <p class="mini-legal">📍 Charbonnage, derrière la Chapelle des Vainqueurs · Libreville, Gabon</p>
+    <p class="mini-legal">📍 Charbonnages, avant la Chapelle des Vainqueurs · Libreville, Gabon<br>☎ 074 68 90 00 / 066 23 47 33</p>
   </section>
 
   <!-- Colonne formulaire -->
@@ -98,7 +134,12 @@
     <div class="auth-card">
       <div class="auth-brand">
         <span class="brand-mark">
-          <svg viewBox="0 0 64 64" aria-hidden="true"><path fill="#d9a83c" d="M12 26l11 7 9-14 9 14 11-7v16H12V26z"/><rect x="12" y="44" width="40" height="5" rx="1.6" fill="#d9a83c"/></svg>
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <defs><linearGradient id="gG2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f6dc9c"/><stop offset="55%" stop-color="#d9a83c"/><stop offset="100%" stop-color="#a9761f"/></linearGradient></defs>
+            <path fill="url(#gG2)" d="M6 22l9 8 8-14 9 14 9-14 8 14 9-8-4 22H10L6 22z"/>
+            <rect x="10" y="46" width="44" height="5" rx="1.6" fill="url(#gG2)"/>
+            <circle cx="32" cy="15" r="3.4" fill="#f6dc9c"/>
+          </svg>
         </span>
         <span>
           <strong>Le Royal Tavern</strong>
